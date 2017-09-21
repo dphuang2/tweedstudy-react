@@ -1,6 +1,6 @@
 # TweedStudy in React
 
-## Out Tech Stack
+## Our Tech Stack
  - Front-end: React
  - Back-end: Express and MongoDB
 
