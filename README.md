@@ -5,7 +5,7 @@
  - Back-end: Express and MongoDB
 
 ## Installation
-1. "git clone https://github.com/dphuang2/tweedstudy-react.git"
+1. ```git clone https://github.com/dphuang2/tweedstudy-react.git```
 2. Install MongoDB https://docs.mongodb.com/manual/installation/
 3. Setup MongoDB to use /data/db
  - "sudo mkdir -p /data/db"
