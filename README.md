@@ -23,7 +23,7 @@
 ## TODO
 
 ### General notes
-please checkout a new branch with "git checkout -b <branch name>" so that you
+please checkout a new branch with ```git checkout -b <branch name>``` so that you
 are not messing with anyone else's code when you push to GitHub. After you each
 complete your tasks, each team will make pull requests with all their code onto
 the master branch and we can deal with conflicts then.
