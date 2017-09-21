@@ -15,10 +15,10 @@
    used for watching changed files and restarting the server when files change
 
 ## Usage
-- To start the front-end react server: "npm start"
-- To start MongoDB database: "npm run db" <-- You must start your database
+- To start the front-end react server: ```npm start```
+- To start MongoDB database: ```npm run db``` <-- You must start your database
   before you start your server...duh
-- To start the back-end express server: "npm run server"
+- To start the back-end express server: ```npm run server```
 
 ## TODO
 
