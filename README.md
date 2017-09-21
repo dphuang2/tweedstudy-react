@@ -29,17 +29,17 @@ complete your tasks, each team will make pull requests with all their code onto
 the master branch and we can deal with conflicts then.
 
 ### Team #1 notes (Recreating Twitter feed)
-Use "npm start" to test your code. The folder that you need to focus on is src/.
+Use ```npm start``` to test your code. The folder that you need to focus on is src/.
 Remember it is good practice to create new folders for each component you make.
 
 ### Team #2 notes (Recreating slider that can filter Twitter data [stored in a variable])
-Use "npm start" to test your code. The folder that you need to focus on is src/.
+Use ```npm start``` to test your code. The folder that you need to focus on is src/.
 Remember it is good practice to create new folders for each component you make.
 
 
 ### Team #3 notes (Interface with Twitter's API)
-Look inside server.js and implement Twitter API requests under "TODO". Use "npm
-run server" to test your code. You don't need to install MongoDB yet or save
+Look inside server.js and implement Twitter API requests under "TODO". Use ```npm
+run server``` to test your code. You don't need to install MongoDB yet or save
 anything to the database but it is worth your time to understand how a REST API
 works as well as looking inside the api/ folder to see how a basic Todo app
 could be setup. You have to go to Twitter's dev website and create an
