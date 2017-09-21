@@ -32,8 +32,7 @@ the master branch and we can deal with conflicts then.
 Use "npm start" to test your code. The folder that you need to focus on is src/.
 Remember it is good practice to create new folders for each component you make.
 
-### Team #2 notes (Recreating slider that can filter Twitter data [stored in a
-variable])
+### Team #2 notes (Recreating slider that can filter Twitter data [stored in a variable])
 Use "npm start" to test your code. The folder that you need to focus on is src/.
 Remember it is good practice to create new folders for each component you make.
 
