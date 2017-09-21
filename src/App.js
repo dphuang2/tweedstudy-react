@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+/*
+ *TODO: 
+ *Build feed with fake twitter data [tweets.json]
+ *Build slider than can filter fake twitter data [tweets.json]
+ */
+
 class App extends Component {
   render() {
     return (
