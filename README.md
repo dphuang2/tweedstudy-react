@@ -8,8 +8,8 @@
 1. ```git clone https://github.com/dphuang2/tweedstudy-react.git```
 2. Install MongoDB https://docs.mongodb.com/manual/installation/
 3. Setup MongoDB to use /data/db
- - "sudo mkdir -p /data/db"
- - "sudo chown -R <your username> /data/db"
+ - ```sudo mkdir -p /data/db```
+ - ```sudo chown -R <your username> /data/db```
 4. npm install (this install all the node modules for react)
 5. npm install -g nodemon (so you can run nodemon from command line) - this is
    used for watching changed files and restarting the server when files change
