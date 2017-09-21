@@ -31,10 +31,14 @@ the master branch and we can deal with conflicts then.
 ### Team #1 notes (Recreating Twitter feed)
 Use ```npm start``` to test your code. The folder that you need to focus on is src/.
 Remember it is good practice to create new folders for each component you make.
+Fake data for you to generate the tweets is inside "data/tweets.json".
 
 ### Team #2 notes (Recreating slider that can filter Twitter data [stored in a variable])
-Use ```npm start``` to test your code. The folder that you need to focus on is src/.
-Remember it is good practice to create new folders for each component you make.
+Use ```npm start``` to test your code. The folder that you need to focus on is
+src/. Remember it is good practice to create new folders for each component you
+make. Fake data is inside tweets.json in "data/tweets.json". Try and query for
+tweets with a retweet count above 0 and print the resulting tweets to screen (or
+just make a simple list of tweets with their texts).
 
 
 ### Team #3 notes (Interface with Twitter's API)
