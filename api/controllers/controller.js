@@ -46,3 +46,7 @@ exports.delete_a_task = function(req, res) {
   });
 };
 
+exports.get_tweets = function(req, res) {
+  var json = JSON.parse(require('fs').readFileSync('data/tweets.json', 'utf8'));
+  res.json(json);
+}

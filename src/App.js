@@ -9,17 +9,31 @@ import './App.css';
  */
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.data = null;
+    fetch("/getTweets")
+      .then((response) => {
+      return response.body;
+      })
+      .then((json) => {
+      this.data = json;
+      });
+  }
+
+  handleChange(event) {
+  console.log(event);
+  }
+
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-          <p> Hopefully this works </p>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+          <div className="App-header">
+              <img src={logo} className="App-logo" alt="logo" />
+              <h2>Welcome to React</h2>
+              <p> Hopefully this works </p>
+          </div>
+          <input onChange={(e) => {this.handleChange(e)}} />
       </div>
     );
   }
