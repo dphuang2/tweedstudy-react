@@ -6,8 +6,8 @@ var express = require('express'),
   bodyParser = require('body-parser');
   
 // mongoose instance connection url connection
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Tododb'); 
+//mongoose.Promise = global.Promise;
+//mongoose.connect('mongodb://localhost/Tododb'); 
 
 // Middleware for parsing incoming HTTP requests and then passing it onto the server
 app.use(bodyParser.urlencoded({ extended: true }));
