@@ -20,6 +20,26 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+
+        <div className="App-first-tweet ">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-4 col-md-offset-4">
+
+                <div className="row">
+                  <div className="col-md-4">
+                    <img src={logo} className="App-pro_pic" alt="logo" />
+                  </div>
+                  <div className="App-tweet-info col-md-6">
+                    <p>Name &nbsp;<i>Handle</i></p>
+                    <p> My first tweet </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     );
   }
