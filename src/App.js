@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Tweet from './Tweet.js'
+
+var tweetData = require('./tweets.json');
 
 /*
  *TODO:
@@ -10,6 +13,10 @@ import './App.css';
 
 class App extends Component {
   render() {
+    var tweetObjs = [];
+    for(var i = 0; i < tweetData.length; i++){
+      tweetObjs.push(<Tweet key={i} i={i} />);
+    }
     return (
       <div className="App">
         <div className="App-header">
@@ -20,26 +27,9 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-
-        <div className="App-first-tweet ">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-4 col-md-offset-4">
-
-                <div className="row">
-                  <div className="col-md-4">
-                    <img src={logo} className="App-pro_pic" alt="logo" />
-                  </div>
-                  <div className="App-tweet-info col-md-6">
-                    <p>Name &nbsp;<i>Handle</i></p>
-                    <p> My first tweet </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="App-tweet-section">
+          {tweetObjs}
         </div>
-
       </div>
     );
   }

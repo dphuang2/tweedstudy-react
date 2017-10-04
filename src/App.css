@@ -18,16 +18,13 @@
   font-size: large;
 }
 
+.App-tweet-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #8fb6ea;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
-
-.App-pro_pic {
-  height: 80px;
-  width: 80px;
-}
-
-.App-tweet-info {
-  padding-top: 11px;
 }
