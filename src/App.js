@@ -24,6 +24,8 @@ import 'rc-slider/assets/index.css';
       .then((json) => {
       this.data = json;
       console.log(json);
+      // Should this be this.setState()? The documentation won't shut up about how bad
+      // forceUpdate() is.
       this.forceUpdate();
       });
   }
@@ -31,18 +33,17 @@ import 'rc-slider/assets/index.css';
 
   filterInfo(filter_var)
   {
-    if(this.data != null)
-    {
-    var filteredTwitter = this.data.filter(tweet => tweet.retweet_count >= filter_var)
-    //console.log(this.data[0].favourites_count)
-    //console.log(filteredTwitter);
-    return filteredTwitter;
-    }
-    return [];
+      if(this.data != null)
+      {
+          var filteredTwitter = this.data.filter(tweet => tweet.retweet_count >= filter_var)
+              return filteredTwitter;
+      } else {
+          return [];
+      }
   }
 
   handleChange(event) {
-  console.log(event);
+      console.log(event);
   }
 
   onSliderChange = (value) => {
@@ -61,9 +62,8 @@ import 'rc-slider/assets/index.css';
                   <Slider onChange={this.onSliderChange}/>
               </div>
               <p> Hopefully this works </p>
-        {this.filterInfo(this.state.value).map((number) => <p key={number.id}>{number.text}  {number.retweet_count}</p>)}
+        {this.filterInfo(this.state.value).map((number) => <p class="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
           </div>
-          <input onChange={(e) => {this.handleChange(e)}} />
       </div>
     );
   }
