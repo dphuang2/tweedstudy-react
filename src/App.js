@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Slider, { Range } from 'rc-slider';
+import Slider  from 'rc-slider';
 // We can just import Slider or Range to reduce bundle size
 // import Slider from 'rc-slider/lib/Slider';
 // import Range from 'rc-slider/lib/Range';
@@ -15,41 +15,48 @@ import 'rc-slider/assets/index.css';
  class App extends Component {
   constructor(props) {
     super(props); 
-    this.state = { value: 0 };
+    this.state = { value: 0, max: 100, min: 0 };
     this.data = null;
     fetch("/getTweets")
       .then((response) => {
-      return response.json();
+        return response.json();
       })
       .then((json) => {
-      this.data = json;
-      console.log(json);
-      // Should this be this.setState()? The documentation won't shut up about how bad
-      // forceUpdate() is.
-      this.forceUpdate();
-      });
+        this.data = json;
+        this.setState({
+            min: this.getSmallestPop(this.data),
+            max: this.getLargestPop(this.data)
+            });
+        });
   }
 
+  getSmallestPop(tweets) {
+      return tweets.map(this.getPopularity).reduce((a, b) => a < b ? a : b);
+  }
+
+  getLargestPop(tweets) {
+      return tweets.map(this.getPopularity).reduce((a, b) => a > b ? a : b);
+  }
 
   filterInfo(filter_var)
   {
       if(this.data != null)
       {
-          var filteredTwitter = this.data.filter(tweet => tweet.retweet_count >= filter_var)
-              return filteredTwitter;
+          var filteredTwitter = this.data.filter(tweet => this.getPopularity(tweet) >= filter_var);
+          return filteredTwitter;
       } else {
           return [];
       }
   }
 
-  handleChange(event) {
-      console.log(event);
-  }
-
-  onSliderChange = (value) => {
+  onSliderChange(value) {
     this.setState({
       value,
     });
+  }
+
+  getPopularity(tweet) {
+      return tweet.retweet_count;
   }
 
   render() {
@@ -59,10 +66,10 @@ import 'rc-slider/assets/index.css';
               <img src={logo} className="App-logo" alt="logo" />
               <h2>Welcome to React</h2>
               <div>
-                  <Slider onChange={this.onSliderChange}/>
+                  <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
               </div>
               <p> Hopefully this works </p>
-        {this.filterInfo(this.state.value).map((number) => <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
+                {this.filterInfo(this.state.value).map((number) => <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
           </div>
       </div>
     );
