@@ -62,7 +62,7 @@ import 'rc-slider/assets/index.css';
                   <Slider onChange={this.onSliderChange}/>
               </div>
               <p> Hopefully this works </p>
-        {this.filterInfo(this.state.value).map((number) => <p class="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
+        {this.filterInfo(this.state.value).map((number) => <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
           </div>
       </div>
     );
