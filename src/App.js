@@ -59,6 +59,13 @@ import 'rc-slider/assets/index.css';
       return tweet.retweet_count;
   }
 
+  getSentiment(tweet) {
+      // Steal Dylan's code and get rid of all the punctuation
+      // Write a function that gets a word's score from the dictionary
+      // (can't actually use a hash because of wildcards)
+      // map and reduce
+  }
+
   render() {
     return (
       <div className="App">
