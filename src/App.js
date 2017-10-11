@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { happyWords, sadWords } from './wordlists';
 import Slider  from 'rc-slider';
 // We can just import Slider or Range to reduce bundle size
 // import Slider from 'rc-slider/lib/Slider';
@@ -15,6 +16,7 @@ import 'rc-slider/assets/index.css';
  class App extends Component {
   constructor(props) {
     super(props); 
+    this.wordSentiments = {};
     this.state = { value: 0, max: 100, min: 0 };
     this.data = null;
     fetch("/getTweets")
@@ -59,14 +61,35 @@ import 'rc-slider/assets/index.css';
       return tweet.retweet_count;
   }
 
+  getWordSentiment(word) {
+      if(this.wordSentiments.hasOwnProperty(word))
+          return this.wordSentiments[word];
+      
+      for(let i = 0; i < sadWords.length; i++) {
+          let sad = sadWords[i];
+          if(sad === word || (sad.endsWith("*") && word.startsWith(sad.substring(0, sad.length - 1)))) {
+              this.wordSentiments[word] = -1;
+              return -1;
+          }
+      }
+
+      for(let i = 0; i < happyWords.length; i++) {
+          let happy = happyWords[i];
+          if(happy === word || (happy.endsWith("*") && word.startsWith(happy.substring(0, happy.length - 1)))) {
+              this.wordSentiments[word] = 1;
+              return 1;
+          }
+      }
+      return 0;
+  }
+
   getSentiment(tweet) {
-      // Steal Dylan's code and get rid of all the punctuation
-      // Write a function that gets a word's score from the dictionary
-      // (can't actually use a hash because of wildcards)
-      // map and reduce
+      let words = tweet.toLowerCase().replace(/[^\w\s]/g, "").split(" ");
+      return words.map(this.getWordSentiment.bind(this)).reduce((x, y) => x + y);
   }
 
   render() {
+    console.log(this.getSentiment("abandonment"));
     return (
       <div className="App">
           <div className="App-header">
