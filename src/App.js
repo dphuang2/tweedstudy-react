@@ -88,8 +88,26 @@ import 'rc-slider/assets/index.css';
       return words.map(this.getWordSentiment.bind(this)).reduce((x, y) => x + y);
   }
 
+  getCelebrity(tweet) {
+      let celeb = 0;
+
+      if(tweet.user.verified)
+          celeb++;
+
+      if(tweet.user.followers_count > 100000)
+          celeb += 3;
+      else if(tweet.user.followers_count > 10000)
+          celeb += 2;
+      else if(tweet.user.followers_count > 1000)
+          celeb += 1; 
+      else
+          celeb -= 1;
+    return celeb
+  }
+
   render() {
-    console.log(this.getSentiment("abandonment"));
+    if(this.data !== null)
+        console.log(this.data.map(this.getCelebrity));
     return (
       <div className="App">
           <div className="App-header">
