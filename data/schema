@@ -1,0 +1,13 @@
+FRIENDS:
+id,nickname,name,image_url,twitter_url,statuses_count,verified,followers_count,location,screen_name,lang,friends_count,description,twitter_creation_date,time_zone,twitter_id,user_id,created_at,updated_at,post_frequency,fake_post_frequency,closeness,fake_closeness,fake_verified,celebrity,fake_celebrity
+
+MESSAGES:
+id,text,user_id,sender_id,sender_name,sent_date,sentiment,word_count,created_at,updated_at,twitter_id
+
+USERS:
+id,nickname,created_at,updated_at,name,image_url,twitter_url,statuses_count,verified,followers_count,location,screen_name,lang,friends_count,description,twitter_creation_date,time_zone,twitter_id,real_feed_position,fake_feed_position
+
+*Please note how users, messages, friends are connected (using a foreign key, look this up if you have never worked with record association)*
+These columns in friends and messages are how you know how that "friend" or "message" is related to a specific user:
+friends.user_id -> user.id
+messages.user_id -> user.id
