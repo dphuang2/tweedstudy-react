@@ -89,7 +89,7 @@ import 'rc-slider/assets/index.css';
   }
 
   getSentiment(tweet) {
-      let words = tweet.toLowerCase().replace(/[^\w\s]/g, "").split(" ");
+      let words = tweet.text.toLowerCase().replace(/[^\w\s]/g, "").split(" ");
       return words.map(this.getWordSentiment.bind(this)).reduce((x, y) => x + y);
   }
 
