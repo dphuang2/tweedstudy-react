@@ -16,21 +16,19 @@ class Authentication extends Component {
         var url_parts = url.parse(curr_url, true);
         var query = url_parts.query;
         if (Object.keys(query).length !== 0) { // If the query has oauth tokens
-            if ('oauth_token' in query && 'oauth_verifier' in query && 'oauth_token_secret' in window.sessionStorage) {
+            if ('oauth_token' in query && 'oauth_verifier' in query && 'oauth_token_secret' in window.localStorage) {
                 fetch("/auth/twitter/verify?oauth_token="+query['oauth_token']+
-                    "&oauth_verifier="+query['oauth_verifier']+
-                    "&oauth_token_secret="+window.sessionStorage['oauth_token_secret'])
-                    .then(function(res){
-                        res.json().then(function(json){
-                            _self.setState({'oauth_token': json.oauth_token,
-                                'oauth_token_secret': json.oauth_token_secret,
-                                'screen_name': json.screen_name,
-                                'user_id': json.user_id,
-                                'isAuthenticated': true
-                            });
+                "&oauth_verifier="+query['oauth_verifier']+
+                "&oauth_token_secret="+window.localStorage['oauth_token_secret'])
+                .then(function(res){
+                    res.json().then(function(json){ _self.setState({'oauth_token': json.oauth_token,
+                            'oauth_token_secret': json.oauth_token_secret,
+                            'screen_name': json.screen_name,
+                            'user_id': json.user_id,
+                            'isAuthenticated': true
                         });
                     });
-
+                });
             }
         }
     }
@@ -40,7 +38,7 @@ class Authentication extends Component {
         fetch("/auth/twitter")
             .then(function(res){
                 res.json().then(function(json){
-                    window.sessionStorage['oauth_token_secret'] = json.oauth_token_secret;
+                    window.localStorage.setItem('oauth_token_secret', json.oauth_token_secret);
                     window.location = json.redirect_uri; // Redirect to the redirect_uri in the response
                 });
             });
@@ -51,12 +49,10 @@ class Authentication extends Component {
     }
 
     render() {
-        console.log(this.state);
         if (this.state['isAuthenticated']) {
-            console.log(this.state['isAuthenticated'])
             return (
                 <div className="Authentication">
-                    <p> Hi {this.state['screen_name']}! </p> 
+                    <p> Hi {this.state['screen_name']}! Your user_id is {this.state['user_id']}. </p> 
                     <button type="button" onClick={this.logout}> Log me out! </button>
                 </div>
             );

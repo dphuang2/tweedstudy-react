@@ -80,9 +80,8 @@ exports.verify = function(req, res) {
     };
     var url = 'https://api.twitter.com/oauth/access_token'
     request.post({url:url, oauth:oauth}, function(e, r, body){
-        console.log(body);
         var req_data = qs.parse(body);
-        if ('oauth_token_secret' in req_data) {
+        if ('oauth_token_secret' in req_data) { // Only return json if got stuff from twitter
             res.json({oauth_token: req_data.oauth_token,
                 oauth_token_secret: req_data.oauth_token_secret,
                 screen_name: req_data.screen_name,
