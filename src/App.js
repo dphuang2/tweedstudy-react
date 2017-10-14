@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import Authentication from './Authentication/Authentication.js'
 import './App.css';
 import { happyWords, sadWords } from './wordlists';
 import Slider  from 'rc-slider';
@@ -119,6 +120,7 @@ import 'rc-slider/assets/index.css';
               <p> Hopefully this works </p>
                 {this.filterInfo(this.state.value).map((number) => <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
           </div>
+          <Authentication/>
       </div>
     );
   }

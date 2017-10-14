@@ -9,7 +9,12 @@ module.exports = function(app) {
     .post(todoList.create_a_task);
     */
 
-
   app.route("/getTweets")
   .get(tweedStudy.get_tweets);
+
+  app.route("/auth/twitter")
+    .get(tweedStudy.authenticate);
+
+  app.route("/auth/twitter/verify")
+    .get(tweedStudy.verify);
 };

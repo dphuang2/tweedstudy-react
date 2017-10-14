@@ -1,5 +1,8 @@
 'use strict';
 
+var qs = require('querystring');
+var request = require('request');
+
 var mongoose = require('mongoose'),
   Task = mongoose.model('Tasks');
 
@@ -46,7 +49,44 @@ exports.delete_a_task = function(req, res) {
   });
 };
 
+// GET /getTweets
 exports.get_tweets = function(req, res) {
   var json = JSON.parse(require('fs').readFileSync('data/tweets.json', 'utf8'));
   res.json(json);
+}
+
+// GET /auth/twitter
+exports.authenticate = function(req, res) {
+    var oauth = { callback: 'http://127.0.0.1:3001'
+        , consumer_key: process.env.CONSUMER_KEY
+        , consumer_secret: process.env.CONSUMER_SECRET };
+    var url = 'https://api.twitter.com/oauth/request_token';
+    request.post({url:url, oauth:oauth}, function(e, r, body){
+        var req_data = qs.parse(body);
+        var redirect_uri = 'https://api.twitter.com/oauth/authenticate'
+                         + '?'
+                         + qs.stringify({oauth_token: req_data.oauth_token});
+        res.json({redirect_uri: redirect_uri, oauth_token_secret: req_data['oauth_token_secret']});
+    });
+}
+
+// GET /auth/twitter/verify
+exports.verify = function(req, res) {
+    var oauth = { consumer_key: process.env.CONSUMER_KEY
+        , consumer_secret: process.env.CONSUMER_SECRET
+        , token: req.query.oauth_token
+        , token_secret: req.query.oauth_token_secret
+        , verifier: req.query.oauth_verifier
+    };
+    var url = 'https://api.twitter.com/oauth/access_token'
+    request.post({url:url, oauth:oauth}, function(e, r, body){
+        console.log(body);
+        var req_data = qs.parse(body);
+        if ('oauth_token_secret' in req_data) {
+            res.json({oauth_token: req_data.oauth_token,
+                oauth_token_secret: req_data.oauth_token_secret,
+                screen_name: req_data.screen_name,
+                user_id: req_data.user_id});
+        }
+    });
 }
