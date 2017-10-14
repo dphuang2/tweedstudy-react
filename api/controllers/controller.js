@@ -58,8 +58,8 @@ exports.get_tweets = function(req, res) {
 // GET /auth/twitter
 exports.authenticate = function(req, res) {
     var oauth = { callback: 'http://127.0.0.1:3001'
-        , consumer_key: process.env.CONSUMER_KEY
-        , consumer_secret: process.env.CONSUMER_SECRET };
+        , consumer_key: process.env.CONSUMER_KEY || 'eiVbxbQIfNYWCJJfXXwkSTflK'
+        , consumer_secret: process.env.CONSUMER_SECRET || '8zJtZZATHYxh2sh7uAXhJBufhtUfPfffqE6nI0IQXf7h577nbe'};
     var url = 'https://api.twitter.com/oauth/request_token';
     request.post({url:url, oauth:oauth}, function(e, r, body){
         var req_data = qs.parse(body);
@@ -72,8 +72,8 @@ exports.authenticate = function(req, res) {
 
 // GET /auth/twitter/verify
 exports.verify = function(req, res) {
-    var oauth = { consumer_key: process.env.CONSUMER_KEY
-        , consumer_secret: process.env.CONSUMER_SECRET
+    var oauth = { consumer_key: process.env.CONSUMER_KEY || 'eiVbxbQIfNYWCJJfXXwkSTflK'
+        , consumer_secret: process.env.CONSUMER_SECRET || '8zJtZZATHYxh2sh7uAXhJBufhtUfPfffqE6nI0IQXf7h577nbe'
         , token: req.query.oauth_token
         , token_secret: req.query.oauth_token_secret
         , verifier: req.query.oauth_verifier
