@@ -16,12 +16,12 @@ class Authentication extends Component {
         var url_parts = url.parse(curr_url, true);
         var query = url_parts.query;
         if (Object.keys(query).length !== 0) { // If the query has oauth tokens
-            if ('oauth_token' in query && 'oauth_verifier' in query && 'oauth_token_secret' in window.localStorage) {
+            if ('oauth_token' in query && 'oauth_verifier' in query) {
                 fetch("/auth/twitter/verify?oauth_token="+query['oauth_token']+
-                "&oauth_verifier="+query['oauth_verifier']+
-                "&oauth_token_secret="+window.localStorage['oauth_token_secret'])
+                "&oauth_verifier="+query['oauth_verifier'])
                 .then(function(res){
-                    res.json().then(function(json){ _self.setState({'oauth_token': json.oauth_token,
+                    res.json().then(function(json){
+                        _self.setState({'oauth_token': json.oauth_token,
                             'oauth_token_secret': json.oauth_token_secret,
                             'screen_name': json.screen_name,
                             'user_id': json.user_id,
@@ -38,7 +38,6 @@ class Authentication extends Component {
         fetch("/auth/twitter")
             .then(function(res){
                 res.json().then(function(json){
-                    window.localStorage.setItem('oauth_token_secret', json.oauth_token_secret);
                     window.location = json.redirect_uri; // Redirect to the redirect_uri in the response
                 });
             });
