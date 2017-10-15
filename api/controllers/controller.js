@@ -66,7 +66,7 @@ exports.authenticate = function(req, res) {
         var redirect_uri = 'https://api.twitter.com/oauth/authenticate'
                          + '?'
                          + qs.stringify({oauth_token: req_data.oauth_token});
-        res.json({redirect_uri: redirect_uri, oauth_token_secret: req_data['oauth_token_secret']});
+        res.json({redirect_uri: redirect_uri});
     });
 }
 
