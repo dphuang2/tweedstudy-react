@@ -36,6 +36,20 @@ import 'rc-slider/assets/index.css';
             profileimg: "https://i.pinimg.com/474x/19/d8/64/19d864e7594878d0a92268249db4e39a--face-photography-baby-kitty.jpg",
             });
         });
+
+    fetch("/getTweets")
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        this.data = json;
+        this.setState({
+            min: this.getSmallestPop(this.data),
+            max: this.getLargestPop(this.data),
+            sadWordsHashTable: new Map(sadWords.map(word => [word, 1])),
+            happyWordsHashTable: new Map(happyWords.map(word => [word, 1]))
+            });
+        });
   }
 
   getSmallestPop(tweets) {
@@ -66,25 +80,47 @@ import 'rc-slider/assets/index.css';
       return tweet.retweet_count;
   }
 
+
   getWordSentiment(word) {
       if(this.wordSentiments.hasOwnProperty(word))
           return this.wordSentiments[word];
-
-      for(let i = 0; i < sadWords.length; i++) {
+      
+      if(this.state.sadWordsHashTable.has(word))
+      {
+		this.wordSentiments[word] = -1;
+		return -1;
+      }
+      else
+      {
+      	for(let i = 0; i < sadWords.length; i++) {
           let sad = sadWords[i];
-          if(sad === word || (sad.endsWith("*") && word.startsWith(sad.substring(0, sad.length - 1)))) {
+          if(sad.endsWith("*") && word.startsWith(sad.substring(0, sad.length - 1))) 
+          {
               this.wordSentiments[word] = -1;
               return -1;
           }
       }
+      }
 
-      for(let i = 0; i < happyWords.length; i++) {
+
+      if(this.state.happyWordsHashTable.has(word))
+      {
+		this.wordSentiments[word] = 1;
+		return 1;
+      }
+      else
+      {
+      	for(let i = 0; i < happyWords.length; i++) 
+      	{
           let happy = happyWords[i];
-          if(happy === word || (happy.endsWith("*") && word.startsWith(happy.substring(0, happy.length - 1)))) {
+          if(happy.endsWith("*") && word.startsWith(happy.substring(0, happy.length - 1))) 
+          {
               this.wordSentiments[word] = 1;
               return 1;
           }
+      	}
       }
+
       return 0;
   }
 
