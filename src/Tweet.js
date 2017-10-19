@@ -17,27 +17,37 @@ export class Tweet extends Component {
         <div className="container">
           <div className="row">
 
-            <div className="Tweet-start col-md-4 col-md-offset-4">
+
+
+
+            <div className="Tweet-start col-md-6 col-md-offset-3">
               <div className="Tweet-area row">
-                <div className="col-md-4">
+                <span className="Tweet-info col-md-2">
                   <img src={tweetData[this.props.i]['user']['profile_image_url']} className="Tweet-pro_pic" alt="profile" />
-                </div>
-                <div className="Tweet-info col-md-8">
-                  <p>{tweetData[this.props.i]['user']['name']} <br/><i>@{tweetData[this.props.i]['user']['screen_name']}</i></p>
+                </span>
+                
+                <span className="Tweet-info col-md-10">
+                  <p>{tweetData[this.props.i]['user']['name']} <a href = {tweetData[this.props.i]['user']['url']} target = '_blank'>@{tweetData[this.props.i]['user']['screen_name']}</a></p>
                   <p>{tweetData[this.props.i]['text']} </p>
-                </div>
+
+
+
+
+                      <div className="row">
+                        <span className="Tweet-icons col-md-2">
+                          <i className="fa fa-comment-o" aria-hidden="true">&nbsp;{tweetData[this.props.i]['popularity']}</i>
+                        </span>
+                        <span className="Tweet-icons col-md-2">
+                          <i className="fa fa-retweet" aria-hidden="true">&nbsp;{tweetData[this.props.i]['retweet_count']}</i>
+                        </span>
+                        <span className="Tweet-icons col-md-2">
+                          <i className="fa fa-heart-o" aria-hidden="true">&nbsp;{tweetData[this.props.i]['favourites_count']}</i>
+                        </span>
+                      </div>
+
+                </span>
               </div>
-              <div className="row">
-                <div className="Tweet-icons col-md-2">
-                  <i className="fa fa-comment-o" aria-hidden="true">&nbsp;{tweetData[this.props.i]['popularity']}</i>
-                </div>
-                <div className="Tweet-icons col-md-2">
-                  <i className="fa fa-retweet" aria-hidden="true">&nbsp;{tweetData[this.props.i]['retweet_count']}</i>
-                </div>
-                <div className="Tweet-icons col-md-2">
-                  <i className="fa fa-heart-o" aria-hidden="true">&nbsp;{tweetData[this.props.i]['favourites_count']}</i>
-                </div>
-              </div>
+
             </div>
 
           </div>

@@ -1,6 +1,7 @@
 .Tweet-first {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 1px;
+  margin-bottom: 0px;
+  font-family: "helvetica neue"
 }
 
 .Tweet-start {
@@ -15,28 +16,32 @@
 }
 
 .Tweet-area {
-  padding: 2px 5px;
+  padding: 2px 2px;
 }
 
 .Tweet-pro_pic {
-  height: 100px;
-  width: 100px;
+  height: 60px;
+  width: 60px;
   padding-top: 5px;
   border-radius: 50px;
+  margin-left: auto;
 }
 
 .Tweet-info {
   padding-top: 5px;
+  font-size: 13px;
+  text-align: left;
 }
 
 .Tweet-icons {
   text-align: left;
   padding-left: 15px;
-  font-size: 14px;
-  padding-bottom: 2px;
+  font-size: 15px;
+  padding-bottom: 5px;
 }
 
 .Tweet-icons i.fa{
   padding-left: 4px;
   padding-right: 4px;
+  color: rgb(105,105,105);
 }
