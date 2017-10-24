@@ -9,10 +9,10 @@ import './App.css';
 import { happyWords, sadWords } from './wordlists';
 import Slider  from 'rc-slider';
 import './Authentication/Authentication';
+import './TweetFilterer.js';
 // We can just import Slider or Range to reduce bundle size
 // import Slider from 'rc-slider/lib/Slider';
 // import Range from 'rc-slider/lib/Range';
-import 'rc-slider/assets/index.css';
 /*
  *TODO:
  *Build feed with fake twitter data [tweets.json]
@@ -21,129 +21,8 @@ import 'rc-slider/assets/index.css';
 
  class App extends Component {
   constructor(props) {
-    super(props);
-    this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0, username: undefined, profileimg: undefined, filtervalue: undefined };
-    this.auth = new Authentication();
-    this.data = null;
-    this.authenticate = this.authenticate.bind(this);
-    this.logout = this.logout.bind(this);
-    this.auth.getScreenName()
-      .then((username) => {
-        this.setState({
-            username: username,
-            tweets: this.auth.tweets,
-            profileimg: "https://i.pinimg.com/474x/19/d8/64/19d864e7594878d0a92268249db4e39a--face-photography-baby-kitty.jpg",
-            });
-        });
-
-    fetch("/getTweets")
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        this.data = json;
-        this.setState({
-            min: this.getSmallestPop(this.data),
-            max: this.getLargestPop(this.data),
-            sadWordsHashTable: new Map(sadWords.map(word => [word, 1])),
-            happyWordsHashTable: new Map(happyWords.map(word => [word, 1]))
-            });
-        });
-  }
-
-  getSmallestPop(tweets) {
-      return tweets.map(this.getPopularity).reduce((a, b) => a < b ? a : b);
-  }
-
-  getLargestPop(tweets) {
-      return tweets.map(this.getPopularity).reduce((a, b) => a > b ? a : b);
-  }
-
-  filterInfo(filter_var)
-  {
-      if(this.data != null) {
-          var filteredTwitter = this.data.filter(tweet => this.getPopularity(tweet) >= filter_var);
-          return filteredTwitter;
-      } else {
-          return [];
-      }
-  }
-
-  onSliderChange(value) {
-    this.setState({
-      value,
-    });
-  }
-
-  getPopularity(tweet) {
-      return tweet.retweet_count;
-  }
-
-
-  getWordSentiment(word) {
-      if(this.wordSentiments.hasOwnProperty(word))
-          return this.wordSentiments[word];
-      
-      if(this.state.sadWordsHashTable.has(word))
-      {
-		this.wordSentiments[word] = -1;
-		return -1;
-      }
-      else
-      {
-      	for(let i = 0; i < sadWords.length; i++) {
-          let sad = sadWords[i];
-          if(sad.endsWith("*") && word.startsWith(sad.substring(0, sad.length - 1))) 
-          {
-              this.wordSentiments[word] = -1;
-              return -1;
-          }
-      }
-      }
-
-
-      if(this.state.happyWordsHashTable.has(word))
-      {
-		this.wordSentiments[word] = 1;
-		return 1;
-      }
-      else
-      {
-      	for(let i = 0; i < happyWords.length; i++) 
-      	{
-          let happy = happyWords[i];
-          if(happy.endsWith("*") && word.startsWith(happy.substring(0, happy.length - 1))) 
-          {
-              this.wordSentiments[word] = 1;
-              return 1;
-          }
-      	}
-      }
-
-      return 0;
-  }
-
-  getSentiment(tweet) {
-      let words = tweet.text.toLowerCase().replace(/[^\w\s]/g, "").split(" ");
-      return words.map(this.getWordSentiment.bind(this)).reduce((x, y) => x + y);
-  }
-
-  getCelebrity(tweet) {
-      let celeb = 0;
-
-      if(tweet.user.verified)
-          celeb++;
-
-      if(tweet.user.followers_count > 100000)
-          celeb += 3;
-      else if(tweet.user.followers_count > 10000)
-          celeb += 2;
-      else if(tweet.user.followers_count > 1000)
-          celeb += 1;
-      else
-          celeb -= 1;
-    return celeb
+    super(props); 
+    this.filterer = new TweetFilterer();
   }
 
   authenticate() {
