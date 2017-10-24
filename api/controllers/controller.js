@@ -75,7 +75,6 @@ exports.verify = function(req, res) {
     var oauth = { consumer_key: process.env.CONSUMER_KEY || 'eiVbxbQIfNYWCJJfXXwkSTflK'
         , consumer_secret: process.env.CONSUMER_SECRET || '8zJtZZATHYxh2sh7uAXhJBufhtUfPfffqE6nI0IQXf7h577nbe'
         , token: req.query.oauth_token
-        , token_secret: req.query.oauth_token_secret
         , verifier: req.query.oauth_verifier
     };
     var url = 'https://api.twitter.com/oauth/access_token'
