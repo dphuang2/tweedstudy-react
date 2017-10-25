@@ -10,19 +10,33 @@ import { happyWords, sadWords } from './wordlists';
 import Slider  from 'rc-slider';
 import './Authentication/Authentication';
 import './TweetFilterer.js';
+import logo from './logo.svg';
+import Slider  from 'rc-slider';
+import './App.css';
+import { TweetFilterer, FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT } from './TweetFilterer';
 // We can just import Slider or Range to reduce bundle size
 // import Slider from 'rc-slider/lib/Slider';
 // import Range from 'rc-slider/lib/Range';
 /*
  *TODO:
- *Build feed with fake twitter data [tweets.json]
- *Build slider than can filter fake twitter data [tweets.json]
+ Write user-based feature algorithms
  */
 
  class App extends Component {
   constructor(props) {
     super(props); 
-    this.filterer = new TweetFilterer();
+    this.filterer = new TweetFilterer(() => this.getFilteredTweets());
+    this.state = {tweets: []};
+    this.filterState = {};
+  }
+  
+  getFilteredTweets() {
+      this.filterer.filterTweets(this.filterState).then(tweets => this.setState({tweets}));
+  }
+
+  onSliderChange(key, value) {
+      this.filterState[key] = value;
+      this.getFilteredTweets();
   }
 
   authenticate() {
