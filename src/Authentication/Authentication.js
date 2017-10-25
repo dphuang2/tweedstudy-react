@@ -51,7 +51,9 @@ class Authentication extends Component {
         if (this.state['isAuthenticated']) {
             return (
                 <div className="Authentication">
-                    <p> Hi {this.state['screen_name']}! Your user_id is {this.state['user_id']}. </p> 
+                    <p> Hi {this.state['screen_name']}! Your user_id is {this.state['user_id']}. </p>
+                    <p> {this.state['tweets']} </p>
+                    <p> {this.state['friends']} </p>
                     <button type="button" onClick={this.logout}> Log me out! </button>
                 </div>
             );

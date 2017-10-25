@@ -2,6 +2,7 @@
 
 var qs = require('querystring');
 var request = require('request');
+var Twitter = require('twitter');
 
 var mongoose = require('mongoose'),
   Task = mongoose.model('Tasks');
@@ -81,10 +82,31 @@ exports.verify = function(req, res) {
     request.post({url:url, oauth:oauth}, function(e, r, body){
         var req_data = qs.parse(body);
         if ('oauth_token_secret' in req_data) { // Only return json if got stuff from twitter
-            res.json({oauth_token: req_data.oauth_token,
-                oauth_token_secret: req_data.oauth_token_secret,
-                screen_name: req_data.screen_name,
-                user_id: req_data.user_id});
+            var client = new Twitter({
+              consumer_key: oauth.consumer_key,
+              consumer_secret: oauth.consumer_secret,
+              access_token_key: req_data.oauth_token,
+              access_token_secret: req_data.oauth_token_secret
+            });
+
+            get_data(client, 'statuses/home_timeline');
+            get_data(client, 'friends/list');
+            // res.json({oauth_token: req_data.oauth_token,
+            //     oauth_token_secret: req_data.oauth_token_secret,
+            //     screen_name: req_data.screen_name,
+            //     user_id: req_data.user_id});
+        }
+    });
+}
+
+function get_data(client, target){
+    var params = {screen_name: 'nodejs'};
+    client.get(target, params, function(error, tweets, response) {
+        if (!error) {
+            console.log(tweets);
+            return tweets;
+        } else{
+            console.log(error);
         }
     });
 }
