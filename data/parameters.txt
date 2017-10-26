@@ -1,8 +1,0 @@
-created_at
-id
-id_str
-recipient_id
-recipient_screen_name
-sender_id
-sender_screen_name
-text
