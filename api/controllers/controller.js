@@ -89,8 +89,16 @@ exports.verify = function(req, res) {
               access_token_secret: req_data.oauth_token_secret
             });
 
-            get_data(client, 'statuses/home_timeline');
-            get_data(client, 'friends/list');
+            get_data(client, 'statuses/home_timeline', function(tweets){
+                get_data(client, 'friends/list', function(friends){
+                    res.json({
+                        screen_name: req_data.screen_name,
+                        user_id: req_data.user_id,
+                        tweets: tweets,
+                        friends: friends
+                    });
+                });
+            });
             // res.json({oauth_token: req_data.oauth_token,
             //     oauth_token_secret: req_data.oauth_token_secret,
             //     screen_name: req_data.screen_name,
@@ -99,12 +107,11 @@ exports.verify = function(req, res) {
     });
 }
 
-function get_data(client, target){
+function get_data(client, target, callback){
     var params = {screen_name: 'nodejs'};
     client.get(target, params, function(error, tweets, response) {
         if (!error) {
-            console.log(tweets);
-            return tweets;
+            callback(tweets);
         } else{
             console.log(error);
         }

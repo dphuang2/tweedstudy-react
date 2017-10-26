@@ -21,8 +21,9 @@ class Authentication extends Component {
                 "&oauth_verifier="+query['oauth_verifier'])
                 .then(function(res){
                     res.json().then(function(json){
-                        _self.setState({'oauth_token': json.oauth_token,
-                            'oauth_token_secret': json.oauth_token_secret,
+                        console.log(json.tweets);
+                        console.log(json.friends);
+                        _self.setState({
                             'screen_name': json.screen_name,
                             'user_id': json.user_id,
                             'isAuthenticated': true
@@ -52,8 +53,6 @@ class Authentication extends Component {
             return (
                 <div className="Authentication">
                     <p> Hi {this.state['screen_name']}! Your user_id is {this.state['user_id']}. </p>
-                    <p> {this.state['tweets']} </p>
-                    <p> {this.state['friends']} </p>
                     <button type="button" onClick={this.logout}> Log me out! </button>
                 </div>
             );
