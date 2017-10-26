@@ -10,6 +10,9 @@ class TweetFilterer {
       if(onLoaded === undefined)
           onLoaded = () => {};
     this.data = null;
+    // Set it up to download the needed data from the server (the endpoints are
+    // already set up) and filter it and do the calculations. Use some yo dawg promises.
+    // It'll be good
     fetch("/getTweets")
       .then((response) => {
         return response.json();

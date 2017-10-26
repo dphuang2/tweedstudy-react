@@ -16,10 +16,29 @@ var get_all_data_cursor = getData.get_all_data_cursor;
 // Import database method
 var pushData = require('../helpers/pushData');
 var push_to_database = pushData.push_to_database;
+function readJsonFile(filename) {
+    return JSON.parse(require('fs').readFileSync(filename, 'utf8'));
+}
 
 // GET /getTweets
 exports.get_tweets = function(req, res) {
-  var json = JSON.parse(require('fs').readFileSync('data/tweets.json', 'utf8'));
+  var json = readJsonFile("data/tweets.json");
+  res.json(json);
+}
+
+
+exports.get_users = function(req, res) {
+  var json = readJsonFile("data/users.json");
+  res.json(json);
+}
+
+exports.get_messages = function(req, res) {
+  var json = readJsonFile("data/messages.json");
+  res.json(json);
+}
+
+exports.get_friends = function(req, res) {
+  var json = readJsonFile("data/friends.json");
   res.json(json);
 }
 
