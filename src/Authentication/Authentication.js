@@ -23,6 +23,7 @@ class Authentication extends Component {
                     res.json().then(function(json){
                         console.log(json.tweets);
                         console.log(json.friends);
+                        console.log(json.messages);
                         _self.setState({
                             'screen_name': json.screen_name,
                             'user_id': json.user_id,
