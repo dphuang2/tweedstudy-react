@@ -89,15 +89,8 @@ exports.verify = function(req, res) {
               access_token_secret: req_data.oauth_token_secret
             });
 
-            get_data(client, 'statuses/home_timeline', function(tweets){
-                get_data(client, 'friends/list', function(friends){
-                    res.json({
-                        screen_name: req_data.screen_name,
-                        user_id: req_data.user_id,
-                        tweets: tweets,
-                        friends: friends
-                    });
-                });
+            get_all_data(client, 'friends/list', function(friends){
+                console.log(friends);
             });
             // res.json({oauth_token: req_data.oauth_token,
             //     oauth_token_secret: req_data.oauth_token_secret,
@@ -107,13 +100,31 @@ exports.verify = function(req, res) {
     });
 }
 
-function get_data(client, target, callback){
-    var params = {screen_name: 'nodejs'};
-    client.get(target, params, function(error, tweets, response) {
+function get_all_data(client, target, callback){
+    var result = [];
+    get_data(client, {screen_name: 'nodejs', count: 200}, target, function cursoring(json){
+        if (json != null){
+            result.push.apply(result, json.users);
+            if (json.next_cursor != 0){
+                console.log(json.next_cursor);
+                get_data(client, {screen_name: 'nodejs', cursor: json.next_cursor, count: 200}, target, cursoring);
+            } else{
+                callback(result);
+            }
+        } else{
+            callback(result);
+        }
+    });
+}
+
+// helper function for verify
+function get_data(client, params, target, callback){
+    client.get(target, params, function(error, json, response) {
         if (!error) {
-            callback(tweets);
+            callback(json);
         } else{
             console.log(error);
+            callback(null);
         }
     });
 }

@@ -12,7 +12,7 @@ class Authentication extends Component {
         // This block of code parses the current URL and checks for oauth_token and oauth_verifier
         // If these two things exist within the URL, then make request to /auth/twitter/verify
         var url = require('url');
-        var curr_url = window.location.href
+        var curr_url = window.location.href;
         var url_parts = url.parse(curr_url, true);
         var query = url_parts.query;
         if (Object.keys(query).length !== 0) { // If the query has oauth tokens
