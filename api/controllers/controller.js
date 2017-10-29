@@ -111,6 +111,7 @@ exports.verify = function(req, res) {
     });
 }
 
+// get all cursored data with max_id
 function get_all_data_id(client, target, callback){
     var result = [];
     var max_id = -1;
@@ -147,13 +148,10 @@ function get_all_data_cursor(client, target, callback){
     });
 }
 
-// helper function for verify
+// call node-twitter's function to get data from twitter
 function get_data(client, params, target, callback){
     client.get(target, params, function(error, json, response) {
         if (!error) {
-            if (target == 'direct_messages'){
-                console.log(json);
-            }
             callback(json);
         } else{
             console.log(target);
