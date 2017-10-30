@@ -44,6 +44,7 @@ class TweetFilterer {
     this.currentTweets = [];
   }
 
+  // This doesn't actually use the Promise...
   filterTweets(filterObject) {
       if(filterObject == null)
           return new Promise((resolve, reject) => resolve([]));

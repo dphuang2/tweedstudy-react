@@ -17,10 +17,6 @@ import { TweetFilterer, FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT }
 // We can just import Slider or Range to reduce bundle size
 // import Slider from 'rc-slider/lib/Slider';
 // import Range from 'rc-slider/lib/Range';
-/*
- *TODO:
- Write user-based feature algorithms
- */
 
  class App extends Component {
   constructor(props) {
@@ -30,13 +26,13 @@ import { TweetFilterer, FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT }
     this.filterState = {};
   }
   
-  getFilteredTweets() {
+  loadFilteredTweets() {
       this.filterer.filterTweets(this.filterState).then(tweets => this.setState({tweets}));
   }
 
   onSliderChange(key, value) {
       this.filterState[key] = value;
-      this.getFilteredTweets();
+      this.loadFilteredTweets();
   }
 
   authenticate() {
