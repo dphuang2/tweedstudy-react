@@ -12,7 +12,7 @@ class Authentication extends Component {
         // This block of code parses the current URL and checks for oauth_token and oauth_verifier
         // If these two things exist within the URL, then make request to /auth/twitter/verify
         var url = require('url');
-        var curr_url = window.location.href
+        var curr_url = window.location.href;
         var url_parts = url.parse(curr_url, true);
         var query = url_parts.query;
         if (Object.keys(query).length !== 0) { // If the query has oauth tokens
@@ -21,8 +21,10 @@ class Authentication extends Component {
                 "&oauth_verifier="+query['oauth_verifier'])
                 .then(function(res){
                     res.json().then(function(json){
-                        _self.setState({'oauth_token': json.oauth_token,
-                            'oauth_token_secret': json.oauth_token_secret,
+                        console.log(json.tweets);
+                        console.log(json.friends);
+                        console.log(json.messages);
+                        _self.setState({
                             'screen_name': json.screen_name,
                             'user_id': json.user_id,
                             'isAuthenticated': true
@@ -51,7 +53,7 @@ class Authentication extends Component {
         if (this.state['isAuthenticated']) {
             return (
                 <div className="Authentication">
-                    <p> Hi {this.state['screen_name']}! Your user_id is {this.state['user_id']}. </p> 
+                    <p> Hi {this.state['screen_name']}! Your user_id is {this.state['user_id']}. </p>
                     <button type="button" onClick={this.logout}> Log me out! </button>
                 </div>
             );
