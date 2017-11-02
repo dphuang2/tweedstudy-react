@@ -21,7 +21,7 @@ import { TweetFilterer, FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT }
  class App extends Component {
   constructor(props) {
     super(props); 
-    this.filterer = new TweetFilterer(() => this.getFilteredTweets());
+    this.filterer = new TweetFilterer();
     this.state = {tweets: []};
     this.filterState = {};
   }

@@ -6,26 +6,11 @@ const POPULARITY = "popularity";
 const CLOSENESS = "closeness";
 const SENTIMENT = "sentiment";
 class TweetFilterer {
-  constructor(onLoaded) {
-      if(onLoaded === undefined)
-          onLoaded = () => {};
+  constructor() {
     this.data = null;
     // Set it up to download the needed data from the server (the endpoints are
     // already set up) and filter it and do the calculations. Use some yo dawg promises.
     // It'll be good
-    fetch("/getTweets")
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        this.data = json;
-        this.filterTweets(this.currentFilter)
-        .then((tweets) => {
-                this.currentTweets.length = 0;
-                this.currentTweets.push(...tweets);
-                onLoaded();
-                });
-        });
 
     this.wordSentiments = {};
     this.wordsHash = new Map();
@@ -39,43 +24,57 @@ class TweetFilterer {
         if(!sadWords[i].endsWith("*"))
             this.wordsHash[sadWords[i]] = -1;
 
-
-    this.currentFilter = null;
     this.currentTweets = [];
   }
 
-  // This doesn't actually use the Promise...
   filterTweets(filterObject) {
+      let _filterTweets = (tweets, filterObject) => {
+          for(let key in filterObject) {
+              let func;
+              switch(key) {
+                  case FREQUENCY:
+                      func = this.getFrequency;
+                      break;
+                  case CELEBRITY:
+                      func = this.getCelebrity;
+                      break;
+                  case POPULARITY:
+                      func = this.getPopularity;
+                      break;
+                  case SENTIMENT:
+                      func = this.getSentiment;
+                      break;
+                  case CLOSENESS:
+                      func = this.getCloseness;
+                      break;
+                  default:
+                      console.log(`You gave me ${key} as a key, but that's not an available key!`);
+                      reject([]);
+                      return;
+
+              }
+              tweets = tweets.filter(tweet => func(tweet) >= filterObject[key]);
+          } 
+          return tweets;
+      };
+
       if(filterObject == null)
           return new Promise((resolve, reject) => resolve([]));
-      this.currentFilter = filterObject;
-      // The filters will make new arrays, so it's ok that we have this one by reference
-      let out = this.data;
-      for(let key in filterObject) {
-          let func;
-          switch(key) {
-              case FREQUENCY:
-                  func = this.getFrequency;
-                  break;
-              case CELEBRITY:
-                  func = this.getCelebrity;
-                  break;
-              case POPULARITY:
-                  func = this.getPopularity;
-                  break;
-              case SENTIMENT:
-                  func = this.getSentiment;
-                  break;
-              case CLOSENESS:
-                  func = this.getCloseness;
-                  break;
-              default:
-                  return new Promise((resolve, reject) => reject([]));
-
-          }
-          out = out.filter(tweet => func(tweet) >= filterObject[key]);
-      } 
-      return new Promise((resolve, reject) => resolve(out));
+      let that = this;
+      return new Promise((resolve, reject) => {
+              if(that.data == null) {
+              fetch("/getTweets")
+              .then((response) => {
+                        return response.json();
+                      })
+              .then((json) => {
+                        that.data = json;
+                        resolve(_filterTweets(that.data, filterObject));
+                      });
+              } else {
+                resolve(_filterTweets(filterObject, this.data));
+              }
+      });
   }
 
   getSmallestPop(tweets) {
@@ -135,6 +134,20 @@ class TweetFilterer {
       else
           celeb -= 1;
     return celeb
+  }
+
+  getFrequency(tweet) {
+      const MILLIS_IN_MONTH = 30 * 24 * 60 * 60 * 1000;
+      let tweetCount = tweet.user.statuses_count;
+      let startDate = new Date(tweet.user.created_at);
+      // Apparently this works. Who knew?
+      let deltaMillis = new Date() - startDate;
+      let deltaMonths = deltaMillis / MILLIS_IN_MONTH;
+      return tweetCount / deltaMonths;
+  }
+
+  async getCloseness(tweet) {
+      // Load messages, and implement algorithm. Not quite trivial but doable
   }
 }
 export { TweetFilterer, FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT };
