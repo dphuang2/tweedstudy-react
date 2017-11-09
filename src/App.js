@@ -4,6 +4,7 @@ import Authentication from './Authentication/Authentication.js'
 import './App.css';
 import { happyWords, sadWords } from './wordlists';
 import Slider  from 'rc-slider';
+import './Authentication/Authentication';
 // We can just import Slider or Range to reduce bundle size
 // import Slider from 'rc-slider/lib/Slider';
 // import Range from 'rc-slider/lib/Range';
@@ -18,17 +19,14 @@ import 'rc-slider/assets/index.css';
   constructor(props) {
     super(props); 
     this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0 };
+    this.state = { value: 0, max: 100, min: 0, username: undefined };
+    this.auth = new Authentication();
     this.data = null;
-    fetch("/getTweets")
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        this.data = json;
+    this.authenticate = this.authenticate.bind(this);
+    this.auth.getScreenName()
+      .then((username) => {
         this.setState({
-            min: this.getSmallestPop(this.data),
-            max: this.getLargestPop(this.data)
+            username
             });
         });
   }
@@ -43,8 +41,7 @@ import 'rc-slider/assets/index.css';
 
   filterInfo(filter_var)
   {
-      if(this.data != null)
-      {
+      if(this.data != null) {
           var filteredTwitter = this.data.filter(tweet => this.getPopularity(tweet) >= filter_var);
           return filteredTwitter;
       } else {
@@ -106,9 +103,18 @@ import 'rc-slider/assets/index.css';
     return celeb
   }
 
+  authenticate() {
+      this.auth.authenticate().then(url => { 
+              window.location = url;
+        });
+  }
+
+  logout() {
+      this.auth.logout();
+      this.setState({username: undefined});
+  }
+
   render() {
-    if(this.data !== null)
-        console.log(this.data.map(this.getCelebrity));
     return (
       <div className="App">
           <div className="App-header">
@@ -117,10 +123,18 @@ import 'rc-slider/assets/index.css';
               <div>
                   <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
               </div>
-              <p> Hopefully this works </p>
-                {this.filterInfo(this.state.value).map((number) => <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
+            {this.filterInfo(this.state.value)
+            .map((number) => 
+                    <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
           </div>
-          <Authentication/>
+          { this.auth.getScreenNameNoWait() !== null ? 
+                <div className="Authentication">
+                    <p> Hi {this.auth.getScreenNameNoWait()}! </p>
+                    <button type="button" onClick={this.logout}> Log me out! </button>
+                </div> :
+                <div className="Authentication">
+                    <button type="button" onClick={this.authenticate}> Authenticate me! </button>
+                </div> }
       </div>
     );
   }
