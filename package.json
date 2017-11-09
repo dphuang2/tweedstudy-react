@@ -5,6 +5,7 @@
   "dependencies": {
     "body-parser": "^1.18.1",
     "express": "^4.16.2",
+    "mongodb": "^2.2.33",
     "mongoose": "^4.13.1",
     "rc-slider": "^8.4.0",
     "react": "^15.6.1",

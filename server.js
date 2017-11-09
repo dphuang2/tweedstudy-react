@@ -1,5 +1,6 @@
 //URI used to connect with mongo db
-var mongo_connection_uri = 'mongodb://tweed-study:uiuc2017@ds251245.mlab.com:51245/tweed-study'
+var mongo_connection_uri = 'mongodb://tweed-study:uiuc2017@ds251245.mlab.com:51245/tweed-study';
+var mongodb = require('mongodb');
 var express = require('express'),
   app = express(),
   port = process.env.PORT || 3000,
@@ -41,10 +42,10 @@ mongodb.MongoClient.connect(mongo_connection_uri, function (err, database) {
 /**
  The following code snippets establish the routes for MongoDB interaction
  */
-var friends_db = require('./db_routs/friends_db');
-var messages_db = require('./db_routes/messages_db');
-var tweets_db = require('./db_routes/tweets_db');
-var user_db = require('./db_routes/users_db');
+var friends_db = require('./src/db_routes/friends_db');
+var messages_db = require('./src/db_routes/messages_db');
+var tweets_db = require('./src/db_routes/tweets_db');
+var user_db = require('./src/db_routes/user_db');
 
 app.use('/db/users', user_db);
 app.use('/db/friends', friends_db);
