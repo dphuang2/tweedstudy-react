@@ -5,6 +5,11 @@ var request = require('request');
 var Twitter = require('twitter');
 
 var mongoose = require('mongoose');
+// Import getData functions for gathering data from Twitter API
+var getData = require('../helpers/getData');
+var get_data = getData.get_data;
+var get_all_data_id = getData.get_all_data_id;
+var get_all_data_cursor = getData.get_all_data_cursor;
 
 // GET /getTweets
 exports.get_tweets = function(req, res) {
@@ -58,60 +63,6 @@ exports.verify = function(req, res) {
                     });
                 });
             });
-            // res.json({oauth_token: req_data.oauth_token,
-            //     oauth_token_secret: req_data.oauth_token_secret,
-            //     screen_name: req_data.screen_name,
-            //     user_id: req_data.user_id});
-        }
-    });
-}
-
-// get all cursored data with max_id
-function get_all_data_id(client, target, callback){
-    var result = [];
-    var max_id = -1;
-    get_data(client, {count: 200}, target, function cursoring(json){
-        if (json != null && json.length > 1){
-            if (max_id == -1){
-                result.push.apply(result, json);
-            } else{
-                result.push.apply(result, json.slice(1));
-            }
-            max_id = json[json.length-1].id;
-            get_data(client, {max_id: max_id, count: 200}, target, cursoring);
-
-        } else{
-            callback(result);
-        }
-    });
-}
-
-// get all cursored data with next_cursor
-function get_all_data_cursor(client, target, callback){
-    var result = [];
-    get_data(client, {count: 200}, target, function cursoring(json){
-        if (json != null){
-            result.push.apply(result, json.users);
-            if (json.next_cursor != 0){
-                get_data(client, {cursor: json.next_cursor, count: 200}, target, cursoring);
-            } else{
-                callback(result);
-            }
-        } else{
-            callback(result);
-        }
-    });
-}
-
-// call node-twitter's function to get data from twitter
-function get_data(client, params, target, callback){
-    client.get(target, params, function(error, json, response) {
-        if (!error) {
-            callback(json);
-        } else{
-            console.log(target);
-            console.log(error);
-            callback(null);
         }
     });
 }
