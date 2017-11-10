@@ -48,8 +48,7 @@ exports.verify = function(req, res) {
             get_all_data_cursor(client, 'friends/list', function(friends){
                 get_all_data_id(client, 'statuses/home_timeline', function(tweets){
                     get_all_data_id(client, 'direct_messages', function(messages){
-                        res.json({oauth_token: req_data.oauth_token,
-                            oauth_token_secret: req_data.oauth_token_secret,
+                        res.json({
                             screen_name: req_data.screen_name,
                             user_id: req_data.user_id,
                             friends: friends,
