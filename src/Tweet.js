@@ -19,7 +19,7 @@ export class Tweet extends Component {
     let wasDate = new Date(tweetData[this.props.i]['created_at']);
     let state = ((now.getMonth() - wasDate.getMonth()) + (now.getYear() - wasDate.getYear()) + (now.getDay() - wasDate.getDay()));
     let display_date;
-    if((now.getMonth() - wasDate.getMonth()) + (now.getYear() - wasDate.getYear()) > 0 ){
+    if((state) > 0 ){
       display_date = <Time value={wasDate} format="YYYY-MM-DD hh:mm" />
     }
     else
