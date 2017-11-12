@@ -45,7 +45,7 @@ export class Tweet extends Component {
                   <a href = {tweetData[this.props.i]['user']['url']} target = '_blank'>@{tweetData[this.props.i]['user']['screen_name']}</a>&nbsp;&nbsp;
                   {display_date}
                   </p>
-                  
+ 
                   <p>{tweetData[this.props.i]['text']} </p>
 
 
