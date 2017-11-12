@@ -19,7 +19,14 @@ export class Tweet extends Component {
     let wasDate = new Date(tweetData[this.props.i]['created_at']);
     let state = ((now.getMonth() - wasDate.getMonth()) + (now.getYear() - wasDate.getYear()) + (now.getDay() - wasDate.getDay()));
     let display_date;
-    if((state) > 0 ){
+    let withinDay = (now.getDay() - wasDate.getDay()) % 6;
+    if(withinDay <= 1){
+      withinDay = now.getHours() - wasDate.getHours();
+    }
+    if(withinDay <= 0){
+      display_date = <RelativeTime value={wasDate} format="hh"/>
+    }
+    else if((state) > 0 ){
       display_date = <Time value={wasDate} format="YYYY-MM-DD hh:mm" />
     }
     else
@@ -39,13 +46,13 @@ export class Tweet extends Component {
                 <span className="Tweet-info col-md-2">
                   <img src={tweetData[this.props.i]['user']['profile_image_url']} className="Tweet-pro_pic" alt="profile" />
                 </span>
-                
+
                 <span className="Tweet-info col-md-10">
                   <p>{tweetData[this.props.i]['user']['name']} &nbsp;
                   <a href = {tweetData[this.props.i]['user']['url']} target = '_blank'>@{tweetData[this.props.i]['user']['screen_name']}</a>&nbsp;&nbsp;
                   {display_date}
                   </p>
- 
+
                   <p>{tweetData[this.props.i]['text']} </p>
 
 
