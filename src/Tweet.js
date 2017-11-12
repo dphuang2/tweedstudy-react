@@ -20,14 +20,21 @@ export class Tweet extends Component {
     let state = ((now.getMonth() - wasDate.getMonth()) + (now.getYear() - wasDate.getYear()) + (now.getDay() - wasDate.getDay()));
     let display_date;
     let withinDay = (now.getDay() - wasDate.getDay()) % 6;
-    if(withinDay <= 1){
-      withinDay = now.getHours() - wasDate.getHours();
+    let withinMonth = (now.getMonth() - wasDate.getMonth());
+    let withinYear = now.getYear() - wasDate.getYear();
+    let withinHours = 0;
+    
+    if(withinDay <= 1){ 
+    withinHours = now.getHours() - wasDate.getHours();
     }
-    if(withinDay <= 0){
+     if((state) > 0 ){
+      display_date = <Time value={wasDate} format="MM-DD-YYYY hh:mm" />
+    }
+    else if(withinHours != 0 && withinHours <=12){ //within a day and display hours
       display_date = <RelativeTime value={wasDate} format="hh"/>
     }
-    else if((state) > 0 ){
-      display_date = <Time value={wasDate} format="YYYY-MM-DD hh:mm" />
+    else if (withinMonth > 0 && withinYear == 0){ // within a year
+      display_date = <Time value ={wasDate} format="MM-DD hh:mm"/>
     }
     else
     {
