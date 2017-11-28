@@ -67,7 +67,7 @@ export class Tweet extends Component {
             <div className="Tweet-start col-md-6 col-md-offset-3">
               <div className="Tweet-area row">
                 <span className="Tweet-info col-md-2">
-                  <img src={tweetData[this.props.i]['profile_image_url']} className="Tweet-pro_pic" alt="profile" />
+                  <img src={tweetData[this.props.i]['user']['profile_image_url']} className="Tweet-pro_pic" alt="profile" />
                 </span>
 
                 <span className="Tweet-info col-md-10">
