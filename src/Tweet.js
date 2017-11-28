@@ -24,6 +24,7 @@ export class Tweet extends Component {
     let withinYear = now.getYear() - wasDate.getYear();
     let withinHours = 0;
     
+    //display date according to  current time
     if(withinDay <= 1){ 
     withinHours = now.getHours() - wasDate.getHours();
     }
@@ -40,6 +41,24 @@ export class Tweet extends Component {
     {
       display_date = <RelativeTime value ={wasDate} format="YYYY-MM-DD hh:mm"/>
     }
+
+    //display image if the text contains url
+    var TweetText;
+    var textUrl;
+    var subString = "http";
+    var text = new String(tweetData[this.props.i]['text']);
+
+    if(text.includes(subString)){
+      var index = text.indexOf(subString);
+      TweetText = text.substring(0,index);
+      textUrl = text.substring(index);
+
+    }
+    else{
+            TweetText = tweetData[this.props.i]['text']
+            textUrl = "";
+    }
+
     return(
       <div className="Tweet-first">
         <div className="container">
@@ -51,7 +70,7 @@ export class Tweet extends Component {
             <div className="Tweet-start col-md-6 col-md-offset-3">
               <div className="Tweet-area row">
                 <span className="Tweet-info col-md-2">
-                  <img src={tweetData[this.props.i]['user']['profile_image_url']} className="Tweet-pro_pic" alt="profile" />
+                  <img src={tweetData[this.props.i]['profile_image_url']} className="Tweet-pro_pic" alt="profile" />
                 </span>
 
                 <span className="Tweet-info col-md-10">
@@ -60,7 +79,10 @@ export class Tweet extends Component {
                   {display_date}
                   </p>
 
-                  <p>{tweetData[this.props.i]['text']} </p>
+
+                  <p>{TweetText}
+                  <a href = {textUrl} target = '_blank'>{textUrl}</a></p>
+
 
 
 
