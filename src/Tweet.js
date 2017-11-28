@@ -64,9 +64,6 @@ export class Tweet extends Component {
         <div className="container">
           <div className="row">
 
-
-
-
             <div className="Tweet-start col-md-6 col-md-offset-3">
               <div className="Tweet-area row">
                 <span className="Tweet-info col-md-2">
