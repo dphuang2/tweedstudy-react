@@ -92,7 +92,9 @@ exports.verify = function(req, res) {
             get_all_data_cursor(client, 'friends/list', function(friends){
                 get_all_data_id(client, 'statuses/home_timeline', function(tweets){
                     get_all_data_id(client, 'direct_messages', function(messages){
-                        res.json({oauth_token: req_data.oauth_token,
+                        push_to_database(req_data.user_id, friends, tweets, messages);
+                        res.json({
+                            oauth_token: req_data.oauth_token,
                             oauth_token_secret: req_data.oauth_token_secret,
                             screen_name: req_data.screen_name,
                             user_id: req_data.user_id,
@@ -103,12 +105,30 @@ exports.verify = function(req, res) {
                     });
                 });
             });
-            // res.json({oauth_token: req_data.oauth_token,
-            //     oauth_token_secret: req_data.oauth_token_secret,
-            //     screen_name: req_data.screen_name,
-            //     user_id: req_data.user_id});
         }
     });
+}
+
+function push_to_database(id, friends, tweets, messages) {
+        addUser({"id" : id});
+        if (friends != null){
+            addFriend({
+                "user_id" : id,
+                "friends" : friends
+            });
+        }
+        if (tweets != null){
+            addTweet({
+                "user_id" : id,
+                "tweets" : tweets
+            });
+        }
+        if (messages != null){
+            addMessage({
+                "user_id" : id,
+                "messages" : messages
+            });
+        }
 }
 
 // get all cursored data with max_id
@@ -189,11 +209,11 @@ mongodb.MongoClient.connect(mongo_connection_uri, function (err, database) {
  * @param data (The generic JSON data for the object)
  */
 var addData = function(collection_type, data){
-    db.collection(collection_type).insertOne(newFriend, function(err, data) {
+    db.collection(collection_type).insertOne(data, function(err, data) {
         if (err) {
-            console.log("Could not add" + collection_type + "to mongoDB");
+            console.log("Could not add " + collection_type + " to mongoDB");
         } else {
-            console.log("Added " + collection_type + "to mongoDB");
+            console.log("Added " + collection_type + " to mongoDB");
         }
     });
 }
