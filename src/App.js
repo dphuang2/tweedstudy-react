@@ -23,6 +23,7 @@ import 'rc-slider/assets/index.css';
     this.auth = new Authentication();
     this.data = null;
     this.authenticate = this.authenticate.bind(this);
+    this.logout = this.logout.bind(this);
     this.auth.getScreenName()
       .then((username) => {
         this.setState({
@@ -129,7 +130,7 @@ import 'rc-slider/assets/index.css';
           </div>
           { this.auth.getScreenNameNoWait() !== null ? 
                 <div className="Authentication">
-                    <p> Hi {this.auth.getScreenNameNoWait()}! </p>
+                    <p>Hi {this.state.username} </p>
                     <button type="button" onClick={this.logout}> Log me out! </button>
                 </div> :
                 <div className="Authentication">

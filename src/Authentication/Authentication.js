@@ -29,8 +29,6 @@ class Authentication {
                 this.friends = json.friends;
                 this.messages = json.friends;
                 return;
-            } else {
-                throw new Error("You need to authenticate first");
             }
         }
 
@@ -77,6 +75,7 @@ class Authentication {
     */
     logout() {
         this.isAuthenticated = false;
+        this.screen_name = undefined;
         this.oauth_token = undefined;
         this.oauth_verifier = undefined;
     }
