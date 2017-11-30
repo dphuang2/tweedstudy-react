@@ -40,3 +40,5 @@ tags
 # End of https://www.gitignore.io/api/vim
 
 /data/db/* # Don't keep data persistent across Git copies
+
+.idea*
