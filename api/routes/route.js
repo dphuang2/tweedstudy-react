@@ -17,4 +17,5 @@ module.exports = function(app) {
 
   app.route("/auth/twitter/verify")
     .get(tweedStudy.verify);
+
 };
