@@ -9,6 +9,10 @@ import './Authentication/Authentication';
 // import Slider from 'rc-slider/lib/Slider';
 // import Range from 'rc-slider/lib/Range';
 import 'rc-slider/assets/index.css';
+
+import Tweet from './Tweet.js'
+
+var tweetData = require('./tweets.json');
 /*
  *TODO:
  *Build feed with fake twitter data [tweets.json]
@@ -116,6 +120,10 @@ import 'rc-slider/assets/index.css';
   }
 
   render() {
+    var tweetObjs = [];
+    for(var i = 0; i < tweetData.length; i++){
+      tweetObjs.push(<Tweet key={i} i={i} />);
+    }
     return (
       <div className="App">
           <div className="App-header">
