@@ -158,7 +158,7 @@ class TweetFilterer {
       // I'm not really sure how we're going to get these. Assume magic
       // Also implement caching for this at some point
       let messages = JSON.parse(await fetch("/getMessages"));
-      if(messages.length == 0)
+      if(messages.length === 0)
           return 0;
       let out = 0;
       if(user.followers_count > 100000)
