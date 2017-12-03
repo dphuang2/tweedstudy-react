@@ -1,0 +1,33 @@
+<script>
+/*
+Question:
+What order are the logs printed to console?
+*/
+
+function resolveAfter2Seconds(x) { 
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(x)
+        }, 2000)
+    })
+}
+
+async function f1() {
+    var msg = await resolveAfter2Seconds('Return from f1!')
+    console.log("This wont print till after promise returns!")
+    console.log(msg)
+}
+
+function f2() {
+    console.log('Calling f2 function before f1 return and setting timeout!')
+    setTimeout(() => {
+        console.log('time out done in f2!')
+    }, 1000)
+}
+
+f1()
+f2()
+console.log('After execution of f1 and f2 but before return of f1 and f2!')
+console.log('Sequentially after first console log statement!')
+
+</script>
