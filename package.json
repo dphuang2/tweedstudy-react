@@ -5,6 +5,7 @@
   "dependencies": {
     "body-parser": "^1.18.1",
     "express": "^4.15.4",
+    "moment": "^2.19.3",
     "mongoose": "^4.11.12",
     "package.json": "^2.0.1",
     "react": "^15.6.1",
