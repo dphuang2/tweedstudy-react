@@ -1,16 +1,16 @@
 import './Authentication.css';
 // This is for URL parsing. I don't understand why I can't import it
-// the ES6 way. 
+// the ES6 way.
 let url = require("url");
 
 class Authentication {
     constructor() {
         /**
-          Nobody else needs to see this function, so I've snuck it in here. 
+          Nobody else needs to see this function, so I've snuck it in here.
           It will load the tweets, friends, and messages from the server
-          and store them in the fields in this object. It'll also return a Promise 
-          that will resolve to void when everything is where it's supposed to be. 
-          The only point of this is for some other functions, getTweets, getMessages, 
+          and store them in the fields in this object. It'll also return a Promise
+          that will resolve to void when everything is where it's supposed to be.
+          The only point of this is for some other functions, getTweets, getMessages,
           and getFriends, to work without duplicating code.
         */
         this.loadData = async () => {
@@ -28,6 +28,10 @@ class Authentication {
                 this.tweets = json.tweets;
                 this.friends = json.friends;
                 this.messages = json.friends;
+
+                if (typeof(Storage) !== "undefined") {
+                    localStorage.setItem("user_info", json);
+                }
                 return;
             }
         }
@@ -37,25 +41,39 @@ class Authentication {
         this.screen_name = null;
         this.user_id = null;
 
-        let curr_url = window.location.href; 
+        let curr_url = window.location.href;
         let url_parts = url.parse(curr_url, true);
         let query = url_parts.query;
         let oauth_token = query["oauth_token"];
         let oauth_verifier = query["oauth_verifier"];
 
-        this.isAuthenticated = oauth_token !== undefined && oauth_verifier !== undefined;
+
+        if (typeof(Storage) !== "undefined") {
+            const cacheHits = localStorage.getItem("user_info");
+            if (cacheHits){
+                this.isAuthenticated = true;
+                var obj = JSON.parse(cacheHits);
+                this.screen_name = obj.screen_name;
+                this.user_id = obj.user_id;
+                this.tweets = obj.tweets;
+                this.friends = obj.friends;
+                this.messages = obj.messages;
+            }
+        } else {
+            this.isAuthenticated = oauth_token !== undefined && oauth_verifier !== undefined;
+        }
     }
 
 
     /**
-        Returns a Promise that will fulfill when the auth endpoint 
-        comes back. The Promise will have as its argument the URL that 
-        comes back from the server. 
+        Returns a Promise that will fulfill when the auth endpoint
+        comes back. The Promise will have as its argument the URL that
+        comes back from the server.
      */
     authenticate() {
         let that = this;
         return new Promise((resolve, reject) => {
-            if(that.oauth_token !== undefined || that.oauth_verifier !== undefined) {
+            if(that.isAuthenticated) {
                 reject("You already signed in!");
                 return;
             }
@@ -78,6 +96,7 @@ class Authentication {
         this.screen_name = undefined;
         this.oauth_token = undefined;
         this.oauth_verifier = undefined;
+        localStorage.removeItem("user_info");
     }
 
     getTweetsNoWait() {

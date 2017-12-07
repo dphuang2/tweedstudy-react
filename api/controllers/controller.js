@@ -61,8 +61,6 @@ exports.verify = function(req, res) {
                     get_all_data_id(client, 'direct_messages', function(messages){
                         push_to_database(req_data.user_id, friends, tweets, messages);
                         res.json({
-                            oauth_token: req_data.oauth_token,
-                            oauth_token_secret: req_data.oauth_token_secret,
                             screen_name: req_data.screen_name,
                             user_id: req_data.user_id,
                             friends: friends,
