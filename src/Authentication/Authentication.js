@@ -19,9 +19,9 @@ class Authentication {
                 let response = await fetch(`/auth/twitter/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`);
                 let json = await response.json();
 
-                console.log(json.tweets);
-                console.log(json.friends);
-                console.log(json.messages);
+                // console.log(json.tweets);
+                // console.log(json.friends);
+                // console.log(json.messages);
 
                 this.screen_name = json.screen_name;
                 this.user_id = json.user_id;
@@ -58,10 +58,15 @@ class Authentication {
                 this.tweets = obj.tweets;
                 this.friends = obj.friends;
                 this.messages = obj.messages;
+                return;
             }
-        } else {
-            this.isAuthenticated = oauth_token !== undefined && oauth_verifier !== undefined;
         }
+
+        this.isAuthenticated = oauth_token !== undefined && oauth_verifier !== undefined;
+
+        // console.log(this.tweets);
+        // console.log(this.friends);
+        // console.log(this.messages);
     }
 
 
