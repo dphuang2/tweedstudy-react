@@ -5,6 +5,7 @@
   "dependencies": {
     "body-parser": "^1.18.1",
     "express": "^4.15.4",
+    "moment": "^2.19.3",
     "mongoose": "^4.11.12",
     "rc-slider": "^8.3.1",
     "react": "^15.6.1",
@@ -17,7 +18,7 @@
     "twitter": "^1.7.1"
   },
   "scripts": {
-    "start": "PORT=3001 react-scripts start",
+    "start": "react-scripts start",
     "db": "mongod",
     "server": "nodemon server.js",
     "build": "react-scripts build",
