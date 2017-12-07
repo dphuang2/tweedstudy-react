@@ -131,6 +131,7 @@ import 'rc-slider/assets/index.css';
           { this.auth.getScreenNameNoWait() !== null ? 
                 <div className="Authentication">
                     <p>Hi {this.state.username} </p>
+                    <p>Your messages are { this.auth.getMessagesNoWait() } </p>
                     <button type="button" onClick={this.logout}> Log me out! </button>
                 </div> :
                 <div className="Authentication">
