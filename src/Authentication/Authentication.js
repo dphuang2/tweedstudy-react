@@ -30,7 +30,7 @@ class Authentication {
                 this.messages = json.friends;
 
                 if (typeof(Storage) !== "undefined") {
-                    localStorage.setItem("user_info", json);
+                    localStorage.setItem("user_info", JSON.stringify(json));
                 }
                 return;
             }
@@ -46,7 +46,6 @@ class Authentication {
         let query = url_parts.query;
         let oauth_token = query["oauth_token"];
         let oauth_verifier = query["oauth_verifier"];
-
 
         if (typeof(Storage) !== "undefined") {
             const cacheHits = localStorage.getItem("user_info");
