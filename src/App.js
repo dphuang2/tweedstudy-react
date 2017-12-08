@@ -19,7 +19,7 @@ import 'rc-slider/assets/index.css';
   constructor(props) {
     super(props); 
     this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0, username: undefined, tweets: undefined };
+    this.state = { value: 0, max: 100, min: 0, username: undefined};
     this.auth = new Authentication();
     this.data = null;
     this.authenticate = this.authenticate.bind(this);
@@ -27,13 +27,8 @@ import 'rc-slider/assets/index.css';
     this.auth.getScreenName()
       .then((username) => {
         this.setState({
-            username
-            });
-      });
-    this.auth.getTweets()
-      .then((tweets) => {
-        this.setState({
-            tweets: tweets
+            username: username,
+            tweets: this.auth.tweets
             });
       });
   }
@@ -46,8 +41,7 @@ import 'rc-slider/assets/index.css';
       return tweets.map(this.getPopularity).reduce((a, b) => a > b ? a : b);
   }
 
-  filterInfo(filter_var)
-  {
+  filterInfo(filter_var) {
       if(this.data != null) {
           var filteredTwitter = this.data.filter(tweet => this.getPopularity(tweet) >= filter_var);
           return filteredTwitter;
@@ -123,13 +117,12 @@ import 'rc-slider/assets/index.css';
 
   render() {
 
-    var rows = [];
-    if(this.state.tweets !== undefined && this.state.tweets.length > 0) {
-         this.state.tweets.forEach(function(tweet){
-             rows.push(<p> {tweet.text} </p>);
-         });
-    }
-
+      var rows = [];
+      if(this.state.tweets != null && this.state.tweets !== undefined && this.state.tweets.length > 0) {
+          this.state.tweets.forEach(function(tweet){
+              rows.push(<p> {tweet.text} </p>);
+          });
+      }
     return (
       <div className="App">
           <div className="App-header">
