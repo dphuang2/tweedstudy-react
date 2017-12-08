@@ -29,7 +29,13 @@ import 'rc-slider/assets/index.css';
         this.setState({
             username
             });
-        });
+      });
+    this.auth.getTweets()
+      .then((tweets) => {
+        this.setState({
+            tweets
+            });
+      });
   }
 
   getSmallestPop(tweets) {
@@ -116,6 +122,14 @@ import 'rc-slider/assets/index.css';
   }
 
   render() {
+
+    var rows = [];
+    if(this.state.tweets !== undefined && this.state.tweets.length !== 0) {
+         this.state.tweets.forEach(function(tweet){
+             rows.push(<p> tweet.text </p>);
+         });
+    }
+
     return (
       <div className="App">
           <div className="App-header">
@@ -131,7 +145,7 @@ import 'rc-slider/assets/index.css';
           { this.auth.getScreenNameNoWait() !== null ? 
                 <div className="Authentication">
                     <p>Hi {this.state.username} </p>
-                    <p>Your messages are { this.auth.getMessagesNoWait() } </p>
+                    {rows} 
                     <button type="button" onClick={this.logout}> Log me out! </button>
                 </div> :
                 <div className="Authentication">
