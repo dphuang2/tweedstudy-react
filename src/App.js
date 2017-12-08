@@ -19,7 +19,7 @@ import 'rc-slider/assets/index.css';
   constructor(props) {
     super(props); 
     this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0, username: undefined };
+    this.state = { value: 0, max: 100, min: 0, username: undefined, tweets: undefined };
     this.auth = new Authentication();
     this.data = null;
     this.authenticate = this.authenticate.bind(this);
@@ -33,7 +33,7 @@ import 'rc-slider/assets/index.css';
     this.auth.getTweets()
       .then((tweets) => {
         this.setState({
-            tweets
+            tweets: tweets
             });
       });
   }
@@ -124,9 +124,9 @@ import 'rc-slider/assets/index.css';
   render() {
 
     var rows = [];
-    if(this.state.tweets !== undefined && this.state.tweets.length !== 0) {
+    if(this.state.tweets !== undefined && this.state.tweets.length > 0) {
          this.state.tweets.forEach(function(tweet){
-             rows.push(<p> tweet.text </p>);
+             rows.push(<p> {tweet.text} </p>);
          });
     }
 
