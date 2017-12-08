@@ -27,11 +27,12 @@ class Authentication {
                 this.user_id = json.user_id;
                 this.tweets = json.tweets;
                 this.friends = json.friends;
-                this.messages = json.friends;
-
+                this.messages = json.messages;
+              
                 if (typeof(Storage) !== "undefined") {
                     localStorage.setItem("user_info", JSON.stringify(json));
                 }
+              
                 return;
             }
         }
@@ -75,6 +76,7 @@ class Authentication {
         comes back from the server.
      */
     authenticate() {
+        // TODO: Refactor this into a regular async function
         let that = this;
         return new Promise((resolve, reject) => {
             if(that.isAuthenticated) {
