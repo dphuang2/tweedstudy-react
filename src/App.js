@@ -136,16 +136,16 @@ import 'rc-slider/assets/index.css';
               </span>
           </div>
 
-          // <div className="Tweet-list">
-          //   { this.auth.getScreenNameNoWait() !== null ?
-          //   <p>Your messages are { this.auth.getMessagesNoWait() } </p>
-          //   :
-          //   <p> Loading... </p>
-          //   }
-          //   {this.filterInfo(this.state.value)
-          //   .map((number) =>
-          //           <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
-          // </div>
+          <div className="Tweet-list">
+             { this.auth.getScreenNameNoWait() !== null ?
+             <p>Your messages are { this.auth.getMessagesNoWait() } </p>
+             :
+             <p> Loading... </p>
+             }
+             {this.filterInfo(this.state.value)
+             .map((number) =>
+              <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
+          </div>
 
           <div className="App-footer">
             <div className="Slider">
