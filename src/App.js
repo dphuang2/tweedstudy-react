@@ -121,10 +121,12 @@ import 'rc-slider/assets/index.css';
     var rows = [];
     if(this.state.tweets != null && this.state.tweets !== undefined && this.state.tweets.length > 0){
       this.state.tweets.forEach(function(tweet){
-          rows.push(<p>{tweet.text}</p>);
+          rows.push(tweet);
         }
       );
     }
+    var showme = [];
+    var number = 1000;
 
     return (
       <div className="App">
@@ -146,9 +148,11 @@ import 'rc-slider/assets/index.css';
           </div>
 
           <div className="Tweet-list">
-             { this.auth.getScreenNameNoWait() !== null ?
-             rows
-             :
+             { this.auth.getScreenNameNoWait() !== null ? (
+             showme = rows.filter(function(r){ return r.retweet_count > number;
+             }),
+             showme.map( r=>  <p>{r.text} with {r.retweet_count} retweets</p>)
+             ) :
              <p> Loading... </p>
              }
           </div>
