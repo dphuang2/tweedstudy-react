@@ -120,24 +120,38 @@ import 'rc-slider/assets/index.css';
     return (
       <div className="App">
           <div className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-              <h2>Welcome to React</h2>
-              <div>
-                  <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
-              </div>
-            {this.filterInfo(this.state.value)
-            .map((number) =>
-                    <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
-          </div>
-          { this.auth.getScreenNameNoWait() !== null ?
-                <div className="Authentication">
+              <span className="Title-area">
+                <img src={logo} className="App-logo" alt="logo" />
+                <h1 className="Title">Welcome to React</h1>
+              </span>
+              <span className="Authentication-area">
+                { this.auth.getScreenNameNoWait() !== null ?
+                <span className="Authentication">
                     <p>Hi {this.state.username} </p>
-                    <p>Your messages are { this.auth.getMessagesNoWait() } </p>
                     <button type="button" onClick={this.logout}> Log me out! </button>
-                </div> :
-                <div className="Authentication">
+                </span> :
+                <span className="Authentication">
                     <button type="button" onClick={this.authenticate}> Authenticate me! </button>
-                </div> }
+                </span> }
+              </span>
+          </div>
+
+          // <div className="Tweet-list">
+          //   { this.auth.getScreenNameNoWait() !== null ?
+          //   <p>Your messages are { this.auth.getMessagesNoWait() } </p>
+          //   :
+          //   <p> Loading... </p>
+          //   }
+          //   {this.filterInfo(this.state.value)
+          //   .map((number) =>
+          //           <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
+          // </div>
+
+          <div className="App-footer">
+            <div className="Slider">
+                <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
+            </div>
+          </div>
       </div>
     );
   }
