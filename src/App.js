@@ -28,7 +28,8 @@ import 'rc-slider/assets/index.css';
     this.auth.getScreenName()
       .then((username) => {
         this.setState({
-            username
+            username: username,
+            tweets: this.auth.tweets
             });
         });
   }
@@ -117,6 +118,14 @@ import 'rc-slider/assets/index.css';
   }
 
   render() {
+    var rows = [];
+    if(this.state.tweets != null && this.state.tweets !== undefined && this.state.tweets.length > 0){
+      this.state.tweets.forEach(function(tweet){
+          rows.push(<p>{tweet.text}</p>);
+        }
+      );
+    }
+
     return (
       <div className="App">
           <div className="App-header">
@@ -138,7 +147,7 @@ import 'rc-slider/assets/index.css';
 
           <div className="Tweet-list">
              { this.auth.getScreenNameNoWait() !== null ?
-             <p>Your messages are { this.auth.getMessagesNoWait() } </p>
+             {rows}
              :
              <p> Loading... </p>
              }
