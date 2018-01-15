@@ -147,13 +147,10 @@ import 'rc-slider/assets/index.css';
 
           <div className="Tweet-list">
              { this.auth.getScreenNameNoWait() !== null ?
-             {rows}
+             rows
              :
              <p> Loading... </p>
              }
-             {this.filterInfo(this.state.value)
-             .map((number) =>
-              <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
           </div>
 
           <div className="App-footer">
