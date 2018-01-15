@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
+import logo from './Twitter_Logo_WhiteOnBlue.svg';
 import Authentication from './Authentication/Authentication.js'
 import './App.css';
 import { happyWords, sadWords } from './wordlists';
@@ -17,7 +18,7 @@ import 'rc-slider/assets/index.css';
 
  class App extends Component {
   constructor(props) {
-    super(props); 
+    super(props);
     this.wordSentiments = {};
     this.state = { value: 0, max: 100, min: 0, username: undefined };
     this.auth = new Authentication();
@@ -63,7 +64,7 @@ import 'rc-slider/assets/index.css';
   getWordSentiment(word) {
       if(this.wordSentiments.hasOwnProperty(word))
           return this.wordSentiments[word];
-      
+
       for(let i = 0; i < sadWords.length; i++) {
           let sad = sadWords[i];
           if(sad === word || (sad.endsWith("*") && word.startsWith(sad.substring(0, sad.length - 1)))) {
@@ -98,14 +99,14 @@ import 'rc-slider/assets/index.css';
       else if(tweet.user.followers_count > 10000)
           celeb += 2;
       else if(tweet.user.followers_count > 1000)
-          celeb += 1; 
+          celeb += 1;
       else
           celeb -= 1;
     return celeb
   }
 
   authenticate() {
-      this.auth.authenticate().then(url => { 
+      this.auth.authenticate().then(url => {
               window.location = url;
         });
   }
@@ -125,10 +126,10 @@ import 'rc-slider/assets/index.css';
                   <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
               </div>
             {this.filterInfo(this.state.value)
-            .map((number) => 
+            .map((number) =>
                     <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
           </div>
-          { this.auth.getScreenNameNoWait() !== null ? 
+          { this.auth.getScreenNameNoWait() !== null ?
                 <div className="Authentication">
                     <p>Hi {this.state.username} </p>
                     <p>Your messages are { this.auth.getMessagesNoWait() } </p>
