@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
+import logo from './Twitter_Logo_WhiteOnBlue.svg';
 import Authentication from './Authentication/Authentication.js'
 import './App.css';
 import { happyWords, sadWords } from './wordlists';
@@ -17,7 +18,7 @@ import 'rc-slider/assets/index.css';
 
  class App extends Component {
   constructor(props) {
-    super(props); 
+    super(props);
     this.wordSentiments = {};
     this.state = { value: 0, max: 100, min: 0, username: undefined };
     this.auth = new Authentication();
@@ -27,7 +28,8 @@ import 'rc-slider/assets/index.css';
     this.auth.getScreenName()
       .then((username) => {
         this.setState({
-            username
+            username: username,
+            tweets: this.auth.tweets
             });
         });
   }
@@ -63,7 +65,7 @@ import 'rc-slider/assets/index.css';
   getWordSentiment(word) {
       if(this.wordSentiments.hasOwnProperty(word))
           return this.wordSentiments[word];
-      
+
       for(let i = 0; i < sadWords.length; i++) {
           let sad = sadWords[i];
           if(sad === word || (sad.endsWith("*") && word.startsWith(sad.substring(0, sad.length - 1)))) {
@@ -98,14 +100,14 @@ import 'rc-slider/assets/index.css';
       else if(tweet.user.followers_count > 10000)
           celeb += 2;
       else if(tweet.user.followers_count > 1000)
-          celeb += 1; 
+          celeb += 1;
       else
           celeb -= 1;
     return celeb
   }
 
   authenticate() {
-      this.auth.authenticate().then(url => { 
+      this.auth.authenticate().then(url => {
               window.location = url;
         });
   }
@@ -116,27 +118,46 @@ import 'rc-slider/assets/index.css';
   }
 
   render() {
+    var rows = [];
+    if(this.state.tweets != null && this.state.tweets !== undefined && this.state.tweets.length > 0){
+      this.state.tweets.forEach(function(tweet){
+          rows.push(<p>{tweet.text}</p>);
+        }
+      );
+    }
+
     return (
       <div className="App">
           <div className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-              <h2>Welcome to React</h2>
-              <div>
-                  <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
-              </div>
-            {this.filterInfo(this.state.value)
-            .map((number) => 
-                    <p className="tweet" key={number.id}>{number.text}  {number.retweet_count}</p>)}
-          </div>
-          { this.auth.getScreenNameNoWait() !== null ? 
-                <div className="Authentication">
+              <span className="Title-area">
+                <img src={logo} className="App-logo" alt="logo" />
+                <h1 className="Title">Welcome to React</h1>
+              </span>
+              <span className="Authentication-area">
+                { this.auth.getScreenNameNoWait() !== null ?
+                <span className="Authentication">
                     <p>Hi {this.state.username} </p>
-                    <p>Your messages are { this.auth.getMessagesNoWait() } </p>
                     <button type="button" onClick={this.logout}> Log me out! </button>
-                </div> :
-                <div className="Authentication">
+                </span> :
+                <span className="Authentication">
                     <button type="button" onClick={this.authenticate}> Authenticate me! </button>
-                </div> }
+                </span> }
+              </span>
+          </div>
+
+          <div className="Tweet-list">
+             { this.auth.getScreenNameNoWait() !== null ?
+             rows
+             :
+             <p> Loading... </p>
+             }
+          </div>
+
+          <div className="App-footer">
+            <div className="Slider">
+                <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
+            </div>
+          </div>
       </div>
     );
   }
