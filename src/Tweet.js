@@ -11,8 +11,8 @@ class Tweet extends Component {
   var time_ago_created_at = 10;
 
   let media = null;
-  if (media) {
-    media = <div> media </div>;
+  if (this.props.entities.media) {
+    media = <div> <img className="mediaimg" src={this.props.entities.media[0].media_url}/> </div>;
   }
 
   return ( //<p>{this.props.text}</p>
@@ -26,9 +26,14 @@ class Tweet extends Component {
               </span>
             </div>
             <div>
-              <p>{this.props.text}</p>
+              <span className = "col-xs-2"></span>
+              <span className = "col-xs-10">
+              <div>
+              <p>{this.props.full_text}</p>
+              </div>
+              {media}
+              </span>
             </div>
-            {media}
           </div>
           );
 
