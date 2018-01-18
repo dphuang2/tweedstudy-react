@@ -28,11 +28,11 @@ class Authentication {
                 this.tweets = json.tweets;
                 this.friends = json.friends;
                 this.messages = json.messages;
-              
+
                 if (typeof(Storage) !== "undefined") {
                     localStorage.setItem("user_info", JSON.stringify(json));
                 }
-              
+
                 return;
             }
         }

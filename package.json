@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "body-parser": "^1.18.1",
+    "bootstrap": "^3.3.7",
     "express": "^4.16.2",
     "mongodb": "^2.2.33",
     "mongoose": "^4.13.1",

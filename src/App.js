@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
+import Tweet from './Tweet.js';
 import logo from './Twitter_Logo_WhiteOnBlue.svg';
-import Authentication from './Authentication/Authentication.js'
+import Authentication from './Authentication/Authentication.js';
 import './App.css';
 import { happyWords, sadWords } from './wordlists';
 import Slider  from 'rc-slider';
@@ -121,7 +122,7 @@ import 'rc-slider/assets/index.css';
     var rows = [];
     if(this.state.tweets != null && this.state.tweets !== undefined && this.state.tweets.length > 0){
       this.state.tweets.forEach(function(tweet){
-          rows.push(<p>{tweet.text}</p>);
+          rows.push(<Tweet {...tweet} />);
         }
       );
     }
