@@ -12,14 +12,14 @@ class Tweet extends Component {
 
   let media = null;
   if (this.props.entities.media) {
-    media = <div> <img className="mediaimg" src={this.props.entities.media[0].media_url}/> </div>;
+    media = <div> <img className="mediaImg" src={this.props.entities.media[0].media_url}/> </div>;
   }
 
   return ( //<p>{this.props.text}</p>
           <div>
             <div> {/* if retweet */}
-              <span className = "col-xs-2">
-                <a href={this.props.user.url}><img className='profileimg' src={this.props.user.profile_image_url}/></a>
+              <span className = "profileImgContainer col-xs-2">
+                <a href={this.props.user.url}><img className='profileImg' src={this.props.user.profile_image_url}/></a>
               </span>
               <span className = "col-xs-10">
                 <a href={this.props.user.url}><b>{this.props.user.name}</b></a> <span>@{this.props.user.screen_name}</span> • {time_ago_created_at}
