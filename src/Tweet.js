@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Tweet.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 class Tweet extends Component {
 
@@ -8,12 +10,16 @@ class Tweet extends Component {
 
   // console.log(this.props);
 
-  var time_ago_created_at = 10;
+  const created_at = new Date(this.props.created_at);
+  let time_difference = <Moment fromNow>{created_at}</Moment>
+
+
 
   let media = null;
   if (this.props.entities.media) {
     media = <div className="mediaImgContainer"> <img className="mediaImg" src={this.props.entities.media[0].media_url}/> </div>;
   }
+
 
   return ( //<p>{this.props.text}</p>
           <div>
@@ -23,7 +29,7 @@ class Tweet extends Component {
               </span>
               <div className = "col-xs-10">
                 <div className = "col-xs-10">
-                <a href={this.props.user.url}><b>{this.props.user.name}</b></a> <span>@{this.props.user.screen_name}</span> • {time_ago_created_at}
+                <a href={this.props.user.url}><b>{this.props.user.name}</b></a> <span>@{this.props.user.screen_name}</span> • {time_difference}
                 </div>
                 <div className = "col-xs-10">
                   <div>
