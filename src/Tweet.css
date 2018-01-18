@@ -1,18 +1,15 @@
 .mediaImg {
-  max-width:400px;
+  width: 100%;
 }
 
 .profileImg  {
-  max-width: 100px;
+  max-width: 70px;
   float:right;
   border-radius: 50%;
 }
 
-div.mediaImgContainer {
-  display: inline-block;
-}
-
-.rectangular {
-  -webkit-clip-path: inset(30px 10px 30px 10px);
-  clip-path: inset(0px 100px 0px 100px);
+.mediaImgContainer {
+  max-width:400px;
+  max-height:200px;
+  overflow:hidden;
 }

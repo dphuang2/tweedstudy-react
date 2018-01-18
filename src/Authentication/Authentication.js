@@ -53,6 +53,8 @@ class Authentication {
             if (cacheHits){
                 this.isAuthenticated = true;
                 var obj = JSON.parse(cacheHits);
+                console.log("look here Kristen");
+                console.log(obj);
                 this.screen_name = obj.screen_name;
                 this.user_id = obj.user_id;
                 this.tweets = obj.tweets;
