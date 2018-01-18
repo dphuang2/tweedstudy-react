@@ -12,7 +12,7 @@ class Tweet extends Component {
 
   let media = null;
   if (this.props.entities.media) {
-    media = <div> <img className="mediaImg" src={this.props.entities.media[0].media_url}/> </div>;
+    media = <div className="mediaImgContainer"> <img className="mediaImg" src={this.props.entities.media[0].media_url}/> </div>;
   }
 
   return ( //<p>{this.props.text}</p>
@@ -21,18 +21,17 @@ class Tweet extends Component {
               <span className = "profileImgContainer col-xs-2">
                 <a href={this.props.user.url}><img className='profileImg' src={this.props.user.profile_image_url}/></a>
               </span>
-              <span className = "col-xs-10">
+              <div className = "col-xs-10">
+                <div className = "col-xs-10">
                 <a href={this.props.user.url}><b>{this.props.user.name}</b></a> <span>@{this.props.user.screen_name}</span> • {time_ago_created_at}
-              </span>
-            </div>
-            <div>
-              <span className = "col-xs-2"></span>
-              <span className = "col-xs-10">
-              <div>
-              <p>{this.props.full_text}</p>
+                </div>
+                <div className = "col-xs-10">
+                  <div>
+                  <p>{this.props.full_text}</p>
+                  </div>
+                  {media}
+                </div>
               </div>
-              {media}
-              </span>
             </div>
           </div>
           );

@@ -7,3 +7,12 @@
   float:right;
   border-radius: 50%;
 }
+
+div.mediaImgContainer {
+  display: inline-block;
+}
+
+.rectangular {
+  -webkit-clip-path: inset(30px 10px 30px 10px);
+  clip-path: inset(0px 100px 0px 100px);
+}
