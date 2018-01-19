@@ -4,7 +4,7 @@
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 70px;
   float: left;
 }
 
@@ -34,7 +34,6 @@
 
 .Title-area {
   float: left;
-  width: 300px;
   height: 100%;
 }
 
@@ -43,13 +42,20 @@
 }
 
 .Authentication-area {
-  float: left;
-  padding: 30px;
+  float: right;
+  padding: 10px;
   height: 100%;
 }
 
 .Authentication {
+}
+
+#ownProfile {
   float: left;
+}
+
+#ownId {
+  float: right;
 }
 
 .Tweet-list {

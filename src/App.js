@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
+import Tweet from './Tweet.js';
+import './Tweet.css';
 import logo from './Twitter_Logo_WhiteOnBlue.svg';
-import Authentication from './Authentication/Authentication.js'
+import Authentication from './Authentication/Authentication.js';
 import './App.css';
 import { happyWords, sadWords } from './wordlists';
 import Slider  from 'rc-slider';
@@ -20,7 +22,7 @@ import 'rc-slider/assets/index.css';
   constructor(props) {
     super(props);
     this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0, username: undefined};
+    this.state = { value: 0, max: 100, min: 0, username: undefined, profileimg: undefined };
     this.auth = new Authentication();
     this.data = null;
     this.authenticate = this.authenticate.bind(this);
@@ -29,7 +31,8 @@ import 'rc-slider/assets/index.css';
       .then((username) => {
         this.setState({
             username: username,
-            tweets: this.auth.tweets
+            tweets: this.auth.tweets,
+            profileimg: "https://i.pinimg.com/474x/19/d8/64/19d864e7594878d0a92268249db4e39a--face-photography-baby-kitty.jpg",
             });
         });
   }
@@ -129,18 +132,25 @@ import 'rc-slider/assets/index.css';
     var number = 100000000;
 
 
+    // console.log(this.state);
+
     return (
       <div className="App">
           <div className="App-header">
-              <span className="Title-area">
+              <span className="Title-area col-xs-8 col-sm-5">
                 <img src={logo} className="App-logo" alt="logo" />
-                <h1 className="Title">Welcome to React</h1>
+                <h1 className="Title">Twitter Study</h1>
               </span>
-              <span className="Authentication-area">
+              <span className="Authentication-area col-xs-4 col-sm-3">
                 { this.auth.getScreenNameNoWait() !== null ?
                 <span className="Authentication">
-                    <p>Hi {this.state.username} </p>
-                    <button type="button" onClick={this.logout}> Log me out! </button>
+                    <span className = "profileImgContainer" id="ownProfile">
+                      <img className='profileImg' src={this.state.profileimg}/>
+                    </span>
+                    <span id="ownId">
+                      <p>{this.state.username}</p>
+                      <button type="button" onClick={this.logout}> Log me out! </button>
+                    </span>
                 </span> :
                 <span className="Authentication">
                     <button type="button" onClick={this.authenticate}> Authenticate me! </button>

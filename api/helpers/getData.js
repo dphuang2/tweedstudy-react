@@ -17,7 +17,7 @@ function get_data(client, params, target, callback){
 function get_all_data_id(client, target, callback){
     var result = [];
     var max_id = -1;
-    get_data(client, {count: 200}, target, function cursoring(json){
+    get_data(client, {count: 200, include_entities: true, tweet_mode: "extended"}, target, function cursoring(json){
         if (json != null && json.length > 1){
             if (max_id == -1){
                 result.push.apply(result, json);
@@ -25,7 +25,7 @@ function get_all_data_id(client, target, callback){
                 result.push.apply(result, json.slice(1));
             }
             max_id = json[json.length-1].id;
-            get_data(client, {max_id: max_id, count: 200}, target, cursoring);
+            get_data(client, {max_id: max_id, count: 200, include_entities:true, tweet_mode: "extended"}, target, cursoring);
 
         } else{
             callback(result);
@@ -36,11 +36,11 @@ function get_all_data_id(client, target, callback){
 // get all cursored data with next_cursor
 function get_all_data_cursor(client, target, callback){
     var result = [];
-    get_data(client, {count: 200}, target, function cursoring(json){
+    get_data(client, {count: 200, include_entities: true, tweet_mode: "extended"}, target, function cursoring(json){
         if (json != null){
             result.push.apply(result, json.users);
             if (json.next_cursor != 0){
-                get_data(client, {cursor: json.next_cursor, count: 200}, target, cursoring);
+                get_data(client, {cursor: json.next_cursor, count: 200, include_entities:true, tweet_mode: "extended"}, target, cursoring);
             } else{
                 callback(result);
             }
