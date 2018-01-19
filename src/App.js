@@ -163,7 +163,7 @@ import 'rc-slider/assets/index.css';
              number = this.state.value,
              showme = rows.filter(function(r){ return r.retweet_count>number;
              }),
-             showme.map( r=>  <p>{r.text} with {r.retweet_count} retweets</p>)
+             showme.map( r=>  <Tweet {...r} />)
              ) :
              <p> Loading... </p>
              }
