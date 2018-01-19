@@ -28,11 +28,11 @@ class Authentication {
                 this.tweets = json.tweets;
                 this.friends = json.friends;
                 this.messages = json.messages;
-              
+
                 if (typeof(Storage) !== "undefined") {
                     localStorage.setItem("user_info", JSON.stringify(json));
                 }
-              
+
                 return;
             }
         }
@@ -53,6 +53,8 @@ class Authentication {
             if (cacheHits){
                 this.isAuthenticated = true;
                 var obj = JSON.parse(cacheHits);
+                console.log("look here Kristen");
+                console.log(obj);
                 this.screen_name = obj.screen_name;
                 this.user_id = obj.user_id;
                 this.tweets = obj.tweets;
