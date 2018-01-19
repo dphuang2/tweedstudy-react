@@ -20,7 +20,7 @@ import 'rc-slider/assets/index.css';
   constructor(props) {
     super(props);
     this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0, username: undefined };
+    this.state = { value: 0, max: 100, min: 0, username: undefined};
     this.auth = new Authentication();
     this.data = null;
     this.authenticate = this.authenticate.bind(this);
@@ -126,7 +126,8 @@ import 'rc-slider/assets/index.css';
       );
     }
     var showme = [];
-    var number = 1000;
+    var number = 100000000;
+
 
     return (
       <div className="App">
@@ -149,7 +150,8 @@ import 'rc-slider/assets/index.css';
 
           <div className="Tweet-list">
              { this.auth.getScreenNameNoWait() !== null ? (
-             showme = rows.filter(function(r){ return r.retweet_count > number;
+             number = this.state.value,
+             showme = rows.filter(function(r){ return r.retweet_count>number;
              }),
              showme.map( r=>  <p>{r.text} with {r.retweet_count} retweets</p>)
              ) :
