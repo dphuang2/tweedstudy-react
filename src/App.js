@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import Tweet from './Tweet.js';
+import DropDownMenuSimpleExample from './Dropdown.js'
 import './Tweet.css';
 import logo from './Twitter_Logo_WhiteOnBlue.svg';
 import Authentication from './Authentication/Authentication.js';
@@ -22,7 +23,7 @@ import 'rc-slider/assets/index.css';
   constructor(props) {
     super(props);
     this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0, username: undefined, profileimg: undefined };
+    this.state = { value: 0, max: 100, min: 0, username: undefined, profileimg: undefined, filtervalue: undefined };
     this.auth = new Authentication();
     this.data = null;
     this.authenticate = this.authenticate.bind(this);
@@ -170,9 +171,12 @@ import 'rc-slider/assets/index.css';
           </div>
 
           <div className="App-footer">
-            <div className="Slider">
+            <span className="Dropdown col-xs-2">
+               <DropDownMenuSimpleExample />
+            </span>
+            <span className="Slider col-xs-9">
                 <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
-            </div>
+            </span>
           </div>
       </div>
     );
