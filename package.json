@@ -17,15 +17,17 @@
     "twitter": "^1.7.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "db": "mongod",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "react-scripts start",
     "server": "nodemon server.js",
+    "db": "mongod",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:3000",
   "devDependencies": {
+    "concurrently": "^3.5.1",
     "nodemon": "^1.12.1"
   }
 }
