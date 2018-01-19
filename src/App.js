@@ -23,7 +23,7 @@ import 'rc-slider/assets/index.css';
   constructor(props) {
     super(props);
     this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0, username: undefined, profileimg: undefined, filter: undefined };
+    this.state = { value: 0, max: 100, min: 0, username: undefined, profileimg: undefined, filtervalue: undefined };
     this.auth = new Authentication();
     this.data = null;
     this.authenticate = this.authenticate.bind(this);
@@ -172,7 +172,7 @@ import 'rc-slider/assets/index.css';
 
           <div className="App-footer">
             <span className="Dropdown col-xs-2">
-               <DropDownMenuSimpleExample {...this}/>
+               <DropDownMenuSimpleExample />
             </span>
             <span className="Slider col-xs-9">
                 <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>

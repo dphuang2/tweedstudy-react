@@ -19,7 +19,6 @@ export default class DropDownMenuSimpleExample extends React.Component {
   handleChange = (event, index, value) => this.setState({value});
 
   render() {
-    console.log(this.state.value);
 
     return (
       <div>
