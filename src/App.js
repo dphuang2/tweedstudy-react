@@ -124,10 +124,13 @@ import 'rc-slider/assets/index.css';
     var rows = [];
     if(this.state.tweets != null && this.state.tweets !== undefined && this.state.tweets.length > 0){
       this.state.tweets.forEach(function(tweet){
-          rows.push(<Tweet {...tweet} />);
+          rows.push(tweet);
         }
       );
     }
+    var showme = [];
+    var number = 100000000;
+
 
     // console.log(this.state);
 
@@ -156,9 +159,12 @@ import 'rc-slider/assets/index.css';
           </div>
 
           <div className="Tweet-list">
-             { this.auth.getScreenNameNoWait() !== null ?
-             rows
-             :
+             { this.auth.getScreenNameNoWait() !== null ? (
+             number = this.state.value,
+             showme = rows.filter(function(r){ return r.retweet_count>number;
+             }),
+             showme.map( r=>  <p>{r.text} with {r.retweet_count} retweets</p>)
+             ) :
              <p> Loading... </p>
              }
           </div>
