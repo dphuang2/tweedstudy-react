@@ -15,10 +15,11 @@ import FilterControl from './FilterControl.js';
  class App extends Component {
   constructor(props) {
     super(props); 
-    this.filterer = new TweetFilterer();
-    this.filterState = {};
     this.auth = new Authentication();
-    this.state = {tweets: this.auth.tweets};
+    this.auth.getTweets().then(tweets => this.setState({tweets}));
+    this.state = {tweets: []};
+    this.filterer = new TweetFilterer(this.state.tweets);
+    this.filterState = {};
   }
   
      // A filterState is an object where they keys are one of FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT, 

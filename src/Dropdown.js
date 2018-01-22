@@ -11,7 +11,7 @@ const styles = {
     },
 };
 
-export default class DropDownMenuSimpleExample extends React.Component {
+export default class FeatureDropdown extends React.Component {
 
     constructor(props) {
         super(props);
@@ -41,6 +41,6 @@ export default class DropDownMenuSimpleExample extends React.Component {
     }
 }
 
-DropDownMenuSimpleExample.defaultProps = {
+FeatureDropdown.defaultProps = {
     onChange: (event, value, index) => {}
 }
