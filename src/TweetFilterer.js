@@ -1,11 +1,11 @@
 import { happyWords, sadWords } from './wordlists';
 import 'rc-slider/assets/index.css';
-const FREQUENCY = "sentiment";
-const CELEBRITY = "celebrity";
-const POPULARITY = "popularity";
-const CLOSENESS = "closeness";
-const SENTIMENT = "sentiment";
-class TweetFilterer {
+const FREQUENCY = "Sentiment";
+const CELEBRITY = "Celebrity";
+const POPULARITY = "Popularity";
+const CLOSENESS = "Closeness";
+const SENTIMENT = "Sentiment";
+export default class TweetFilterer {
   constructor() {
     this.data = null;
     // Set it up to download the needed data from the server (the endpoints are
@@ -27,7 +27,7 @@ class TweetFilterer {
     this.currentTweets = [];
   }
 
-  filterTweets(filterObject) {
+  async filterTweets(filterObject) {
       let _filterTweets = (tweets, filterObject) => {
           for(let key in filterObject) {
               let func;
@@ -48,9 +48,7 @@ class TweetFilterer {
                       func = this.getCloseness;
                       break;
                   default:
-                      console.log(`You gave me ${key} as a key, but that's not an available key!`);
-                      reject([]);
-                      return;
+                      throw new Error(`You gave me ${key} as a key, but that's not an available key!`);
 
               }
               tweets = tweets.filter(tweet => func(tweet) >= filterObject[key]);
@@ -59,22 +57,14 @@ class TweetFilterer {
       };
 
       if(filterObject == null)
-          return new Promise((resolve, reject) => resolve([]));
-      let that = this;
-      return new Promise((resolve, reject) => {
-              if(that.data == null) {
-              fetch("/getTweets")
-              .then((response) => {
-                        return response.json();
-                      })
-              .then((json) => {
-                        that.data = json;
-                        resolve(_filterTweets(that.data, filterObject));
-                      });
-              } else {
-                resolve(_filterTweets(filterObject, this.data));
-              }
-      });
+          return [];
+
+      if(this.data == null) {
+          let response = await fetch("/getTweets");
+          let responseJson = await response.json();
+          this.data = responseJson;
+      }
+      return _filterTweets(this.data, filterObject);
   }
 
   getSmallestPop(tweets) {
@@ -120,7 +110,7 @@ class TweetFilterer {
   }
 
   getSentiment(tweet) {
-      return getTextSentiment(tweet.text);
+      return this.getTextSentiment(tweet.text);
   }
 
   getCelebrity(tweet) {
@@ -151,7 +141,7 @@ class TweetFilterer {
   }
 
   async getCloseness(tweet) {
-      return await getUserCloseness(tweet.user);
+      return await this.getUserCloseness(tweet.user);
   }
 
   async getUserCloseness(user) {

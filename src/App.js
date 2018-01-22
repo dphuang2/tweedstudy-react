@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import Tweet from './Tweet.js';
 import DropDownMenuSimpleExample from './Dropdown.js'
 import './Tweet.css';
@@ -9,30 +8,24 @@ import './App.css';
 import { happyWords, sadWords } from './wordlists';
 import Slider  from 'rc-slider';
 import './Authentication/Authentication';
-import './TweetFilterer.js';
-import logo from './logo.svg';
-import Slider  from 'rc-slider';
+import TweetFilterer from './TweetFilterer.js';
 import './App.css';
-import { TweetFilterer, FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT } from './TweetFilterer';
-// We can just import Slider or Range to reduce bundle size
-// import Slider from 'rc-slider/lib/Slider';
-// import Range from 'rc-slider/lib/Range';
+import FilterControl from './FilterControl.js';
 
  class App extends Component {
   constructor(props) {
     super(props); 
     this.filterer = new TweetFilterer();
-    this.state = {tweets: []};
     this.filterState = {};
+    this.auth = new Authentication();
+    this.state = {tweets: this.auth.tweets};
   }
   
-  loadFilteredTweets() {
+     // A filterState is an object where they keys are one of FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT, 
+     // And the values are the numerical minumum values of the appropriate feature. Not all of the keys
+     // must appear, but no keys other than the ones specifically allowed may appear.
+  loadFilteredTweets(filterState) {
       this.filterer.filterTweets(this.filterState).then(tweets => this.setState({tweets}));
-  }
-
-  onSliderChange(key, value) {
-      this.filterState[key] = value;
-      this.loadFilteredTweets();
   }
 
   authenticate() {
@@ -45,21 +38,12 @@ import { TweetFilterer, FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT }
       this.auth.logout();
       this.setState({username: undefined});
   }
+  
+  isLoggedIn() {
+      return this.auth.getScreenNameNoWait() !== undefined && this.state.tweets !== undefined;
+  }
 
   render() {
-    var rows = [];
-    if(this.state.tweets != null && this.state.tweets !== undefined && this.state.tweets.length > 0){
-      this.state.tweets.forEach(function(tweet){
-          rows.push(tweet);
-        }
-      );
-    }
-    var showme = [];
-    var number = 100000000;
-
-
-    // console.log(this.state);
-
     return (
       <div className="App">
           <div className="App-header">
@@ -68,40 +52,34 @@ import { TweetFilterer, FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT }
                 <h1 className="Title">Twitter Study</h1>
               </span>
               <span className="Authentication-area col-xs-4 col-sm-3">
-                { this.auth.getScreenNameNoWait() !== null ?
+                  { !this.isLoggedIn()
+                          ?
                 <span className="Authentication">
                     <span className = "profileImgContainer" id="ownProfile">
                       <img className='profileImg' src={this.state.profileimg}/>
                     </span>
                     <span id="ownId">
                       <p>{this.state.username}</p>
-                      <button type="button" onClick={this.logout}> Log me out! </button>
+                      <button type="button" onClick={this.logout.bind(this)}> Log me out! </button>
                     </span>
-                </span> :
+                </span> 
+                        :
                 <span className="Authentication">
-                    <button type="button" onClick={this.authenticate}> Authenticate me! </button>
+                    <button type="button" onClick={this.authenticate.bind(this)}> Authenticate me! </button>
                 </span> }
               </span>
           </div>
 
           <div className="Tweet-list">
-             { this.auth.getScreenNameNoWait() !== null ? (
-             number = this.state.value,
-             showme = rows.filter(function(r){ return r.retweet_count>number;
-             }),
-             showme.map( r=>  <Tweet {...r} />)
-             ) :
+             { this.isLoggedIn() ?
+             this.state.tweets.map(r =>  <Tweet key={r.id.toString()} {...r} />)
+             :
              <p> Loading... </p>
              }
           </div>
 
           <div className="App-footer">
-            <span className="Dropdown col-xs-2">
-               <DropDownMenuSimpleExample />
-            </span>
-            <span className="Slider col-xs-9">
-                <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
-            </span>
+              <FilterControl dropdownClass="Dropdown col-xs-2" sliderClass="Slider col-xs-9" onChange={filterState => this.loadFilteredTweets(filterState)} tweets={this.state.tweets} />
           </div>
       </div>
     );

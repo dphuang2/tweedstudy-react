@@ -8,20 +8,15 @@ class Tweet extends Component {
 
   render() {
 
-  // console.log(this.props);
-
   const created_at = new Date(this.props.created_at);
   let time_difference = <Moment fromNow>{created_at}</Moment>
-
-
 
   let media = null;
   if (this.props.entities.media) {
     media = <div className="mediaImgContainer"> <img className="mediaImg" src={this.props.entities.media[0].media_url}/> </div>;
   }
 
-
-  return ( //<p>{this.props.text}</p>
+  return ( 
           <div>
             <div> {/* if retweet */}
               <span className = "profileImgContainer col-xs-2">
@@ -33,7 +28,7 @@ class Tweet extends Component {
                 </div>
                 <div className = "col-xs-10">
                   <div>
-                  <p>{this.props.full_text}</p>
+                  <p>{this.props.text}</p>
                   </div>
                   {media}
                 </div>

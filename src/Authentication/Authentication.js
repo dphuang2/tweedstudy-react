@@ -19,10 +19,6 @@ class Authentication {
                 let response = await fetch(`/auth/twitter/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`);
                 let json = await response.json();
 
-                // console.log(json.tweets);
-                // console.log(json.friends);
-                // console.log(json.messages);
-
                 this.screen_name = json.screen_name;
                 this.user_id = json.user_id;
                 this.tweets = json.tweets;
@@ -53,8 +49,6 @@ class Authentication {
             if (cacheHits){
                 this.isAuthenticated = true;
                 var obj = JSON.parse(cacheHits);
-                console.log("look here Kristen");
-                console.log(obj);
                 this.screen_name = obj.screen_name;
                 this.user_id = obj.user_id;
                 this.tweets = obj.tweets;
@@ -66,9 +60,6 @@ class Authentication {
 
         this.isAuthenticated = oauth_token !== undefined && oauth_verifier !== undefined;
 
-        // console.log(this.tweets);
-        // console.log(this.friends);
-        // console.log(this.messages);
     }
 
 
@@ -88,7 +79,6 @@ class Authentication {
             // send request for redirect_uri
             fetch("/auth/twitter")
                 .then(function(res){
-                        console.log(res);
                     res.json().then(function(json){
                         resolve(json.redirect_uri);
                     });
