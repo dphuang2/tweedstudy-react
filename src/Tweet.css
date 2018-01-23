@@ -1,15 +1,10 @@
 .mediaImg {
-  width: 100%;
+    width: 100%;
+    max-width:400px;
+    max-height:200px;
+    overflow:hidden;
 }
 
-.profileImg  {
-  max-width: 70px;
-  float:right;
-  border-radius: 50%;
-}
-
-.mediaImgContainer {
-  max-width:400px;
-  max-height:200px;
-  overflow:hidden;
+#tweet{
+    margin: 1% 0;
 }

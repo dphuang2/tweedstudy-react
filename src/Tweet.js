@@ -6,43 +6,28 @@ import 'moment-timezone';
 
 class Tweet extends Component {
 
-  render() {
+    render() {
 
-  // console.log(this.props);
+    const created_at = new Date(this.props.created_at);
+    let time_difference = <Moment fromNow>{created_at}</Moment>
 
-  const created_at = new Date(this.props.created_at);
-  let time_difference = <Moment fromNow>{created_at}</Moment>
+    let media = null;
+    if (this.props.entities.media) {
+        media = <img className="mediaImg" src={this.props.entities.media[0].media_url} alt=""/>;
+    }
 
-
-
-  let media = null;
-  if (this.props.entities.media) {
-    media = <div className="mediaImgContainer"> <img className="mediaImg" src={this.props.entities.media[0].media_url}/> </div>;
-  }
-
-
-  return ( //<p>{this.props.text}</p>
-          <div>
-            <div> {/* if retweet */}
-              <span className = "profileImgContainer col-xs-2">
-                <a href={this.props.user.url}><img className='profileImg' src={this.props.user.profile_image_url}/></a>
-              </span>
-              <div className = "col-xs-10">
-                <div className = "col-xs-10">
+    return ( //<p>{this.props.text}</p>
+        <div id="tweet" className="row"> {/* if retweet */}
+            <a className="col-xs-2 col-md-offset-1 col-md-1" href={this.props.user.url}><img className='profileImg img-circle' src={this.props.user.profile_image_url} alt="profile"/></a>
+            <span className="col-xs-10">
                 <a href={this.props.user.url}><b>{this.props.user.name}</b></a> <span>@{this.props.user.screen_name}</span> • {time_difference}
-                </div>
-                <div className = "col-xs-10">
-                  <div>
-                  <p>{this.props.full_text}</p>
-                  </div>
-                  {media}
-                </div>
-              </div>
-            </div>
-          </div>
-          );
+                <p>{this.props.full_text}</p>
+                {media}
+            </span>
+        </div>
+    );
 
-  }
+    }
 }
 
 export default Tweet;
