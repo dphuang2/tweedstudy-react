@@ -94,10 +94,20 @@ class Tweet extends Component {
         return await this.getUserCloseness(this.props.user);
     }
 
+    async getMessages() {
+        if(this.messages === undefined) {
+            let response = await fetch("/getMessages");
+            this.messages = await response.json();
+            console.log(this.messages);
+        }
+        return this.messages;
+    }
+
     async getUserCloseness(user) {
         // I'm not really sure how we're going to get these. Assume magic
         // Also implement caching for this at some point
-        let messages = JSON.parse(await fetch("/getMessages"));
+        let messages = await this.getMessages();
+        console.log(messages);
         if(messages.length === 0)
             return 0;
         let out = 0;
