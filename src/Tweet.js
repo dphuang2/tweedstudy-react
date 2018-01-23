@@ -19,6 +19,12 @@ for(let i = 0; i < sadWords.length; i++)
         wordsHash[sadWords[i]] = -1;
 
 class Tweet extends Component {
+
+    constructor(props) {
+        super(props);
+        this.orig = props;
+    }
+
     getPopularity() {
         return this.props.retweet_count;
     }
@@ -31,7 +37,7 @@ class Tweet extends Component {
             let happy = happyWildcardWords[i];
             if(word.startsWith(happy.substring(0, happy.length - 1))) 
             {
-                wordSentiments.set(word, 1);
+                wordSentiments[word] = 1;
                 return 1;
             }
         }
@@ -40,11 +46,11 @@ class Tweet extends Component {
             let sad = sadWildcardWords[i];
             if(word.startsWith(sad.substring(0, sad.length - 1))) 
             {
-                wordSentiments.set(word, -1);
+                wordSentiments[word] = -1;
                 return -1;
             }
         }
-        wordSentiments.set(word, 0);
+        wordSentiments[word] = 0;
         return 0;
     }
 
@@ -157,14 +163,14 @@ class Tweet extends Component {
 
             let media = null;
         if (this.props.entities.media) {
-            media = <div className="mediaImgContainer"> <img className="mediaImg" src={this.props.entities.media[0].media_url}/> </div>;
+            media = <div className="mediaImgContainer"> <img alt="media" className="mediaImg" src={this.props.entities.media[0].media_url}/> </div>;
         }
 
         return ( 
             <div>
                 <div> {/* if retweet */}
                     <span className = "profileImgContainer col-xs-2">
-                        <a href={this.props.user.url}><img className='profileImg' src={this.props.user.profile_image_url}/></a>
+                        <a href={this.props.user.url}><img alt="profileImage" className='profileImg' src={this.props.user.profile_image_url}/></a>
                     </span>
                     <div className = "col-xs-10">
                         <div className = "col-xs-10">

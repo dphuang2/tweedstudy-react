@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import Tweet from './Tweet.js';
-import DropDownMenuSimpleExample from './Dropdown.js'
 import './Tweet.css';
 import logo from './Twitter_Logo_WhiteOnBlue.svg';
 import Authentication from './Authentication/Authentication.js';
 import './App.css';
-import { happyWords, sadWords } from './wordlists';
-import Slider  from 'rc-slider';
 import './Authentication/Authentication';
 import TweetFilterer from './TweetFilterer.js';
 import './App.css';
@@ -16,17 +13,27 @@ import FilterControl from './FilterControl.js';
   constructor(props) {
     super(props); 
     this.auth = new Authentication();
-    this.auth.getTweets().then(tweets => this.setState({tweets}));
+
+    this.auth.getTweets().then(tweets => {
+        this.filterer = new TweetFilterer(tweets);
+        this.controller.tweets = tweets;
+        this.setState({tweets});
+    });
     this.state = {tweets: []};
     this.filterer = new TweetFilterer(this.state.tweets);
-    this.filterState = {};
+
+    this.controller = new FilterControl();
+    this.controller.dropdownClass = "Dropdown col-xs-2";
+    this.controller.sliderClass = "Slider col-xs-9";
+    this.controller.onChange = filterState => this.loadFilteredTweets(filterState);
+    this.controller.tweets = this.state.tweets;
   }
   
      // A filterState is an object where they keys are one of FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT, 
      // And the values are the numerical minumum values of the appropriate feature. Not all of the keys
      // must appear, but no keys other than the ones specifically allowed may appear.
   loadFilteredTweets(filterState) {
-      this.filterer.filterTweets(this.filterState).then(tweets => this.setState({tweets}));
+      this.filterer.filterTweets(filterState).then(tweets => this.setState({tweets}));
   }
 
   authenticate() {
@@ -41,7 +48,7 @@ import FilterControl from './FilterControl.js';
   }
   
   isLoggedIn() {
-      return this.auth.getScreenNameNoWait() !== undefined && this.state.tweets !== undefined;
+      return this.auth.getScreenNameNoWait() !== undefined;
   }
 
   render() {
@@ -57,7 +64,7 @@ import FilterControl from './FilterControl.js';
                           ?
                 <span className="Authentication">
                     <span className = "profileImgContainer" id="ownProfile">
-                      <img className='profileImg' src={this.state.profileimg}/>
+                      <img alt="profileImage" className='profileImg' src={this.state.profileimg}/>
                     </span>
                     <span id="ownId">
                       <p>{this.state.username}</p>
@@ -80,7 +87,7 @@ import FilterControl from './FilterControl.js';
           </div>
 
           <div className="App-footer">
-              <FilterControl dropdownClass="Dropdown col-xs-2" sliderClass="Slider col-xs-9" onChange={filterState => this.loadFilteredTweets(filterState)} tweets={this.state.tweets} />
+              { this.controller.renderElements() }
           </div>
       </div>
     );

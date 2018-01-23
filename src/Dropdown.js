@@ -15,12 +15,13 @@ export default class FeatureDropdown extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {value: POPULARITY};
+        this.state = {value: props.value};
+        this.options = [POPULARITY, FREQUENCY, SENTIMENT, CLOSENESS, CELEBRITY];
     }
 
     handleChange = (event, index, value) => {
         this.setState({value});
-        this.props.onChange(event, value, index);
+        this.props.onChange(event, index, value);
     };
 
     render() {
@@ -29,11 +30,7 @@ export default class FeatureDropdown extends React.Component {
             <div>
                 <MuiThemeProvider>
                     <DropDownMenu value={this.state.value} onChange={this.handleChange} labelStyle={styles.customColor}>
-                        <MenuItem value={POPULARITY} primaryText={POPULARITY}/>
-                        <MenuItem value={FREQUENCY} primaryText={FREQUENCY} />
-                        <MenuItem value={SENTIMENT} primaryText={SENTIMENT} />
-                        <MenuItem value={CLOSENESS} primaryText={CLOSENESS} />
-                        <MenuItem value={CELEBRITY} primaryText={CELEBRITY} />
+                        { this.options.map(o => <MenuItem key={o} value={o} primaryText={o} />) }
                     </DropDownMenu>
                 </MuiThemeProvider>
             </div>
