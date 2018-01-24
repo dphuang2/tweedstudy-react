@@ -28,6 +28,7 @@ class Authentication {
                 this.tweets = json.tweets;
                 this.friends = json.friends;
                 this.messages = json.messages;
+                this.user_data = json.user_data;
 
                 if (typeof(Storage) !== "undefined") {
                     localStorage.setItem("user_info", JSON.stringify(json));
@@ -153,6 +154,23 @@ class Authentication {
         if(ret === null) {
             await this.loadData();
             return this.getFriendsNoWait();
+        } else {
+            return ret;
+        }
+    }
+
+    getUserDataNoWait() {
+        if(this.user_data === undefined)
+            return null;
+        else
+            return this.user_data;
+    }
+
+    async getUserData() {
+        let ret = this.getUserDataNoWait();
+        if(ret === null) {
+            await this.loadData();
+            return this.getUserDataNoWait();
         } else {
             return ret;
         }

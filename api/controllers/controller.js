@@ -12,6 +12,7 @@ var getData = require('../helpers/getData');
 var get_data = getData.get_data;
 var get_all_data_id = getData.get_all_data_id;
 var get_all_data_cursor = getData.get_all_data_cursor;
+var get_user_data = getData.get_user_data;
 
 // Import database method
 var pushData = require('../helpers/pushData');
@@ -55,18 +56,22 @@ exports.verify = function(req, res) {
               access_token_key: req_data.oauth_token,
               access_token_secret: req_data.oauth_token_secret
             });
+            // Get more user information
 
             get_all_data_cursor(client, 'friends/list', function(friends){
                 get_all_data_id(client, 'statuses/home_timeline', function(tweets){
                     get_all_data_id(client, 'direct_messages', function(messages){
+                      get_user_data(client, 'users/show', req_data.user_id, function(user_data) {
                         push_to_database(req_data.user_id, friends, tweets, messages);
                         res.json({
-                            screen_name: req_data.screen_name,
-                            user_id: req_data.user_id,
-                            friends: friends,
-                            tweets: tweets,
-                            messages: messages
+                          screen_name: req_data.screen_name,
+                          user_id: req_data.user_id,
+                          user_data: user_data,
+                          friends: friends,
+                          tweets: tweets,
+                          messages: messages
                         });
+                      })
                     });
                 });
             });

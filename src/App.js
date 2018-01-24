@@ -21,21 +21,24 @@ import 'rc-slider/assets/index.css';
 
  class App extends Component {
   constructor(props) {
-    super(props);
-    this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0, username: undefined, profileimg: undefined, filtervalue: undefined };
-    this.auth = new Authentication();
-    this.data = null;
-    this.authenticate = this.authenticate.bind(this);
-    this.logout = this.logout.bind(this);
-    this.auth.getScreenName()
-      .then((username) => {
-        this.setState({
-            username: username,
-            tweets: this.auth.tweets,
-            profileimg: "https://i.pinimg.com/474x/19/d8/64/19d864e7594878d0a92268249db4e39a--face-photography-baby-kitty.jpg",
-            });
-        });
+      super(props);
+      this.wordSentiments = {};
+      this.state = { value: 0, max: 100, min: 0, username: undefined, profileimg: undefined, filtervalue: undefined };
+      this.auth = new Authentication();
+      this.data = null;
+      this.authenticate = this.authenticate.bind(this);
+      this.logout = this.logout.bind(this);
+      this.auth.getScreenName()
+          .then((username) => {
+              this.auth.getUserData()
+                  .then((user_data) => {
+                      this.setState({
+                          username: username,
+                          tweets: this.auth.tweets,
+                          profileimg: user_data.profile_image_url,
+                      });
+                  })
+          });
   }
 
   getSmallestPop(tweets) {

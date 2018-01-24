@@ -50,8 +50,18 @@ function get_all_data_cursor(client, target, callback){
     });
 }
 
+// Get user data from user_id
+function get_user_data(client, target, user_id, callback){
+  get_data(client, {user_id: user_id}, target, function(json){
+    if (json != null) {
+      callback(json);
+    } 
+  });
+}
+
 module.exports = {
     get_data: get_data,
     get_all_data_id: get_all_data_id,
-    get_all_data_cursor: get_all_data_cursor
+    get_all_data_cursor: get_all_data_cursor,
+    get_user_data: get_user_data
 }
