@@ -2,7 +2,12 @@
     margin: 2% 0;
 }
 
-#tweet>p{
-    margin-top: 2%;
-    margin-bottom: 0;
+#counts{
+    margin-bottom: 2%;
+    margin-left: 10%;
+    margin-right: 3%;
+}
+
+#media-img{
+    margin-bottom: 10px;
 }
