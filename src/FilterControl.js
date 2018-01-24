@@ -1,30 +1,30 @@
 import Tweet from './Tweet.js';
-import React from 'react';
+import React, { Component } from 'react';
 import FeatureDropdown from './Dropdown.js'
 import Slider  from 'rc-slider';
 import { FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT } from './TweetFilterer';
 
-export default class FilterControl {
-    // TODO: Read the documentation and refactor this back into a real component that knows 
-    // how to hold onto its state properly. We'll see if that's possible...
-    constructor() {
-        this.filterStatus = {};
-        this.currentFeature = POPULARITY;
-        this.currentValue = 0;
-        this.sliderClass = "slider";
-        this.dropdownClass = "dropdown";
-        this.onChange = filterState => {};
-        this.tweets = [];
+export default class FilterControl extends Component {
+    constructor(props) {
+        super(props)
+        let filterStatus = {};
+        for(let feature in [FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT])
+            filterStatus[feature] = 0;
+
+        let currentFeature = POPULARITY;
+        this.state = {currentFeature, filterStatus};
     }
 
     onSliderChange(value) {
-        this.currentValue = value;
-        this.filterStatus[this.currentFeature] = value;
-        this.onChange(this.filterStatus);
+        let filterStatus = this.state.filterStatus;
+        filterStatus[this.state.currentFeature] = value;
+        this.setState({filterStatus}, 
+            (_, __) => this.props.onChange(this.filterStatus));
+        
     }
 
     onDropdownChange(event, index, value) {
-        this.currentFeature = value;
+        this.setState({currentFeature: value});
     }
 
 
@@ -70,58 +70,63 @@ export default class FilterControl {
     }
 
     getHighestFeature(feature) {
-        console.log("CALLED");
+        console.log("CALLED highest with " + feature);
         const DEFAULT = 100;
-        if(this.tweets.length === 0)
+        if(this.props.tweets.length === 0)
             return DEFAULT;
         switch(feature) {
             case FREQUENCY:
-                return this.getHighestFrequency(this.tweets);
+                return this.getHighestFrequency(this.props.tweets);
             case CELEBRITY:
-                return this.getHighestCloseness(this.tweets);
+                return this.getHighestCloseness(this.props.tweets);
             case CLOSENESS:
-                return this.getHighestCloseness(this.tweets);
+                return this.getHighestCloseness(this.props.tweets);
             case POPULARITY:
-                return this.getHighestPop(this.tweets);
+                return this.getHighestPop(this.props.tweets);
             case SENTIMENT:
-                return this.getHighestSentiment(this.tweets);
+                return this.getHighestSentiment(this.props.tweets);
             default:
                 return DEFAULT;
         }
     }
 
     getLowestFeature(feature) {
-        console.log("CALLED");
+        console.log("CALLED lowest with " + feature);
         const DEFAULT = 0;
-        if(this.tweets.length === 0)
+        if(this.props.tweets.length === 0)
             return DEFAULT;
 
         switch(feature) {
             case FREQUENCY:
-                return this.getLowestFrequency(this.tweets);
+                return this.getLowestFrequency(this.props.tweets);
             case CELEBRITY:
-                return this.getLowestCloseness(this.tweets);
+                return this.getLowestCloseness(this.props.tweets);
             case CLOSENESS:
-                return this.getLowestCloseness(this.tweets);
+                return this.getLowestCloseness(this.props.tweets);
             case POPULARITY:
-                return this.getLowestPop(this.tweets);
+                return this.getLowestPop(this.props.tweets);
             case SENTIMENT:
-                return this.getLowestSentiment(this.tweets);
+                return this.getLowestSentiment(this.props.tweets);
             default:
                 return DEFAULT;
         }
     }
 
-    renderElements() {
+    render() {
         return (
             <div>
-                <span className={this.dropdownClass}>
-                    <FeatureDropdown onChange={this.onDropdownChange.bind(this)} value={ this.currentFeature } />
+                <span className={ this.props.dropdownClass }>
+                    <FeatureDropdown onChange={ this.onDropdownChange.bind(this) } value={ this.state.currentFeature } />
                 </span>
-                <span className={this.sliderClass}>
-                    <Slider min={this.getLowestFeature(this.currentFeature)} max={this.getHighestFeature(this.currentFeature)} onChange={this.onSliderChange.bind(this)} defaultValue={ this.value }/>
+                <span className={ this.props.sliderClass }>
+                    <Slider min={ this.getLowestFeature(this.state.currentFeature) } max={ this.getHighestFeature(this.state.currentFeature) } onChange={ this.onSliderChange.bind(this) } defaultValue={ this.state.filterStatus[this.state.currentFeature] }/>
                 </span>
             </div>
         );
     }
 }
+
+FilterControl.defaultProps = {
+    sliderClass: "slider", 
+    dropdownClass: "dropdown"
+};
