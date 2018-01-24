@@ -10,6 +10,13 @@ var wordsHash = new Map();
 var sadWildcardWords = sadWords.filter((w) => w.endsWith("*"));
 var happyWildcardWords = happyWords.filter((w) => w.endsWith("*"));
 
+var messages = undefined;
+var request = fetch("/getMessages").then(resp => resp.json());
+request.then(jsonObj => { 
+    console.log("loaded messages"); 
+    messages = jsonObj;
+});
+
 for(let i = 0; i < happyWords.length; i++)
     if(!happyWords[i].endsWith("*"))
         wordsHash[happyWords[i]] = 1;
@@ -17,6 +24,8 @@ for(let i = 0; i < happyWords.length; i++)
 for(let i = 0; i < sadWords.length; i++)
     if(!sadWords[i].endsWith("*"))
         wordsHash[sadWords[i]] = -1;
+
+var closenessCache = {};
 
 class Tweet extends Component {
 
@@ -77,6 +86,7 @@ class Tweet extends Component {
             celeb += 1; 
         else
             celeb -= 1;
+        console.log(celeb);
         return celeb
     }
 
@@ -94,20 +104,14 @@ class Tweet extends Component {
         return await this.getUserCloseness(this.props.user);
     }
 
-    async getMessages() {
-        if(this.messages === undefined) {
-            let response = await fetch("/getMessages");
-            this.messages = await response.json();
-            console.log(this.messages);
-        }
-        return this.messages;
-    }
 
     async getUserCloseness(user) {
+        if(user.id in closenessCache)
+            return closenessCache[user.id];
         // I'm not really sure how we're going to get these. Assume magic
-        // Also implement caching for this at some point
-        let messages = await this.getMessages();
-        console.log(messages);
+        if(messages === undefined)
+            await request;
+
         if(messages.length === 0)
             return 0;
         let out = 0;
@@ -163,7 +167,8 @@ class Tweet extends Component {
         else
             out += 1;
 
-        return out;
+        closenessCache[user.id] = out;
+        return this.getUserCloseness(user);
     }
 
 

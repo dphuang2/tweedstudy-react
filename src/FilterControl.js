@@ -5,6 +5,8 @@ import Slider  from 'rc-slider';
 import { FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT } from './TweetFilterer';
 
 export default class FilterControl {
+    // TODO: Read the documentation and refactor this back into a real component that knows 
+    // how to hold onto its state properly. We'll see if that's possible...
     constructor() {
         this.filterStatus = {};
         this.currentFeature = POPULARITY;
@@ -41,10 +43,16 @@ export default class FilterControl {
     }
 
     getHighestCelebrity(tweets) {
-        return Math.max(...tweets.map(t => new Tweet(t)).map(t => t.getCelebrity()));
+        console.log("Starting calculation");
+        let out = Math.max(...tweets.map(t => new Tweet(t)).map(t => t.getCelebrity()));
+        console.log(`Highest celebrity is ${out}`);
+        return out;
     }
     getLowestCelebrity(tweets) {
-        return Math.min(...tweets.map(t => new Tweet(t)).map(t => t.getCelebrity()));
+        console.log("Starting calculation");
+        let out = Math.min(...tweets.map(t => new Tweet(t)).map(t => t.getCelebrity()));
+        console.log(`Lowest celebrity is ${out}`);
+        return out;
     }
 
     getHighestCloseness(tweets) {
@@ -62,6 +70,7 @@ export default class FilterControl {
     }
 
     getHighestFeature(feature) {
+        console.log("CALLED");
         const DEFAULT = 100;
         if(this.tweets.length === 0)
             return DEFAULT;
@@ -82,6 +91,7 @@ export default class FilterControl {
     }
 
     getLowestFeature(feature) {
+        console.log("CALLED");
         const DEFAULT = 0;
         if(this.tweets.length === 0)
             return DEFAULT;
