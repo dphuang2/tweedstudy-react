@@ -134,19 +134,18 @@ import 'rc-slider/assets/index.css';
 
 
 // console.log(this.state);
-// <img src={logo} className="App-logo" alt="logo" />
+// <img className="App-logo" src={logo} alt="logo" />
     return (
         <div className="container-fluid">
-            <div className="App-header">
-
-                <h1 className="Title col-xs-offset-1 col-xs-8">Twitter Study</h1>
+            <div className="App-header row">
+                <h1 className="col-xs-offset-1 col-xs-8 Title">Twitter Study</h1>
                 {
                     this.auth.getScreenNameNoWait() !== null &&
-                    <span className="col-xs-3">
-                        <img className='user-img profile-img img-circle' src={this.state.profileimg} alt="user profile"/>
+                    (<div className="col-xs-3">
+                        <img className='profile-img img-circle' src={this.state.profileimg} alt="user profile"/>
                         <p className="hidden-xs">{this.state.username}</p>
-                        <button type="button" onClick={this.logout}>Log out</button>
-                    </span>
+                        <button className="btn btn-danger btn-xs" type="button" onClick={this.logout}>Log out</button>
+                    </div>)
                 }
             </div>
 
@@ -157,7 +156,7 @@ import 'rc-slider/assets/index.css';
                      showme = rows.filter(function(r){ return r.retweet_count>number; }),
                      showme.map( r=>  <Tweet {...r} />)
                      ) :
-                     <button className="Authenticate" type="button" onClick={this.authenticate}> Login with twitter </button>
+                     <button className="btn btn-primary brn-lg btn-block" type="button" onClick={this.authenticate}> Login with twitter </button>
                  }
             </div>
 

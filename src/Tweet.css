@@ -1,10 +1,8 @@
-.mediaImg {
-    width: 100%;
-    max-width:400px;
-    max-height:200px;
-    overflow:hidden;
+#tweet{
+    margin: 2% 0;
 }
 
-#tweet{
-    margin: 1% 0;
+#tweet>p{
+    margin-top: 2%;
+    margin-bottom: 0;
 }
