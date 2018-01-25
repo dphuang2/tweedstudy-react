@@ -12,6 +12,7 @@ var getData = require('../helpers/getData');
 var get_data = getData.get_data;
 var get_all_data_id = getData.get_all_data_id;
 var get_all_data_cursor = getData.get_all_data_cursor;
+var get_profile_img = getData.get_profile_img;
 
 // Import database method
 var pushData = require('../helpers/pushData');
@@ -60,12 +61,15 @@ exports.verify = function(req, res) {
                 get_all_data_id(client, 'statuses/home_timeline', function(tweets){
                     get_all_data_id(client, 'direct_messages', function(messages){
                         push_to_database(req_data.user_id, friends, tweets, messages);
-                        res.json({
-                            screen_name: req_data.screen_name,
-                            user_id: req_data.user_id,
-                            friends: friends,
-                            tweets: tweets,
-                            messages: messages
+                        get_profile_img(client, req_data.screen_name, req_data.user_id, function(profile_img){
+                            res.json({
+                                screen_name: req_data.screen_name,
+                                user_id: req_data.user_id,
+                                friends: friends,
+                                tweets: tweets,
+                                messages: messages,
+                                profile_img: profile_img
+                            });
                         });
                     });
                 });

@@ -13,6 +13,16 @@ function get_data(client, params, target, callback){
     });
 }
 
+function get_profile_img(client, screen_name, user_id, callback){
+    get_data(client, {screen_name: screen_name, user_id: user_id, include_entities: false}, 'users/show', function(json){
+        if (json != null){
+            callback(json.profile_image_url);
+        } else{
+            callback(null);
+        }
+    });
+}
+
 // get all cursored data with max_id
 function get_all_data_id(client, target, callback){
     var result = [];
@@ -53,5 +63,6 @@ function get_all_data_cursor(client, target, callback){
 module.exports = {
     get_data: get_data,
     get_all_data_id: get_all_data_id,
-    get_all_data_cursor: get_all_data_cursor
+    get_all_data_cursor: get_all_data_cursor,
+    get_profile_img: get_profile_img
 }
