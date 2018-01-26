@@ -113,13 +113,15 @@ export default class FilterControl extends Component {
     }
 
     render() {
+        let lowestFeature = this.getLowestFeature(this.state.currentFeature)  
+        let highestFeature = this.getHighestFeature(this.state.currentFeature) 
         return (
             <div>
                 <span className={ this.props.dropdownClass }>
                     <FeatureDropdown onChange={ this.onDropdownChange.bind(this) } value={ this.state.currentFeature } />
                 </span>
                 <span className={ this.props.sliderClass }>
-                    <Slider min={ this.getLowestFeature(this.state.currentFeature) } max={ this.getHighestFeature(this.state.currentFeature) } onChange={ this.onSliderChange.bind(this) } defaultValue={ this.state.filterStatus[this.state.currentFeature] }/>
+                    <Slider min={ lowestFeature } max={ highestFeature } onChange={ this.onSliderChange.bind(this) } defaultValue={ this.state.filterStatus[this.state.currentFeature] }/>
                 </span>
             </div>
         );

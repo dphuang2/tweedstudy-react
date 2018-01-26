@@ -13,7 +13,6 @@ var happyWildcardWords = happyWords.filter((w) => w.endsWith("*"));
 var messages = undefined;
 var request = fetch("/getMessages").then(resp => resp.json());
 request.then(jsonObj => { 
-    console.log("loaded messages"); 
     messages = jsonObj;
 });
 
@@ -86,7 +85,6 @@ class Tweet extends Component {
             celeb += 1; 
         else
             celeb -= 1;
-        console.log(celeb);
         return celeb
     }
 
@@ -101,7 +99,20 @@ class Tweet extends Component {
     }
 
     async getCloseness() {
-        return await this.getUserCloseness(this.props.user);
+        // TODO: Make this calculate everything at the beginning, maybe with WebWorkers, and 
+        // then save it so we don't have to mess with it all the time.
+        // In more detail, my plan is to do this:
+        // 1. Hold all the tweet data as actual tweet objects instead of just straight json
+        // 2. On startup, in a way that won't harm user experience, calculate all the closenesses (and
+        // other stuff if we want) in the background to avoid the annoyance of waiting for network
+        // and calculation when we're actually trying to show stuff to the user.
+        // 3. This should all just work? Maybe?
+        //
+        // Or, better yet, I should just capture it from auth. Although they might show up
+        // empty because of permissions. I dunno. Who cares. Use auth data and we should 
+        // be good I think.
+        *******
+            return await this.getUserCloseness(this.props.user);
     }
 
 
