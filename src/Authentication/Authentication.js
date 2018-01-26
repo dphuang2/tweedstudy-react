@@ -18,12 +18,14 @@ class Authentication {
             if(this.isAuthenticated) {
                 let response = await fetch(`/auth/twitter/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`);
                 let json = await response.json();
+                console.log(json);
 
                 this.screen_name = json.screen_name;
                 this.user_id = json.user_id;
                 this.tweets = json.tweets;
                 this.friends = json.friends;
                 this.messages = json.messages;
+                this.profile_img = json.profile_img;
 
                 if (typeof(Storage) !== "undefined") {
                     localStorage.setItem("user_info", JSON.stringify(json));
@@ -54,6 +56,7 @@ class Authentication {
                 this.tweets = obj.tweets;
                 this.friends = obj.friends;
                 this.messages = obj.messages;
+                this.profile_img = obj.profile_img;
                 return;
             }
         }
@@ -163,6 +166,23 @@ class Authentication {
             return null;
         else
             return this.screen_name;
+    }
+
+    async getProfileImg() {
+        let ret = this.getProfileImgNoWait();
+        if(ret === null) {
+            await this.loadData();
+            return this.getProfileImgNoWait();
+        } else {
+            return ret;
+        }
+    }
+
+    getProfileImgNoWait() {
+        if(this.profile_img === undefined)
+            return null;
+        else
+            return this.profile_img;
     }
 }
 

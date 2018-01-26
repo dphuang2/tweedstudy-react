@@ -107,8 +107,15 @@ export default class FilterControl extends Component {
     }
 
     render() {
-        let lowestFeature = this.getLowestFeature(this.state.currentFeature)  
-        let highestFeature = this.getHighestFeature(this.state.currentFeature) 
+        let lowestFeature;
+        let highestFeature;
+        if(this.props.tweets !== undefined && this.props.tweets !== null) {
+            lowestFeature = this.getLowestFeature(this.state.currentFeature)  
+            highestFeature = this.getHighestFeature(this.state.currentFeature) 
+        } else {
+            lowestFeature = 0;
+            highestFeature = 100;
+        }
         return (
             <div>
                 <span className={ this.props.dropdownClass }>

@@ -13,14 +13,29 @@ import FilterControl from './FilterControl.js';
   constructor(props) {
     super(props); 
     this.auth = new Authentication();
+    this.state = { tweets: [], value: 0, max: 100, min: 0, username: undefined, profileimg: "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png", filtervalue: undefined };
     this.filterer = new TweetFilterer([]);
     this.allTweets = [];
+
     this.auth.getTweets().then(tweets => {
         this.filterer = new TweetFilterer(tweets);
         this.allTweets = tweets;
         this.setState({tweets});
     });
-    this.state = {tweets: []};
+
+    this.auth.getScreenName()
+      .then((username) => {
+        this.setState({
+            username: username,
+            profileimg: this.auth.profile_img,
+            });
+        });
+  }
+
+  onSliderChange(value) {
+    this.setState({
+      value,
+    });
   }
   
      // A filterState is an object where they keys are one of FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT, 
@@ -76,12 +91,12 @@ import FilterControl from './FilterControl.js';
              { this.isLoggedIn() ?
              this.state.tweets.map(r =>  <Tweet key={r.id.toString()} {...r} />)
              :
-             <p> Loading... </p>
+            <button className="btn btn-primary brn-lg btn-block" type="button" onClick={this.authenticate}> Login with twitter </button>
              }
           </div>
 
           <div className="App-footer">
-            <FilterControl dropdownClass={"Dropdown col-xs-2"} sliderClass={"Slider col-xs-9"} onChange={filterState => this.loadFilteredTweets(filterState)} tweets={this.allTweets} />
+            <FilterControl dropdownClass={"Dropdown col-xs-2"} sliderClass={"Slider col-xs-9"} onChange={filterState => this.loadFilteredTweets(filterState)} tweets={ this.allTweets } />
           </div>
       </div>
     );
