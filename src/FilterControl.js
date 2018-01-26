@@ -8,8 +8,8 @@ export default class FilterControl extends Component {
     constructor(props) {
         super(props)
         let filterStatus = {};
-        for(let feature in [FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT])
-            filterStatus[feature] = 0;
+        [FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT]
+            .forEach(feature => filterStatus[feature] = this.getLowestFeature(feature));
 
         let currentFeature = POPULARITY;
         this.state = {currentFeature, filterStatus};
@@ -19,7 +19,7 @@ export default class FilterControl extends Component {
         let filterStatus = this.state.filterStatus;
         filterStatus[this.state.currentFeature] = value;
         this.setState({filterStatus}, 
-            (_, __) => this.props.onChange(this.filterStatus));
+            (_, __) => this.props.onChange(filterStatus));
         
     }
 
@@ -43,15 +43,11 @@ export default class FilterControl extends Component {
     }
 
     getHighestCelebrity(tweets) {
-        console.log("Starting calculation");
         let out = Math.max(...tweets.map(t => new Tweet(t)).map(t => t.getCelebrity()));
-        console.log(`Highest celebrity is ${out}`);
         return out;
     }
     getLowestCelebrity(tweets) {
-        console.log("Starting calculation");
         let out = Math.min(...tweets.map(t => new Tweet(t)).map(t => t.getCelebrity()));
-        console.log(`Lowest celebrity is ${out}`);
         return out;
     }
 
@@ -70,7 +66,6 @@ export default class FilterControl extends Component {
     }
 
     getHighestFeature(feature) {
-        console.log("CALLED highest with " + feature);
         const DEFAULT = 100;
         if(this.props.tweets.length === 0)
             return DEFAULT;
@@ -91,7 +86,6 @@ export default class FilterControl extends Component {
     }
 
     getLowestFeature(feature) {
-        console.log("CALLED lowest with " + feature);
         const DEFAULT = 0;
         if(this.props.tweets.length === 0)
             return DEFAULT;

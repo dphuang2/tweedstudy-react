@@ -13,14 +13,14 @@ import FilterControl from './FilterControl.js';
   constructor(props) {
     super(props); 
     this.auth = new Authentication();
-
+    this.filterer = new TweetFilterer([]);
+    this.allTweets = [];
     this.auth.getTweets().then(tweets => {
         this.filterer = new TweetFilterer(tweets);
+        this.allTweets = tweets;
         this.setState({tweets});
     });
     this.state = {tweets: []};
-    this.filterer = new TweetFilterer(this.state.tweets);
-
   }
   
      // A filterState is an object where they keys are one of FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT, 
@@ -81,8 +81,7 @@ import FilterControl from './FilterControl.js';
           </div>
 
           <div className="App-footer">
-    this.controller = new FilterControl();
-        <FilterControl dropdownClass={"Dropdown col-xs-2"} sliderClass={"Slider col-xs-9"} onChange={filterState => this.loadFilteredTweets(filterState)} tweets={this.state.tweets} />
+            <FilterControl dropdownClass={"Dropdown col-xs-2"} sliderClass={"Slider col-xs-9"} onChange={filterState => this.loadFilteredTweets(filterState)} tweets={this.allTweets} />
           </div>
       </div>
     );

@@ -98,7 +98,10 @@ class Tweet extends Component {
         return tweetCount / deltaMonths;
     }
 
-    async getCloseness() {
+    getCloseness() {
+        // I need this so that the rest of the system will work kinda.
+        return 1000;
+
         // TODO: Make this calculate everything at the beginning, maybe with WebWorkers, and 
         // then save it so we don't have to mess with it all the time.
         // In more detail, my plan is to do this:
@@ -111,8 +114,7 @@ class Tweet extends Component {
         // Or, better yet, I should just capture it from auth. Although they might show up
         // empty because of permissions. I dunno. Who cares. Use auth data and we should 
         // be good I think.
-        *******
-            return await this.getUserCloseness(this.props.user);
+        return this.getUserCloseness(this.props.user);
     }
 
 
