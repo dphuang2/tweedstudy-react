@@ -68,7 +68,7 @@ class Tweet extends Component {
     }
 
     getSentiment() {
-        return this.getTextSentiment(this.props.full_text);
+        return this.getTextSentiment(this.getText());
     }
 
     getCelebrity() {
@@ -184,6 +184,13 @@ class Tweet extends Component {
         return this.getUserCloseness(user);
     }
 
+    getText() {
+        if (this.props.hasOwnProperty('retweeted_status'))
+            return this.props.retweeted_status.full_text;
+        else
+            return this.props.full_text;
+    }
+
     render() {
 
     const created_at = new Date(this.props.created_at);
@@ -215,13 +222,15 @@ class Tweet extends Component {
         }
         </p>)
 
+        let text = this.getText();
+
     return ( //<p>{this.props.text}</p>
         <div id="tweet" className="row">
             {retweet_status}
             <a className="col-xs-2 col-md-offset-1 col-md-1" href={tweet.user.url}><img className='profileImg img-circle' src={tweet.user.profile_image_url} alt="profile"/></a>
             <span className="col-xs-10">
                 <a href={tweet.user.url}><b>{tweet.user.name}</b></a> <span style={{color: '#808080'}}>@{tweet.user.screen_name} • {time_difference}</span>
-                <p>{tweet.full_text.slice(tweet.display_text_range[0], tweet.display_text_range[1])}</p>
+                <p>{text.slice(tweet.display_text_range[0], tweet.display_text_range[1])}</p>
                 {media}
                 {counts}
             </span>
