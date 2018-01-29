@@ -154,7 +154,7 @@ import 'rc-slider/assets/index.css';
                      this.auth.getScreenNameNoWait() !== null ? (
                      number = this.state.value,
                      showme = rows.filter(function(r){ return r.retweet_count>number; }),
-                     showme.map( r=>  <Tweet {...r} />)
+                     showme.map( r=>  <Tweet key={r.id_str} {...r} />)
                      ) :
                      <button className="btn btn-primary brn-lg btn-block" type="button" onClick={this.authenticate}> Login with twitter </button>
                  }

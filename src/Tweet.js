@@ -37,13 +37,51 @@ class Tweet extends Component {
         }
         </p>)
 
+    /**
+     * Find and highlight relevant keywords within a block of text
+     * @param  {string} text - The text to parse
+     * @param  {array} values - The search keyword to highlight
+     * @return {object} A JSX object containing an array of alternating strings and JSX
+     */
+    const format_link = (text, values) => {
+      if (!values.length) {
+        return (<p>{text}</p>);
+      }
+      let parts = [];
+      let prev_index = 0;
+      for (let i = 0; i < values.length; i++){
+          console.log(text.slice(prev_index, values[i].indices[0]));
+          if (text.charAt(values[i].indices[0]) == 'h'){
+              parts.push(text.slice(prev_index, values[i].indices[0]));
+          } else{
+              parts.push(text.slice(prev_index, values[i].indices[0]+1));
+          }
+          parts.push(<a title={values[i].expanded_url} href={values[i].url} key={values[i].url}>{values[i].url}</a>);
+          prev_index = values[i].indices[1]+1;
+      }
+      parts.push(text.slice(prev_index));
+
+      return (<p>
+        { parts.reduce((prev, current, i) => {
+            if (!i) {
+              return [current];
+            }
+            return prev.concat(current);
+          }, [])
+        }
+      </p>);
+    };
+
+
+    let full_text = format_link(tweet.full_text.slice(tweet.display_text_range[0], tweet.display_text_range[1]), tweet.entities.urls);
+
     return ( //<p>{this.props.text}</p>
         <div id="tweet" className="row">
             {retweet_status}
             <a className="col-xs-2 col-md-offset-1 col-md-1" href={tweet.user.url}><img className='profileImg img-circle' src={tweet.user.profile_image_url} alt="profile"/></a>
             <span className="col-xs-10">
                 <a href={tweet.user.url}><b>{tweet.user.name}</b></a> <span style={{color: '#808080'}}>@{tweet.user.screen_name} • {time_difference}</span>
-                <p>{tweet.full_text.slice(tweet.display_text_range[0], tweet.display_text_range[1])}</p>
+                {full_text}
                 {media}
                 {counts}
             </span>
