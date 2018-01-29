@@ -6,10 +6,15 @@ import { FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT } from './TweetF
 
 export default class FilterControl extends Component {
     constructor(props) {
+        const LOW_NUMBER = -10000;
         super(props)
         let filterStatus = {};
+        // NB That sentiment can be negative, so we can't set these to 0, 
+        // but we can't ask the tweets because it takes forever and also 
+        // we don't have them on construction. So, we have this.
+        // Don't tell anyone. 
         [FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT]
-            .forEach(feature => filterStatus[feature] = this.getLowestFeature(feature));
+            .forEach(feature => filterStatus[feature] = LOW_NUMBER);
 
         let currentFeature = POPULARITY;
         this.state = {currentFeature, filterStatus};
@@ -129,13 +134,6 @@ export default class FilterControl extends Component {
         if(this.props.tweets !== undefined && this.props.tweets !== null) {
             lowestFeature = this.getLowestFeature(this.state.currentFeature)  
             highestFeature = this.getHighestFeature(this.state.currentFeature) 
-            let count = 0;
-            *********
-            // TODO: Why does this not work like I expect?
-            for(let i = 0; i < this.props.tweets.length; i++) 
-                if(this.props.tweets[i].retweet_count >= highestFeature)
-                    count++;
-            console.log(`There should be ${count} tweets showing now`);
         } else {
             lowestFeature = 0;
             highestFeature = 100;
