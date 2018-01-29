@@ -69,20 +69,29 @@ export default class FilterControl extends Component {
         const DEFAULT = 100;
         if(this.props.tweets.length === 0)
             return DEFAULT;
+
+        let highest;
         switch(feature) {
             case FREQUENCY:
-                return this.getHighestFrequency(this.props.tweets);
+                highest = this.getHighestFrequency(this.props.tweets);
+                break;
             case CELEBRITY:
-                return this.getHighestCloseness(this.props.tweets);
+                highest = this.getHighestCloseness(this.props.tweets);
+                break;
             case CLOSENESS:
-                return this.getHighestCloseness(this.props.tweets);
+                highest = this.getHighestCloseness(this.props.tweets);
+                break;
             case POPULARITY:
-                return this.getHighestPop(this.props.tweets);
+                highest = this.getHighestPop(this.props.tweets);
+                break;
             case SENTIMENT:
-                return this.getHighestSentiment(this.props.tweets);
+                highest = this.getHighestSentiment(this.props.tweets);
+                break;
             default:
-                return DEFAULT;
+                highest = DEFAULT;
+                break;
         }
+        return highest;
     }
 
     getLowestFeature(feature) {
@@ -90,20 +99,28 @@ export default class FilterControl extends Component {
         if(this.props.tweets.length === 0)
             return DEFAULT;
 
+        let lowest;
         switch(feature) {
             case FREQUENCY:
-                return this.getLowestFrequency(this.props.tweets);
+                lowest = this.getLowestFrequency(this.props.tweets);
+                break;
             case CELEBRITY:
-                return this.getLowestCloseness(this.props.tweets);
+                lowest = this.getLowestCloseness(this.props.tweets);
+                break;
             case CLOSENESS:
-                return this.getLowestCloseness(this.props.tweets);
+                lowest = this.getLowestCloseness(this.props.tweets);
+                break;
             case POPULARITY:
-                return this.getLowestPop(this.props.tweets);
+                lowest = this.getLowestPop(this.props.tweets);
+                break;
             case SENTIMENT:
-                return this.getLowestSentiment(this.props.tweets);
+                lowest = this.getLowestSentiment(this.props.tweets);
+                break;
             default:
-                return DEFAULT;
+                lowest = DEFAULT;
+                break;
         }
+        return lowest;
     }
 
     render() {
@@ -116,6 +133,8 @@ export default class FilterControl extends Component {
             lowestFeature = 0;
             highestFeature = 100;
         }
+            ***********
+            // TODO: Figure out why the slider's max is higher than the actual highest tweet
         return (
             <div>
                 <span className={ this.props.dropdownClass }>
