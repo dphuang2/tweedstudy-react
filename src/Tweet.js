@@ -50,7 +50,7 @@ class Tweet extends Component {
       let parts = [];
       let prev_index = 0;
       for (let i = 0; i < values.length; i++){
-          console.log(text.slice(prev_index, values[i].indices[0]));
+          // console.log(text.slice(prev_index, values[i].indices[0]));
           if (text.charAt(values[i].indices[0]) == 'h'){
               parts.push(text.slice(prev_index, values[i].indices[0]));
           } else{
