@@ -222,7 +222,7 @@ class Tweet extends Component {
         }
         </p>)
 
-        let text = this.getText();
+        let text = this.getText().slice(tweet.display_text_range[0], tweet.display_text_range[1]);
 
     return ( //<p>{this.props.text}</p>
         <div id="tweet" className="row">

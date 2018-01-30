@@ -18,7 +18,6 @@ class Authentication {
             if(this.isAuthenticated) {
                 let response = await fetch(`/auth/twitter/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`);
                 let json = await response.json();
-                console.log(json);
 
                 this.screen_name = json.screen_name;
                 this.user_id = json.user_id;
