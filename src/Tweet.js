@@ -102,7 +102,6 @@ class Tweet extends Component {
         // I need this so that the rest of the system will work kinda.
         return 1000;
 
-        **********
         // TODO: Make this calculate everything at the beginning, maybe with WebWorkers, and 
         // then save it so we don't have to mess with it all the time.
         // In more detail, my plan is to do this:
@@ -187,9 +186,9 @@ class Tweet extends Component {
 
     getText() {
         if (this.props.hasOwnProperty('retweeted_status'))
-            return this.props.retweeted_status.text;
+            return this.props.retweeted_status.full_text;
         else
-            return this.props.text;
+            return this.props.full_text;
     }
 
     render() {
