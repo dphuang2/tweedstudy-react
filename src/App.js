@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Tweet from './Tweet.js';
 import DropDownMenuSimpleExample from './Dropdown.js'
 import './Tweet.css';
-import logo from './Twitter_Logo_WhiteOnBlue.svg';
+// import logo from './Twitter_Logo_WhiteOnBlue.svg';
 import Authentication from './Authentication/Authentication.js';
 import './App.css';
 import { happyWords, sadWords } from './wordlists';
@@ -164,7 +164,7 @@ import 'rc-slider/assets/index.css';
                 <span className="Dropdown col-xs-2">
                     <DropDownMenuSimpleExample />
                 </span>
-                <span className="Slider col-xs-9">
+                <span className="Slider col-xs-8 col-md-9">
                     <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
                 </span>
             </div>

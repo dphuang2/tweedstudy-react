@@ -69,7 +69,7 @@ class Tweet extends Component {
     };
 
 
-    let full_text = format_link(tweet.full_text.slice(tweet.display_text_range[0], tweet.display_text_range[1]), tweet.entities.urls);
+    let full_text = format_link(tweet.full_text.slice(tweet.display_text_range[0], tweet.display_text_range[1]+1), tweet.entities.urls);
 
     return ( //<p>{this.props.text}</p>
         <div id="tweet" className="row">

@@ -1,18 +1,20 @@
 .container-fluid {
   background-color: #fff;
   padding: 0;
+  margin: 0;
 }
 
-.App-logo {
+/* .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 70px;
   float: left;
   margin-left: 2%;
-}
+} */
 
 .App-header {
   background-color: #1DA1F2;
-  height: 90px;
+  width: 120%;
+  height: 10%;
   color: white;
 }
 
@@ -22,21 +24,26 @@
   margin-bottom: 4px;
 }
 
-@keyframes App-logo-spin {
+/* @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
+} */
 
 .App-footer {
   position:fixed;
   bottom: 0px;
   width: 100%;
-  height: 15%;
+  height: 10%;
   background-color: #1c91d8;
 }
 
+.Dropdown{
+    padding-left: 0;
+}
+
 .Slider {
-  margin: 20px;
+    margin: 20px 0;
+    margin-left: 40px;
 }
 
 .rheostat {
