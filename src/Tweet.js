@@ -51,13 +51,9 @@ class Tweet extends Component {
       let prev_index = 0;
       for (let i = 0; i < values.length; i++){
           // console.log(text.slice(prev_index, values[i].indices[0]));
-          if (text.charAt(values[i].indices[0]) == 'h'){
-              parts.push(text.slice(prev_index, values[i].indices[0]));
-          } else{
-              parts.push(text.slice(prev_index, values[i].indices[0]+1));
-          }
+          parts.push(text.slice(prev_index, values[i].indices[0]));
           parts.push(<a title={values[i].expanded_url} href={values[i].url} key={values[i].url}>{values[i].url}</a>);
-          prev_index = values[i].indices[1]+1;
+          prev_index = values[i].indices[1];
       }
       parts.push(text.slice(prev_index));
 

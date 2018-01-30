@@ -21,7 +21,7 @@ export default class DropDownMenuSimpleExample extends React.Component {
   render() {
 
     return (
-      <div>
+      <span>
         <MuiThemeProvider>
         <DropDownMenu value={this.state.value} onChange={this.handleChange} labelStyle={styles.customColor}>
           <MenuItem value={1} primaryText="Popularity" />
@@ -31,7 +31,7 @@ export default class DropDownMenuSimpleExample extends React.Component {
           <MenuItem value={5} primaryText="Celebrity" />
         </DropDownMenu>
         </MuiThemeProvider>
-      </div>
+      </span>
     );
   }
 }
