@@ -13,13 +13,14 @@ import FilterControl from './FilterControl.js';
   constructor(props) {
     super(props); 
     this.auth = new Authentication();
-      this.state = { tweets: [],
-          value: 0,
-          max: 100,
-          min: 0,
-          username: undefined,
-          profileimg: "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
-          filtervalue: undefined };
+    this.state = { 
+        tweets: [],
+        value: 0,
+        max: 100,
+        min: 0,
+        username: undefined,
+        profileimg: "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
+        filtervalue: undefined };
 
     this.filterer = new TweetFilterer([]);
     this.allTweets = [];
@@ -64,7 +65,7 @@ import FilterControl from './FilterControl.js';
   }
   
   isLoggedIn() {
-      return this.auth.getScreenNameNoWait() !== undefined;
+      return this.auth.getScreenNameNoWait() !== null;
   }
 
   render() {
@@ -98,7 +99,7 @@ import FilterControl from './FilterControl.js';
              { this.isLoggedIn() ?
              this.state.tweets.map(r =>  <Tweet key={r.id.toString()} {...r} />)
              :
-            <button className="btn btn-primary brn-lg btn-block" type="button" onClick={this.authenticate}> Login with twitter </button>
+            <button className="btn btn-primary brn-lg btn-block" type="button" onClick={this.authenticate.bind(this)}> Login with twitter </button>
              }
           </div>
 
