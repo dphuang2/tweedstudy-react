@@ -12,17 +12,18 @@ class Authentication {
           that will resolve to void when everything is where it's supposed to be.
           The only point of this is for some other functions, getTweets, getMessages,
           and getFriends, to work without duplicating code.
-        */
+          */
         this.loadData = async () => {
             // https://memegenerator.net/img/instances/500x/80786494/private-method.jpg
             if(this.isAuthenticated) {
+                this.loading = true;
                 let response = await fetch(`/auth/twitter/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`);
                 let json = await response.json();
 
                 // console.log(json.tweets);
                 // console.log(json.friends);
                 // console.log(json.messages);
-                console.log(json.profile_img);
+                // console.log(json.profile_img);
 
                 this.screen_name = json.screen_name;
                 this.user_id = json.user_id;
@@ -34,7 +35,7 @@ class Authentication {
                 if (typeof(Storage) !== "undefined") {
                     localStorage.setItem("user_info", JSON.stringify(json));
                 }
-
+                this.loading = false;
                 return;
             }
         }
@@ -43,6 +44,7 @@ class Authentication {
         this.logout = this.logout.bind(this);
         this.screen_name = null;
         this.user_id = null;
+        this.loading = false;
 
         let curr_url = window.location.href;
         let url_parts = url.parse(curr_url, true);
@@ -52,18 +54,19 @@ class Authentication {
 
         if (typeof(Storage) !== "undefined") {
             const cacheHits = localStorage.getItem("user_info");
-            if (cacheHits){
-                this.isAuthenticated = true;
+            if (cacheHits) {
                 var obj = JSON.parse(cacheHits);
-                console.log("look here Kristen");
-                console.log(obj);
-                this.screen_name = obj.screen_name;
-                this.user_id = obj.user_id;
-                this.tweets = obj.tweets;
-                this.friends = obj.friends;
-                this.messages = obj.messages;
-                this.profile_img = obj.profile_img;
-                return;
+                if (obj.tweets.length > 0) {
+                    console.log(obj)
+                    this.isAuthenticated = true;
+                    this.screen_name = obj.screen_name;
+                    this.user_id = obj.user_id;
+                    this.tweets = obj.tweets;
+                    this.friends = obj.friends;
+                    this.messages = obj.messages;
+                    this.profile_img = obj.profile_img;
+                    return;
+                }
             }
         }
 
@@ -74,12 +77,11 @@ class Authentication {
         // console.log(this.messages);
     }
 
-
     /**
         Returns a Promise that will fulfill when the auth endpoint
         comes back. The Promise will have as its argument the URL that
         comes back from the server.
-     */
+        */
     authenticate() {
         // TODO: Refactor this into a regular async function
         let that = this;
@@ -90,18 +92,18 @@ class Authentication {
             }
             // send request for redirect_uri
             fetch("/auth/twitter")
-                .then(function(res){
-                        console.log(res);
-                    res.json().then(function(json){
+                .then(function(res) {
+                    console.log(res);
+                    res.json().then(function(json) {
                         resolve(json.redirect_uri);
                     });
                 }).catch(reject);
-            });
+        });
     }
 
     /**
         Clear out authentication data so you can log in again
-    */
+        */
     logout() {
         this.isAuthenticated = false;
         this.screen_name = undefined;
