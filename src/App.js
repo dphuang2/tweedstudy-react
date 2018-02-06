@@ -24,11 +24,13 @@ import FilterControl from './FilterControl.js';
 
     this.filterer = new TweetFilterer([]);
     this.allTweets = [];
+    this.messages = [];
 
     this.auth.getTweets().then(tweets => {
         this.filterer = new TweetFilterer(tweets);
         this.allTweets = tweets;
         this.setState({tweets});
+        App.messages = this.auth.getMessagesNoWait();
     });
 
     this.auth.getScreenName()
@@ -38,6 +40,7 @@ import FilterControl from './FilterControl.js';
             profileimg: this.auth.profile_img,
             });
         });
+
   }
 
   onSliderChange(value) {

@@ -4,17 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import { happyWords, sadWords } from './wordlists';
+import App from './App';
 
 var wordSentiments = {};
 var wordsHash = new Map();
 var sadWildcardWords = sadWords.filter((w) => w.endsWith("*"));
 var happyWildcardWords = happyWords.filter((w) => w.endsWith("*"));
-
-var messages = undefined;
-var request = fetch("/getMessages").then(resp => resp.json());
-request.then(jsonObj => { 
-    messages = jsonObj;
-});
 
 for(let i = 0; i < happyWords.length; i++)
     if(!happyWords[i].endsWith("*"))
@@ -92,15 +87,12 @@ class Tweet extends Component {
         const MILLIS_IN_MONTH = 30 * 24 * 60 * 60 * 1000;
         let tweetCount = this.props.user.statuses_count;
         let startDate = new Date(this.props.user.created_at);
-        // Apparently this works. Who knew?
         let deltaMillis = new Date() - startDate;
         let deltaMonths = deltaMillis / MILLIS_IN_MONTH;
         return tweetCount / deltaMonths;
     }
 
     getCloseness() {
-        // I need this so that the rest of the system will work kinda.
-        return 1000;
 
         // TODO: Make this calculate everything at the beginning, maybe with WebWorkers, and 
         // then save it so we don't have to mess with it all the time.
@@ -118,12 +110,11 @@ class Tweet extends Component {
     }
 
 
-    async getUserCloseness(user) {
+    getUserCloseness(user) {
         if(user.id in closenessCache)
             return closenessCache[user.id];
-        // I'm not really sure how we're going to get these. Assume magic
-        if(messages === undefined)
-            await request;
+        // No one has to know I've done this
+        const messages = App.messages;
 
         if(messages.length === 0)
             return 0;
@@ -136,6 +127,7 @@ class Tweet extends Component {
             out -= 1;
         else
             out += 1;
+
         let words = messages.map(message => message
             .text.replace(/[^\w\s]/g, "")
             .split(" "))
