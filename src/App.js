@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Tweet from './Tweet.js';
-import './Tweet.css';
 import logo from './Twitter_Logo_WhiteOnBlue.svg';
 import Authentication from './Authentication/Authentication.js';
 import './App.css';
@@ -8,6 +7,7 @@ import './Authentication/Authentication';
 import TweetFilterer from './TweetFilterer.js';
 import './App.css';
 import FilterControl from './FilterControl.js';
+import TweetView from './TweetView';
 
  class App extends Component {
   constructor(props) {
@@ -27,10 +27,10 @@ import FilterControl from './FilterControl.js';
     this.messages = [];
 
     this.auth.getTweets().then(tweets => {
-        this.filterer = new TweetFilterer(tweets);
-        this.allTweets = tweets;
-        this.setState({tweets});
         App.messages = this.auth.getMessagesNoWait();
+        this.allTweets = tweets.map(t => new Tweet(t));
+        this.filterer = new TweetFilterer(this.allTweets);
+        this.setState({ tweets: this.allTweets });
     });
 
     this.auth.getScreenName()
@@ -87,7 +87,7 @@ import FilterControl from './FilterControl.js';
                       <img alt="profileImage" className='profileImg' src={this.state.profileimg}/>
                     </span>
                     <span id="ownId">
-                      <p>{this.state.username}</p>
+                      <p>{ this.state.username }</p>
                       <button type="button" onClick={this.logout.bind(this)}> Log me out! </button>
                     </span>
                 </span> 
@@ -100,7 +100,7 @@ import FilterControl from './FilterControl.js';
 
           <div className="Tweet-list">
              { this.isLoggedIn() ?
-             this.state.tweets.map(r =>  <Tweet key={r.id.toString()} {...r} />)
+             this.state.tweets.map(r =>  <TweetView key={ r.id.toString() } tweet={ r } />)
              :
             <button className="btn btn-primary brn-lg btn-block" type="button" onClick={this.authenticate.bind(this)}> Login with twitter </button>
              }

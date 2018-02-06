@@ -1,4 +1,3 @@
-import Tweet from './Tweet.js';
 import React, { Component } from 'react';
 import FeatureDropdown from './Dropdown.js'
 import Slider  from 'rc-slider';
@@ -34,40 +33,40 @@ export default class FilterControl extends Component {
 
 
     getHighestPop(tweets) {
-        return Math.max(...tweets.map(t => new Tweet(t)).map(t => t.getPopularity()));
+        return Math.max(...tweets.map(t => t.getPopularity()));
     }
     getLowestPop(tweets) {
-        return Math.min(...tweets.map(t => new Tweet(t)).map(t => t.getPopularity()));
+        return Math.min(...tweets.map(t => t.getPopularity()));
     }
 
     getHighestFrequency(tweets) {
-        return Math.max(...tweets.map(t => new Tweet(t)).map(t => t.getFrequency()));
+        return Math.max(...tweets.map(t => t.getFrequency()));
     }
     getLowestFrequency(tweets) {
-        return Math.min(...tweets.map(t => new Tweet(t)).map(t => t.getFrequency()));
+        return Math.min(...tweets.map(t => t.getFrequency()));
     }
 
     getHighestCelebrity(tweets) {
-        let out = Math.max(...tweets.map(t => new Tweet(t)).map(t => t.getCelebrity()));
+        let out = Math.max(...tweets.map(t => t.getCelebrity()));
         return out;
     }
     getLowestCelebrity(tweets) {
-        let out = Math.min(...tweets.map(t => new Tweet(t)).map(t => t.getCelebrity()));
+        let out = Math.min(...tweets.map(t => t.getCelebrity()));
         return out;
     }
 
     getHighestCloseness(tweets) {
-        return Math.max(...tweets.map(t => new Tweet(t)).map(t => t.getCloseness()));
+        return Math.max(...tweets.map(t => t.getCloseness()));
     }
     getLowestCloseness(tweets) {
-        return Math.min(...tweets.map(t => new Tweet(t)).map(t => t.getCloseness()));
+        return Math.min(...tweets.map(t => t.getCloseness()));
     }
 
     getHighestSentiment(tweets) {
-        return Math.max(...tweets.map(t => new Tweet(t)).map(t => t.getSentiment()));
+        return Math.max(...tweets.map(t => t.getSentiment()));
     }
     getLowestSentiment(tweets) {
-        return Math.min(...tweets.map(t => new Tweet(t)).map(t => t.getSentiment()));
+        return Math.min(...tweets.map(t => t.getSentiment()));
     }
 
     getHighestFeature(feature) {
