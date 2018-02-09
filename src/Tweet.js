@@ -118,11 +118,14 @@ class Tweet {
 
 
     getUserCloseness(user) {
+        // TODO: Implement caching on this method too. We're working from a small number of users, this can be really fast
+
         // No one has to know I've done this
         const messages = App.messages;
 
         if(messages.length === 0)
             return 0;
+
         let out = 0;
         if(user.followers_count > 100000)
             out -= 3;

@@ -15,7 +15,7 @@ class Authentication {
         */
         this.loadData = async () => {
             // https://memegenerator.net/img/instances/500x/80786494/private-method.jpg
-            if(this.isAuthenticated) {
+            if(this.isAuthenticated()) {
                 let response = await fetch(`/auth/twitter/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`);
                 let json = await response.json();
 
@@ -38,6 +38,9 @@ class Authentication {
         this.logout = this.logout.bind(this);
         this.screen_name = null;
         this.user_id = null;
+        // We can flip this if we need to show that we are authenticated
+        // but we don't actually have oauth stuff (ie, we have everything cached)
+        this.authOverridden = false;
 
         let curr_url = window.location.href;
         let url_parts = url.parse(curr_url, true);
@@ -48,8 +51,8 @@ class Authentication {
         if (typeof(Storage) !== "undefined") {
             const cacheHits = localStorage.getItem("user_info");
             if (cacheHits){
-                this.isAuthenticated = true;
                 var obj = JSON.parse(cacheHits);
+                this.authOverridden = true;
                 this.screen_name = obj.screen_name;
                 this.user_id = obj.user_id;
                 this.tweets = obj.tweets;
@@ -59,11 +62,11 @@ class Authentication {
                 return;
             }
         }
-
-        this.isAuthenticated = oauth_token !== undefined && oauth_verifier !== undefined;
-
     }
 
+    isAuthenticated() {
+        return (this.oauth_token !== undefined && this.oauth_verifier !== undefined) || this.authOverridden;
+    }
 
     /**
         Returns a Promise that will fulfill when the auth endpoint
@@ -74,7 +77,7 @@ class Authentication {
         // TODO: Refactor this into a regular async function
         let that = this;
         return new Promise((resolve, reject) => {
-            if(that.isAuthenticated) {
+            if(that.isAuthenticated()) {
                 reject("You already signed in!");
                 return;
             }
@@ -92,7 +95,6 @@ class Authentication {
         Clear out authentication data so you can log in again
     */
     logout() {
-        this.isAuthenticated = false;
         this.screen_name = undefined;
         this.oauth_token = undefined;
         this.oauth_verifier = undefined;

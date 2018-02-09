@@ -26,20 +26,23 @@ import TweetView from './TweetView';
     this.allTweets = [];
     this.messages = [];
 
-    this.auth.getTweets().then(tweets => {
-        App.messages = this.auth.getMessagesNoWait();
-        this.allTweets = tweets.map(t => new Tweet(t));
-        this.filterer = new TweetFilterer(this.allTweets);
-        this.setState({ tweets: this.allTweets });
-    });
-
-    this.auth.getScreenName()
-      .then((username) => {
-        this.setState({
-            username: username,
-            profileimg: this.auth.profile_img,
-            });
+    if(this.isLoggedIn()) {
+        console.log("got here");
+        this.auth.getTweets().then(tweets => {
+            App.messages = this.auth.getMessagesNoWait();
+            this.allTweets = tweets.map(t => new Tweet(t));
+            this.filterer = new TweetFilterer(this.allTweets);
+            this.setState({ tweets: this.allTweets });
         });
+
+        this.auth.getScreenName()
+            .then((username) => {
+                this.setState({
+                    username: username,
+                    profileimg: this.auth.profile_img,
+                });
+            });
+      }
 
   }
 
@@ -68,7 +71,7 @@ import TweetView from './TweetView';
   }
   
   isLoggedIn() {
-      return this.auth.getScreenNameNoWait() !== null;
+      return this.auth.isAuthenticated();
   }
 
   render() {

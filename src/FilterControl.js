@@ -56,10 +56,14 @@ export default class FilterControl extends Component {
     }
 
     getHighestCloseness(tweets) {
-        return Math.max(...tweets.map(t => t.getCloseness()));
+        let ret = Math.max(...tweets.map(t => t.getCloseness()));
+        console.log(`highest closeness is ${ret}`);
+        return ret;
     }
     getLowestCloseness(tweets) {
-        return Math.min(...tweets.map(t => t.getCloseness()));
+        let ret = Math.min(...tweets.map(t => t.getCloseness()));
+        console.log(`lowest closeness is ${ret}`);
+        return ret;
     }
 
     getHighestSentiment(tweets) {
