@@ -1,84 +1,71 @@
-.container-fluid {
+.container {
   background-color: #fff;
-  padding: 0;
-  margin: 0;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 10% 80% 10%;
+  grid-template-columns: 1fr;
+  grid-template-areas: "header" "content" "footer";
 }
 
-/* .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 70px;
-  float: left;
-  margin-left: 2%;
-} */
-
-.App-header {
+header {
+  grid-area: header;
   background-color: #1DA1F2;
-  width: 120%;
-  height: 10%;
   color: white;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 80% 20%;
+  grid-template-areas: "title profile";
+}
+
+.title{
+  grid-area: title;
+  margin-left: 5%;
+}
+
+.profile{
+  grid-area: profile;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin: 2% auto;
 }
 
 .profile-img  {
+  width: 100%;
   max-width: 70px;
-  margin-top: 8px;
-  margin-bottom: 4px;
+  border-radius: 50%;
 }
 
-/* @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-} */
+.profile>p{
+  margin: 0;
+}
 
-.App-footer {
+.main{
+  grid-area: content;
+  justify-content: center;
+  align-items: center;
+}
+
+footer {
+  grid-area: footer;
   position:fixed;
   bottom: 0px;
   width: 100%;
-  height: 10%;
   background-color: #1c91d8;
+  display: grid;
+  grid-template-columns: 10% 90%;
+  grid-template-areas: "menu slider";
+
+  justify-content: center;
+  align-items: center;
 }
 
-.Dropdown{
-    padding-left: 0;
+footer>span{
+  grid-area: menu;
 }
 
-.Slider {
-    margin: 20px 0;
-    margin-left: 40px;
-}
-
-.rheostat {
-  overflow: visible;
-}
-
-.rheostat-background {
-  background-color: #fcfcfc;
-  border: 1px solid #d8d8d8;
-  position: relative;
-}
-
-.rheostat-progress {
-  background-color: #abc4e8;
-  position: absolute;
-}
-
-.rheostat-handle {
-  background-color: #fff;
-  border: 1px solid #d8d8d8;
-  border-radius: 20%;
-  height: 24px;
-  outline: none;
-  z-index: 2;
-  width: 24px;
-}
-
-.rheostat-handle:before,
-.rheostat-handle:after {
-  content: '';
-  display: block;
-  position: absolute;
-  background-color: #dadfe8;
-}
-
-#tweet-list{
-    margin: 2% 0;
+footer>.rc-slider{
+  grid-area: slider;
+  width: 95%;
+  margin: auto 2%;
 }

@@ -136,38 +136,34 @@ import 'rc-slider/assets/index.css';
 // console.log(this.state);
 // <img className="App-logo" src={logo} alt="logo" />
     return (
-        <div className="container-fluid">
-            <div className="App-header row">
-                <h1 className="col-xs-offset-1 col-xs-8 Title">Twitter Study</h1>
+        <div className="container">
+            <header>
+                <h1 className="title">Twitter Study</h1>
                 {
                     this.auth.getScreenNameNoWait() !== null &&
-                    (<div className="col-xs-3">
-                        <img className='profile-img img-circle' src={this.state.profileimg} alt="user profile"/>
-                        <p className="hidden-xs">{this.state.username}</p>
-                        <button className="btn btn-danger btn-xs" type="button" onClick={this.logout}>Log out</button>
+                    (<div className="profile">
+                        <img className='profile-img' src={this.state.profileimg} alt="user profile"/>
+                        <p className="username">{this.state.username}</p>
+                        <button type="button" onClick={this.logout}>Log out</button>
                     </div>)
                 }
-            </div>
+            </header>
 
-            <div id="tweet-list">
+            <div className="main">
                 {
                      this.auth.getScreenNameNoWait() !== null ? (
                      number = this.state.value,
                      showme = rows.filter(function(r){ return r.retweet_count>number; }),
                      showme.map( r=>  <Tweet key={r.id_str} {...r} />)
                      ) :
-                     <button className="btn btn-primary brn-lg btn-block" type="button" onClick={this.authenticate}> Login with twitter </button>
+                     <button type="button" onClick={this.authenticate}> Login with twitter </button>
                  }
             </div>
 
-            <div className="App-footer">
-                <span className="Dropdown col-xs-2">
-                    <DropDownMenuSimpleExample />
-                </span>
-                <span className="Slider col-xs-8 col-md-9">
-                    <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
-                </span>
-            </div>
+            <footer>
+                <DropDownMenuSimpleExample />
+                <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
+            </footer>
       </div>
     );
   }

@@ -1,13 +1,29 @@
-#tweet{
-    margin: 2% 0;
-}
-
 #counts{
-    margin-bottom: 2%;
-    margin-left: 10%;
-    margin-right: 3%;
+  margin-left: 10%;
+  margin-right: 3%;
 }
 
 #media-img{
-    margin-bottom: 10px;
+  width: 80%;
+  border-radius: 3%;
+}
+
+.tweet{
+  display: grid;
+  grid-template-columns: 10% 90%;
+  grid-template-rows: 5% 95%;
+  grid-template-areas: "EMPTY retweet" "tweet-img tweet";
+  margin: 1% 5%;
+}
+
+.retweet{
+  grid-area: retweet;
+}
+
+.tweet>a{
+  grid-area: tweet-img;
+}
+
+.tweet>div{
+  grid-area: tweet;
 }
