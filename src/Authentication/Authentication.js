@@ -16,7 +16,7 @@ class Authentication {
         this.loadData = async () => {
             // https://memegenerator.net/img/instances/500x/80786494/private-method.jpg
             if(this.isAuthenticated()) {
-                let response = await fetch(`/auth/twitter/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`);
+                let response = await fetch(`/auth/twitter/verify?oauth_token=${this.oauth_token}&oauth_verifier=${this.oauth_verifier}`);
                 let json = await response.json();
 
                 this.screen_name = json.screen_name;
@@ -45,8 +45,8 @@ class Authentication {
         let curr_url = window.location.href;
         let url_parts = url.parse(curr_url, true);
         let query = url_parts.query;
-        let oauth_token = query["oauth_token"];
-        let oauth_verifier = query["oauth_verifier"];
+        this.oauth_token = query["oauth_token"];
+        this.oauth_verifier = query["oauth_verifier"];
 
         if (typeof(Storage) !== "undefined") {
             const cacheHits = localStorage.getItem("user_info");

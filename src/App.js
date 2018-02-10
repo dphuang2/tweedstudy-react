@@ -27,7 +27,6 @@ import TweetView from './TweetView';
     this.messages = [];
 
     if(this.isLoggedIn()) {
-        console.log("got here");
         this.auth.getTweets().then(tweets => {
             App.messages = this.auth.getMessagesNoWait();
             this.allTweets = tweets.map(t => new Tweet(t));
