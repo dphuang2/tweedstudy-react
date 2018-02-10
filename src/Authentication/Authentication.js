@@ -73,22 +73,12 @@ class Authentication {
         comes back. The Promise will have as its argument the URL that
         comes back from the server.
      */
-    authenticate() {
-        // TODO: Refactor this into a regular async function
-        let that = this;
-        return new Promise((resolve, reject) => {
-            if(that.isAuthenticated()) {
-                reject("You already signed in!");
-                return;
-            }
-            // send request for redirect_uri
-            fetch("/auth/twitter")
-                .then(function(res){
-                    res.json().then(function(json){
-                        resolve(json.redirect_uri);
-                    });
-                }).catch(reject);
-            });
+    async authenticate() {
+        if(this.isAuthenticated())
+            throw new Error("You already signed in");
+        let res = await fetch("/auth/twitter");
+        let json = await res.json();
+        return json.redirect_uri;
     }
 
     /**
