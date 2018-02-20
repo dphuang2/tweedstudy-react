@@ -18,12 +18,4 @@ module.exports = function(app) {
   app.route("/auth/twitter/verify")
     .get(tweedStudy.verify);
 
-  app.route("/getFriends")
-  .get(tweedStudy.get_friends);
-
-  app.route("/getMessages")
-  .get(tweedStudy.get_messages);
-
-  app.route("/getUsers")
-  .get(tweedStudy.get_users);
 };
