@@ -15,14 +15,9 @@ class Authentication {
         */
         this.loadData = async () => {
             // https://memegenerator.net/img/instances/500x/80786494/private-method.jpg
-            if(this.isAuthenticated) {
-                let response = await fetch(`/auth/twitter/verify?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`);
+            if(this.isAuthenticated()) {
+                let response = await fetch(`/auth/twitter/verify?oauth_token=${this.oauth_token}&oauth_verifier=${this.oauth_verifier}`);
                 let json = await response.json();
-
-                // console.log(json.tweets);
-                // console.log(json.friends);
-                // console.log(json.messages);
-                console.log(json.profile_img);
 
                 this.screen_name = json.screen_name;
                 this.user_id = json.user_id;
@@ -43,20 +38,21 @@ class Authentication {
         this.logout = this.logout.bind(this);
         this.screen_name = null;
         this.user_id = null;
+        // We can flip this if we need to show that we are authenticated
+        // but we don't actually have oauth stuff (ie, we have everything cached)
+        this.authOverridden = false;
 
         let curr_url = window.location.href;
         let url_parts = url.parse(curr_url, true);
         let query = url_parts.query;
-        let oauth_token = query["oauth_token"];
-        let oauth_verifier = query["oauth_verifier"];
+        this.oauth_token = query["oauth_token"];
+        this.oauth_verifier = query["oauth_verifier"];
 
         if (typeof(Storage) !== "undefined") {
             const cacheHits = localStorage.getItem("user_info");
             if (cacheHits){
-                this.isAuthenticated = true;
                 var obj = JSON.parse(cacheHits);
-                console.log("look here Kristen");
-                console.log(obj);
+                this.authOverridden = true;
                 this.screen_name = obj.screen_name;
                 this.user_id = obj.user_id;
                 this.tweets = obj.tweets;
@@ -66,44 +62,29 @@ class Authentication {
                 return;
             }
         }
-
-        this.isAuthenticated = oauth_token !== undefined && oauth_verifier !== undefined;
-
-        // console.log(this.tweets);
-        // console.log(this.friends);
-        // console.log(this.messages);
     }
 
+    isAuthenticated() {
+        return (this.oauth_token !== undefined && this.oauth_verifier !== undefined) || this.authOverridden;
+    }
 
     /**
         Returns a Promise that will fulfill when the auth endpoint
         comes back. The Promise will have as its argument the URL that
         comes back from the server.
      */
-    authenticate() {
-        // TODO: Refactor this into a regular async function
-        let that = this;
-        return new Promise((resolve, reject) => {
-            if(that.isAuthenticated) {
-                reject("You already signed in!");
-                return;
-            }
-            // send request for redirect_uri
-            fetch("/auth/twitter")
-                .then(function(res){
-                        console.log(res);
-                    res.json().then(function(json){
-                        resolve(json.redirect_uri);
-                    });
-                }).catch(reject);
-            });
+    async authenticate() {
+        if(this.isAuthenticated())
+            throw new Error("You already signed in");
+        let res = await fetch("/auth/twitter");
+        let json = await res.json();
+        return json.redirect_uri;
     }
 
     /**
         Clear out authentication data so you can log in again
     */
     logout() {
-        this.isAuthenticated = false;
         this.screen_name = undefined;
         this.oauth_token = undefined;
         this.oauth_verifier = undefined;
