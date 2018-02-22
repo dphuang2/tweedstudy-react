@@ -69,3 +69,24 @@ footer>.rc-slider{
   width: 95%;
   margin: auto 2%;
 }
+
+/* link styles */
+a:link {
+  color: #4579fb;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #4579fb;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #4579fb;
+  text-decoration: underline;
+}
+
+a:active {
+  color: #4579fb;
+  text-decoration: underline;
+}
