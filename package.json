@@ -5,6 +5,7 @@
   "dependencies": {
     "body-parser": "^1.18.1",
     "express": "^4.16.2",
+    "html-entities": "^1.2.1",
     "material-ui": "^0.20.0",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",

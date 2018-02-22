@@ -3,6 +3,9 @@ import './Tweet.css';
 import Moment from 'react-moment';
 import 'moment-timezone';
 
+const Entities = require('html-entities').XmlEntities;
+const entities = new Entities();
+
 class Tweet extends Component {
 
     render() {
@@ -14,7 +17,7 @@ class Tweet extends Component {
     let retweet_status = null;
     if (this.props.hasOwnProperty('retweeted_status')){
         tweet = this.props.retweeted_status;
-        retweet_status = <p className="retweet"> <span className="glyphicon glyphicon-retweet" aria-hidden="true"></span> {this.props.user.screen_name} retweeted </p>;
+        retweet_status = <p className="retweet"><i className="fas fa-retweet"></i> {this.props.user.screen_name} retweeted </p>;
     }
 
     let media = null;
@@ -25,50 +28,40 @@ class Tweet extends Component {
     let counts = (<p>
         {
             tweet.retweeted ?
-            <span style={{color: '#66ff99'}}><span id="counts" className="glyphicon glyphicon-retweet" aria-hidden="true"></span> {tweet.retweet_count}</span> :
-            <span><span id="counts" className="glyphicon glyphicon-retweet" aria-hidden="true"></span> {tweet.retweet_count}</span>
+            <span style={{color: '#66ff99'}}><i className="fas fa-retweet"  id="counts"></i> {tweet.retweet_count}</span> :
+            <span><i className="fas fa-retweet"  id="counts"></i>{tweet.retweet_count}</span>
         }
 
         {
             tweet.favorited ?
-            <span style={{color: '#ff6699'}}><span id="counts" className="glyphicon glyphicon-heart" aria-hidden="true"></span>{tweet.favorite_count}</span> :
-            <span><span id="counts" className="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>{tweet.favorite_count}</span>
+            <span style={{color: '#ff6699'}}><i className="fas fa-heart"  id="counts"></i>{tweet.favorite_count}</span> :
+            <span><i className="far fa-heart"  id="counts"></i>{tweet.favorite_count}</span>
         }
         </p>)
 
     /**
-     * Find and highlight relevant keywords within a block of text
-     * @param  {string} text - The text to parse
-     * @param  {array} values - The search keyword to highlight
-     * @return {object} A JSX object containing an array of alternating strings and JSX
+     * Append anchor tag to links and replace escaped &amp; ish with & ish
      */
-    const format_link = (text, values) => {
+    const format = (text, values) => {
       if (!values.length) {
         return (<p>{text}</p>);
       }
       let parts = [];
       let prev_index = 0;
       for (let i = 0; i < values.length; i++){
-          // console.log(text.slice(prev_index, values[i].indices[0]));
-          parts.push(text.slice(prev_index, values[i].indices[0]));
+          parts.push(entities.decode([...text].slice( prev_index, values[i].indices[0]).join('')));
+          // console.log(runes.substr(text, prev_index, values[i].indices[0]));
           parts.push(<a title={values[i].expanded_url} href={values[i].url} key={values[i].url}>{values[i].url}</a>);
           prev_index = values[i].indices[1];
       }
-      parts.push(text.slice(prev_index));
+      parts.push(entities.decode([...text].slice(prev_index).join('')));
 
-      return (<p>
-        { parts.reduce((prev, current, i) => {
-            if (!i) {
-              return [current];
-            }
-            return prev.concat(current);
-          }, [])
-        }
-      </p>);
+      return (<p>{parts}</p>);
     };
 
 
-    let full_text = format_link(tweet.full_text.slice(tweet.display_text_range[0], tweet.display_text_range[1]+1), tweet.entities.urls);
+    let full_text = format([...tweet.full_text].slice(tweet.display_text_range[0], tweet.display_text_range[1]), tweet.entities.urls);
+    // let full_text = "<p>" + tweet.full_text.slice(tweet.display_text_range[0], tweet.display_text_range[1]) + "</p>"
 
     return ( //<p>{this.props.text}</p>
         <div className="tweet">

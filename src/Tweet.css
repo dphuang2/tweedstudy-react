@@ -22,6 +22,7 @@
 
 .tweet>a{
   grid-area: tweet-img;
+  width: 60%;
 }
 
 .tweet>div{
