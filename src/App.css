@@ -60,11 +60,11 @@ footer {
   align-items: center;
 }
 
-footer>.dropdown{
+.dropdown{
   grid-area: menu;
 }
 
-footer>.slider{
+.slider{
   grid-area: slider;
   width: 95%;
   margin: auto 2%;

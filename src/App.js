@@ -10,7 +10,6 @@ import FilterControl from './FilterControl.js';
 
 import TweetView from './TweetView';
 
-import './Tweet.css';
 import './App.css';
 
  class App extends Component {
@@ -83,7 +82,7 @@ import './App.css';
         <header>
               <h1 className="title">Twitter Study</h1>
               {
-                  this.isLoggedIn() &&
+                  !this.isLoggedIn() &&
                   (<div className="profile">
                       <img className='profile-img' src={this.state.profileimg} alt="user profile"/>
                       <p className="username">{this.state.username}</p>
@@ -94,17 +93,17 @@ import './App.css';
 
           <div className="main">
               {
-                { this.isLoggedIn() ?
-                  this.state.tweets.map(r =>
-                    <TweetView key={ r.id.toString() } tweet={ r } />
-                  ):
-                  <button type="button" onClick={this.authenticate.bind(this)}> Login with twitter </button>
+                this.isLoggedIn() ?
+                this.state.tweets.map(r =>
+                  <TweetView key={ r.id.toString() } tweet={ r } />
+                ):
+                <button type="button" onClick={this.authenticate.bind(this)}> Login with twitter </button>
                }
           </div>
 
-          <div className="footer">
-            <FilterControl dropdownClass={"dropdown"} sliderClass={"slider"} onChange={filterState => this.loadFilteredTweets(filterState)} tweets={ this.allTweets } />
-          </div>
+          <footer>
+            <FilterControl onChange={filterState => this.loadFilteredTweets(filterState)} tweets={ this.allTweets } />
+          </footer>
       </div>
     );
   }

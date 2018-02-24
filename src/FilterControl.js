@@ -8,10 +8,10 @@ export default class FilterControl extends Component {
         const LOW_NUMBER = -10000;
         super(props)
         let filterStatus = {};
-        // NB That sentiment can be negative, so we can't set these to 0, 
-        // but we can't ask the tweets because it takes forever and also 
+        // NB That sentiment can be negative, so we can't set these to 0,
+        // but we can't ask the tweets because it takes forever and also
         // we don't have them on construction. So, we have this.
-        // Don't tell anyone. 
+        // Don't tell anyone.
         [FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT]
             .forEach(feature => filterStatus[feature] = LOW_NUMBER);
 
@@ -22,9 +22,9 @@ export default class FilterControl extends Component {
     onSliderChange(value) {
         let filterStatus = this.state.filterStatus;
         filterStatus[this.state.currentFeature] = value;
-        this.setState({filterStatus}, 
+        this.setState({filterStatus},
             (_, __) => this.props.onChange(filterStatus));
-        
+
     }
 
     onDropdownChange(event, index, value) {
@@ -135,8 +135,8 @@ export default class FilterControl extends Component {
         let lowestFeature;
         let highestFeature;
         if(this.props.tweets !== undefined && this.props.tweets !== null) {
-            lowestFeature = this.getLowestFeature(this.state.currentFeature)  
-            highestFeature = this.getHighestFeature(this.state.currentFeature) 
+            lowestFeature = this.getLowestFeature(this.state.currentFeature)
+            highestFeature = this.getHighestFeature(this.state.currentFeature)
         } else {
             lowestFeature = 0;
             highestFeature = 100;
@@ -155,6 +155,6 @@ export default class FilterControl extends Component {
 }
 
 FilterControl.defaultProps = {
-    sliderClass: "slider", 
+    sliderClass: "slider",
     dropdownClass: "dropdown"
 };

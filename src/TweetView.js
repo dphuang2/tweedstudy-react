@@ -14,13 +14,12 @@ export default class TweetView extends Component {
 
         let retweet_status = null;
         if (tweet.hasOwnProperty('retweeted_status')){
-            tweet = tweet.retweeted_status;
             retweet_status = <p className="retweet"><i className="fas fa-retweet"></i> {tweet.user.screen_name} retweeted </p>;
         }
 
         let media = null;
         if (tweet.entities.media) {
-          media = <img id="media-img" className="img-responsive img-rounded" width={tweet.entities.media[0].sizes.thumb.w * 5} src={tweet.entities.media[0].media_url} alt=""/>;
+          media = <img id="media-img" width={tweet.entities.media[0].sizes.thumb.w * 5} src={tweet.entities.media[0].media_url} alt=""/>;
         }
 
         let counts = (<p>
@@ -57,7 +56,7 @@ export default class TweetView extends Component {
           return (<p>{parts}</p>);
         }
 
-        let full_text = format([...tweet.full_text].slice(tweet.display_text_range[0], tweet.display_text_range[1]), tweet.entities.urls);
+        let full_text = format([...tweet.getText()].slice(tweet.display_text_range[0], tweet.display_text_range[1]), tweet.entities.urls);
 
         return (
           <div className="tweet">
