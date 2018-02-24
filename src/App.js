@@ -1,59 +1,52 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
+
 import Tweet from './Tweet.js';
-import DropDownMenuSimpleExample from './Dropdown.js'
-import './Tweet.css';
-// import logo from './Twitter_Logo_WhiteOnBlue.svg';
+
 import Authentication from './Authentication/Authentication.js';
-import './App.css';
-import { happyWords, sadWords } from './wordlists';
-import Slider  from 'rc-slider';
 import './Authentication/Authentication';
-// We can just import Slider or Range to reduce bundle size
-// import Slider from 'rc-slider/lib/Slider';
-// import Range from 'rc-slider/lib/Range';
-import 'rc-slider/assets/index.css';
-/*
- *TODO:
- *Build feed with fake twitter data [tweets.json]
- *Build slider than can filter fake twitter data [tweets.json]
- */
+
+import TweetFilterer from './TweetFilterer.js';
+import FilterControl from './FilterControl.js';
+
+import TweetView from './TweetView';
+
+import './Tweet.css';
+import './App.css';
 
  class App extends Component {
   constructor(props) {
     super(props);
-    this.wordSentiments = {};
-    this.state = { value: 0, max: 100, min: 0, username: undefined, profileimg: "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png", filtervalue: undefined };
     this.auth = new Authentication();
-    this.data = null;
-    this.authenticate = this.authenticate.bind(this);
-    this.logout = this.logout.bind(this);
-    this.auth.getScreenName()
-      .then((username) => {
-        this.setState({
-            username: username,
-            tweets: this.auth.tweets,
-            profileimg: this.auth.profile_img,
-            });
+    this.state = {
+        tweets: [],
+        value: 0,
+        max: 100,
+        min: 0,
+        username: undefined,
+        profileimg: "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
+        filtervalue: undefined };
+
+    this.filterer = new TweetFilterer([]);
+    this.allTweets = [];
+    this.messages = [];
+
+    if(this.isLoggedIn()) {
+        this.auth.getTweets().then(tweets => {
+            App.messages = this.auth.getMessagesNoWait();
+            this.allTweets = tweets.map(t => new Tweet(t));
+            this.filterer = new TweetFilterer(this.allTweets);
+            this.setState({ tweets: this.allTweets });
         });
-  }
 
-  getSmallestPop(tweets) {
-      return tweets.map(this.getPopularity).reduce((a, b) => a < b ? a : b);
-  }
-
-  getLargestPop(tweets) {
-      return tweets.map(this.getPopularity).reduce((a, b) => a > b ? a : b);
-  }
-
-  filterInfo(filter_var)
-  {
-      if(this.data != null) {
-          var filteredTwitter = this.data.filter(tweet => this.getPopularity(tweet) >= filter_var);
-          return filteredTwitter;
-      } else {
-          return [];
+        this.auth.getScreenName()
+            .then((username) => {
+                this.setState({
+                    username: username,
+                    profileimg: this.auth.profile_img,
+                });
+            });
       }
+
   }
 
   onSliderChange(value) {
@@ -62,52 +55,11 @@ import 'rc-slider/assets/index.css';
     });
   }
 
-  getPopularity(tweet) {
-      return tweet.retweet_count;
-  }
-
-  getWordSentiment(word) {
-      if(this.wordSentiments.hasOwnProperty(word))
-          return this.wordSentiments[word];
-
-      for(let i = 0; i < sadWords.length; i++) {
-          let sad = sadWords[i];
-          if(sad === word || (sad.endsWith("*") && word.startsWith(sad.substring(0, sad.length - 1)))) {
-              this.wordSentiments[word] = -1;
-              return -1;
-          }
-      }
-
-      for(let i = 0; i < happyWords.length; i++) {
-          let happy = happyWords[i];
-          if(happy === word || (happy.endsWith("*") && word.startsWith(happy.substring(0, happy.length - 1)))) {
-              this.wordSentiments[word] = 1;
-              return 1;
-          }
-      }
-      return 0;
-  }
-
-  getSentiment(tweet) {
-      let words = tweet.toLowerCase().replace(/[^\w\s]/g, "").split(" ");
-      return words.map(this.getWordSentiment.bind(this)).reduce((x, y) => x + y);
-  }
-
-  getCelebrity(tweet) {
-      let celeb = 0;
-
-      if(tweet.user.verified)
-          celeb++;
-
-      if(tweet.user.followers_count > 100000)
-          celeb += 3;
-      else if(tweet.user.followers_count > 10000)
-          celeb += 2;
-      else if(tweet.user.followers_count > 1000)
-          celeb += 1;
-      else
-          celeb -= 1;
-    return celeb
+     // A filterState is an object where they keys are one of FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT,
+     // And the values are the numerical minumum values of the appropriate feature. Not all of the keys
+     // must appear, but no keys other than the ones specifically allowed may appear.
+  loadFilteredTweets(filterState) {
+      this.filterer.filterTweets(filterState).then(tweets => this.setState({tweets}));
   }
 
   authenticate() {
@@ -121,49 +73,38 @@ import 'rc-slider/assets/index.css';
       this.setState({username: undefined});
   }
 
+  isLoggedIn() {
+      return this.auth.isAuthenticated();
+  }
+
   render() {
-    var rows = [];
-    if(this.state.tweets != null && this.state.tweets !== undefined && this.state.tweets.length > 0){
-      this.state.tweets.forEach(function(tweet){
-          rows.push(tweet);
-        }
-      );
-    }
-    var showme = [];
-    var number = 100000000;
-
-
-// console.log(this.state);
-// <img className="App-logo" src={logo} alt="logo" />
     return (
-        <div className="container">
-            <header>
-                <h1 className="title">Twitter Study</h1>
-                {
-                    this.auth.getScreenNameNoWait() !== null &&
-                    (<div className="profile">
-                        <img className='profile-img' src={this.state.profileimg} alt="user profile"/>
-                        <p className="username">{this.state.username}</p>
-                        <button type="button" onClick={this.logout}>Log out</button>
-                    </div>)
-                }
-            </header>
+      <div className="container">
+        <header>
+              <h1 className="title">Twitter Study</h1>
+              {
+                  this.isLoggedIn() &&
+                  (<div className="profile">
+                      <img className='profile-img' src={this.state.profileimg} alt="user profile"/>
+                      <p className="username">{this.state.username}</p>
+                      <button type="button" onClick={this.logout.bind(this)}>Log out</button>
+                  </div>)
+              }
+          </header>
 
-            <div className="main">
-                {
-                     this.auth.getScreenNameNoWait() !== null ? (
-                     number = this.state.value,
-                     showme = rows.filter(function(r){ return r.retweet_count>number; }),
-                     showme.map( r=>  <Tweet key={r.id_str} {...r} />)
-                     ) :
-                     <button type="button" onClick={this.authenticate}> Login with twitter </button>
-                 }
-            </div>
+          <div className="main">
+              {
+                { this.isLoggedIn() ?
+                  this.state.tweets.map(r =>
+                    <TweetView key={ r.id.toString() } tweet={ r } />
+                  ):
+                  <button type="button" onClick={this.authenticate.bind(this)}> Login with twitter </button>
+               }
+          </div>
 
-            <footer>
-                <DropDownMenuSimpleExample />
-                <Slider max={this.state.max} min={this.state.min} onChange={this.onSliderChange.bind(this)}/>
-            </footer>
+          <div className="footer">
+            <FilterControl dropdownClass={"dropdown"} sliderClass={"slider"} onChange={filterState => this.loadFilteredTweets(filterState)} tweets={ this.allTweets } />
+          </div>
       </div>
     );
   }

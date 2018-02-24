@@ -60,11 +60,11 @@ footer {
   align-items: center;
 }
 
-footer>span{
+footer>.dropdown{
   grid-area: menu;
 }
 
-footer>.rc-slider{
+footer>.slider{
   grid-area: slider;
   width: 95%;
   margin: auto 2%;
