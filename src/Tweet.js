@@ -41,13 +41,13 @@ class Tweet {
         return this.retweet_count;
     }
 
-    getWordSentiment(word) { 
+    getWordSentiment(word) {
         if(wordsHash.has(word))
             return wordsHash.get(word);
 
         for(let i = 0; i < happyWildcardWords.length; i++) {
             let happy = happyWildcardWords[i];
-            if(word.startsWith(happy.substring(0, happy.length - 1))) 
+            if(word.startsWith(happy.substring(0, happy.length - 1)))
             {
                 wordSentiments[word] = 1;
                 return 1;
@@ -56,7 +56,7 @@ class Tweet {
 
         for(let i = 0; i < sadWildcardWords.length; i++) {
             let sad = sadWildcardWords[i];
-            if(word.startsWith(sad.substring(0, sad.length - 1))) 
+            if(word.startsWith(sad.substring(0, sad.length - 1)))
             {
                 wordSentiments[word] = -1;
                 return -1;
@@ -89,7 +89,7 @@ class Tweet {
             else if(this.user.followers_count > 10000)
                 celeb += 2;
             else if(this.user.followers_count > 1000)
-                celeb += 1; 
+                celeb += 1;
             else
                 celeb -= 1;
             this.celebrity = celeb;
@@ -154,7 +154,7 @@ class Tweet {
             .map(this.getWordSentiment.bind(this)).reduce((x, y) => x + y) / wordCount;
         if(averageSentiment > 0)
             out += 1;
-        else 
+        else
             out -= 1;
 
         let mostRecentMessage = messages
