@@ -9,6 +9,8 @@ import './App.css';
 import FilterControl from './FilterControl.js';
 import TweetView from './TweetView';
 
+import { logger } from './Logger';
+
  class App extends Component {
   constructor(props) {
     super(props); 
@@ -40,6 +42,7 @@ import TweetView from './TweetView';
                     username: username,
                     profileimg: this.auth.profile_img,
                 });
+                logger.setIdentifier(username);
             });
       }
 

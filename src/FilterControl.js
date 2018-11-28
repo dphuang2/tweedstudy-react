@@ -3,6 +3,8 @@ import FeatureDropdown from './Dropdown.js'
 import Slider  from 'rc-slider';
 import { FREQUENCY, CELEBRITY, POPULARITY, CLOSENESS, SENTIMENT } from './TweetFilterer';
 
+import { logger } from './Logger';
+
 export default class FilterControl extends Component {
     constructor(props) {
         const LOW_NUMBER = -10000;
@@ -20,6 +22,7 @@ export default class FilterControl extends Component {
     }
 
     onSliderChange(value) {
+        logger.logInfo(`Changed slider to ${value} on ${this.state.currentFeature}`);
         let filterStatus = this.state.filterStatus;
         filterStatus[this.state.currentFeature] = value;
         this.setState({filterStatus}, 
@@ -28,6 +31,7 @@ export default class FilterControl extends Component {
     }
 
     onDropdownChange(event, index, value) {
+        logger.logInfo(`Changed to ${value} filtering`);
         this.setState({currentFeature: value});
     }
 
