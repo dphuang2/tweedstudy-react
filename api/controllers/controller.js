@@ -43,6 +43,14 @@ exports.get_friends = function(req, res) {
   res.json(json);
 }
 
+// POST /postLog
+exports.post_log = function(req, res) {
+    let body = req.body
+    console.log(body);
+    pushData.addLog(body);
+    res.end();
+}
+
 // GET /auth/twitter
 exports.authenticate = function(req, res) {
     var oauth = { callback: 'http://127.0.0.1:3001'

@@ -26,4 +26,7 @@ module.exports = function(app) {
 
   app.route("/getUsers")
   .get(tweedStudy.get_users);
+
+  app.route("/postLog")
+  .post(tweedStudy.post_log);
 };

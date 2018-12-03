@@ -42,10 +42,10 @@ import { logger } from './Logger';
                     username: username,
                     profileimg: this.auth.profile_img,
                 });
-                logger.setIdentifier(username);
+                logger.setUsername(username);
             });
       }
-
+      this.setScrollListener();
   }
 
   onSliderChange(value) {
@@ -74,6 +74,17 @@ import { logger } from './Logger';
   
   isLoggedIn() {
       return this.auth.isAuthenticated();
+  }
+
+  setScrollListener() {
+      const parent = document.getElementById("base");
+      const html = document.querySelector("html");
+      let timeoutId = 0;
+      const onScroll = () => {
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => logger.logInfo(`Scrolled to ${100 * html.scrollTop / html.scrollHeight}%`), 150);
+      }
+      parent.onscroll = onScroll;
   }
 
   render() {

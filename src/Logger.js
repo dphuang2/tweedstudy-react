@@ -13,8 +13,8 @@ class Logger {
         return out;
     }
 
-    setIdentifier(id) {
-        this.userItentifier = id;
+    setUsername(username) {
+        this._log(this.buildMessage("info", `Set username to ${username}`));
     }
 
     logInfo(message) {
@@ -31,11 +31,21 @@ class Logger {
 
     _log(message) {
         // This will be OK for testing 
+        const LOG_URL = "/postLog";
         console.log(message);
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        fetch(LOG_URL, { 
+            method: "POST",
+            body: JSON.stringify(message),
+            headers
+        }).then((res) => res.json())
+        .then((json) => console.log(json));
     }
 
     buildMessage(type, message) {
-        return `${type}|${this.userItentifier}|${message}`;
+        let time = (new Date()).toDateString();
+        return { type, message, userId: this.userItentifier, time };
     }
 }
 

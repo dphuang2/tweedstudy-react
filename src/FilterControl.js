@@ -22,7 +22,6 @@ export default class FilterControl extends Component {
     }
 
     onSliderChange(value) {
-        logger.logInfo(`Changed slider to ${value} on ${this.state.currentFeature}`);
         let filterStatus = this.state.filterStatus;
         filterStatus[this.state.currentFeature] = value;
         this.setState({filterStatus}, 
@@ -135,6 +134,10 @@ export default class FilterControl extends Component {
         return lowest;
     }
 
+    onLift(value) {
+        logger.logInfo(`Changed slider to ${value} on ${this.state.currentFeature}`);
+    }
+
     render() {
         let lowestFeature;
         let highestFeature;
@@ -151,7 +154,7 @@ export default class FilterControl extends Component {
                     <FeatureDropdown onChange={ this.onDropdownChange.bind(this) } value={ this.state.currentFeature } />
                 </span>
                 <span className={ this.props.sliderClass }>
-                    <Slider min={ lowestFeature } max={ highestFeature } onChange={ this.onSliderChange.bind(this) } defaultValue={ this.state.filterStatus[this.state.currentFeature] }/>
+                    <Slider min={ lowestFeature } max={ highestFeature } onChange={ this.onSliderChange.bind(this) } onAfterChange={ this.onLift.bind(this) } defaultValue={ this.state.filterStatus[this.state.currentFeature] }/>
                 </span>
             </div>
         );
